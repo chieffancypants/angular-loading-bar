@@ -8,7 +8,7 @@ This is mostly cool because you simply include it in your app, and it works, and
 
 ## Why I created this
 
-Two goals for this project?
+Two goals for this project:
 
 1. Make it automatic
 2. 100% code coverage
