@@ -5,6 +5,8 @@ The idea is simple: Add a loading bar whenever an XHR request goes out in angula
 
 This is mostly cool because you simply include it in your app, and it works, and it's pretty.  There's no complicated setup, or need to maintain the state of the loading bar.
 
+## Requirements:
+Angular 1.2+
 
 ## Why I created this
 
