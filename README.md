@@ -1,12 +1,15 @@
 angular-loading-bar
 ===================
 
-Automatically add a loading bar to your angular apps, automatically.  Automatic.
+The idea is simple: Add a loading bar whenever an XHR request goes out in angular.  Multiple requests within the same time period get bundled together such that each response increments the progress bar by the appropriate amount.
+
+This is mostly cool because you simply include it in your app, and it works, and it's pretty.  There's no complicated setup, or need to maintain the state of the loading bar.
 
 
 ## Why I created this
 
 I made this for two reasons:
+
 1. To make sure it was automatic
 2. To make sure it was fully tested
 
