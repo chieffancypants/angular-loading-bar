@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min.js"></script>
+    <script src="../src/loading-bar.js"></script>
+    <script src="app.js"></script>
+
+  </head>
+  <body ng-app="LoadingBarExample" ng-controller="ExampleCtrl">
+
+    <div ng-repeat="post in posts">
+      {{post.data}}
+    </div>
+
+  </body>
+</html>
