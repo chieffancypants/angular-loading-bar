@@ -35,32 +35,45 @@ angular.module('chieffancypants.loadingBar', [])
 
 
       /**
-       * increments the reqsCompleted, and checks if all XHR requests have
-       * completed.  If so, it calls cfpLoadingBar.complete() which removes the
+       * calls cfpLoadingBar.complete() which removes the
        * loading bar from the DOM.
        */
-      function checkComplete() {
-        reqsCompleted++;
-        if (reqsCompleted === reqsTotal) {
-          cfpLoadingBar.complete();
-        }
+      function setComplete() {
+        cfpLoadingBar.complete();
+        reqsCompleted = 0;
+        reqsTotal = 0;
       }
 
       return {
         'request': function(config) {
+          if (reqsTotal === 0) {
+            cfpLoadingBar.start();
+            console.log('start that shit', reqsCompleted, reqsTotal);
+          }
           reqsTotal++;
+          console.log('request', reqsCompleted, reqsTotal);
           return config;
         },
 
         'response': function(response) {
-          checkComplete();
-          cfpLoadingBar.set(reqsCompleted / reqsTotal);
+          reqsCompleted++;
+          console.log('set complete', reqsCompleted, reqsTotal);
+          if (reqsCompleted === reqsTotal) {
+            setComplete();
+          } else {
+            cfpLoadingBar.set(reqsCompleted / reqsTotal);
+          }
           return response;
         },
 
         'responseError': function(rejection) {
-          checkComplete();
-          cfpLoadingBar.set(reqsCompleted / reqsTotal);
+          reqsCompleted++;
+          console.log('set complete fail', reqsCompleted, reqsTotal);
+          if (reqsCompleted === reqsTotal) {
+            setComplete();
+          } else {
+            cfpLoadingBar.set(reqsCompleted / reqsTotal);
+          }
           return $q.reject(rejection);
         }
       };
@@ -121,7 +134,7 @@ angular.module('chieffancypants.loadingBar', [])
       if (_status() >= 1) {
         return;
       }
-      var pct = _status() + (Math.random() / 100);
+      var pct = _status() + (Math.random() / 10);
       _set(pct);
       console.log('status is', _status());
     }
@@ -136,8 +149,10 @@ angular.module('chieffancypants.loadingBar', [])
       status: _status,
 
       complete: function () {
+        _set(1);
         $timeout(function() {
           loadingBar.css('opacity', 0);
+          status = 0;
           started = false;
         }, 500);
       }
