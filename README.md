@@ -10,7 +10,7 @@ Angular 1.2+
 
 ## Why I created this
 
-Two goals for this project:
+Goals for this project:
 
 1. Make it automatic
 2. 100% code coverage
