@@ -14,6 +14,7 @@ Two goals for this project:
 
 1. Make it automatic
 2. 100% code coverage
+3. Should work well with ngAnimate
 
 ### Automated
 There are a couple projects similar to this out there, but none are ideal.  All implementations I've seen are based on the excellent [nprogress](https://github.com/rstacruz/nprogress) by rstacruz, which requires that you maintain state on behalf of the loading bar.  In other words, you're setting the value of the loading/progress bar manually from potentially many different locations.  This becomes complicated when you have a very large application with several services all making independant XHR requests.
