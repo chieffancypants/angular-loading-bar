@@ -89,23 +89,23 @@ angular.module('chieffancypants.loadingBar', [])
    * This service handles actually adding and removing the element from the DOM.
    * Because this is such a light-weight element, the
    */
-  .factory('cfpLoadingBar', ['$document', '$timeout', function ($document, $timeout) {
+  .factory('cfpLoadingBar', ['$document', '$timeout', '$animate', function ($document, $timeout, $animate) {
 
     var $body = $document.find('body'),
       loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'),
       loadingBar = loadingBarContainer.find('div').eq(0);
 
     var started = false,
-      status = 0;
-
+      status = 0,
+      incTimeout;
 
     /**
      * Inserts the loading bar element into the dom, and sets it to 1%
      */
     function _start() {
       started = true;
-      $body.append(loadingBarContainer);
-      loadingBar.css('width', '1%').css('opacity', 1);
+      $animate.enter(loadingBarContainer, $body, null);
+      _set(0.02);
     }
 
     /**
@@ -115,26 +115,41 @@ angular.module('chieffancypants.loadingBar', [])
      */
     function _set(n) {
       if (!started) {
-        _start();
+        return;
       }
       var pct = (n * 100) + '%';
       loadingBar.css('width', pct);
       status = n;
 
-      // give the illusion that there is always progress...
-      $timeout(function() {
+      // increment loadingbar to give the illusion that there is always progress
+      // but make sure to cancel the previous timeouts so we don't have multiple
+      // incs running at the same time.
+      $timeout.cancel(incTimeout);
+      incTimeout = $timeout(function() {
         _inc();
       }, 500);
     }
 
     /**
      * Increments the loading bar by a random amount between .1% and .9%
+     * but slows down once it approaches 70%
      */
     function _inc() {
       if (_status() >= 1) {
         return;
       }
-      var pct = _status() + (Math.random() / 10);
+
+      var rnd = 0;
+
+      if (_status() >= 0.7 && _status() < 0.9) {
+        rnd = Math.random() / 50;
+      } else if (_status() >= 0.9) {
+        rnd = 0.005;
+      } else {
+        rnd = (Math.random() / 25);
+      }
+
+      var pct = _status() + rnd;
       _set(pct);
       console.log('status is', _status());
     }
@@ -151,9 +166,11 @@ angular.module('chieffancypants.loadingBar', [])
       complete: function () {
         _set(1);
         $timeout(function() {
-          loadingBar.css('opacity', 0);
-          status = 0;
-          started = false;
+          $animate.leave(loadingBarContainer, function() {
+            console.log('removed loading bar');
+            status = 0;
+            started = false;
+          });
         }, 500);
       }
 

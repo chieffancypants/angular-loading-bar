@@ -2,6 +2,7 @@
 <html>
   <head>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-animate.min.js"></script>
     <script src="../src/loading-bar.js"></script>
     <script src="app.js"></script>
 
@@ -40,6 +41,20 @@
         margin: 0;
         border-radius: 0;
       }
+
+      .panel {
+        -webkit-transition: 0.75s ease-in-out all;
+        -moz-transition: 0.75s ease-in-out all;
+        -o-transition: 0.75s ease-in-out all;
+        transition: 0.75s ease-in-out all;
+      }
+      .panel.ng-enter {
+        opacity: 0;
+      }
+      .panel.ng-enter-active {
+        opacity: 1;
+        transition-delay: 0.5s;
+      }
     </style>
 
   </head>
@@ -54,7 +69,10 @@
       </div>
     </nav>
 
-    <div class="jumbotron">Welcome to loading-bar!</div>
+    <div class="jumbotron">
+      <h1>This is a loading bar.</h1>
+      <p>Check this out.  Click the above, and you'll see the loading bar.</p>
+    </div>
 
     <div ng-repeat="post in posts" class="panel panel-default">
       <div class="panel-body media">
