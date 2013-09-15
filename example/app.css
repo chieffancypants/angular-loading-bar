@@ -43,6 +43,7 @@ footer.navbar {
   transition: 0.75s ease-in-out all;
   background-color: #fff;
   border: none;
+  margin-bottom: 15px;
 }
 
 .panel a {
@@ -61,6 +62,12 @@ footer.navbar {
 .panel.ng-enter-active {
   opacity: 1;
   transition-delay: 0.5s;
+}
+
+.panel-body {
+  border: 1px solid #ccc;
+  /*box-shadow: 0 1px 3px rgba(0,0,0,0.1);*/
+  border-radius: 5px;
 }
 
 .examples {
@@ -98,19 +105,11 @@ footer.navbar {
 }
 
 .examples .btn i {
-  /*color: #999;*/
   top: 2px;
 }
 
-.example {
-  margin-bottom: 15px;
-}
-.example a {
-  font-size: 20px;
-}
-.example p {
-  margin:0;
-  color: #666;
+.examples span {
+  color: #A1FFC9;
 }
 
 .btn-primary {
@@ -154,6 +153,11 @@ h1 {
 h4 {
   font-family: 'Oxygen', sans;
   color: #888;
+  padding-bottom: 5px;
+  padding-top: 10px;
+}
+h4 span {
+  color: #e74c3c;
 }
 
 
