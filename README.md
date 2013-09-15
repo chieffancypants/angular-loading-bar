@@ -21,3 +21,7 @@ There are a couple projects similar to this out there, but none are ideal.  All 
 
 ### Tested
 The basis of Angular is that it's easy to test.  So it pains me to see angular modules without tests. This loading bar aims for 100% code coverage.
+
+
+## Credits: 
+Credit goes to [rstacruz](https://github.com/rstacruz) for his excellent [nProgress](https://github.com/rstacruz/nprogress).
