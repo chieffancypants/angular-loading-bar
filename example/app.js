@@ -9,10 +9,21 @@ angular.module('LoadingBarExample', ['chieffancypants.loadingBar', 'ngAnimate'])
     $scope.posts = [];
     $scope.section = null;
     $scope.subreddit = null;
-    $scope.subreddits = ['cats', 'pics', 'funny', 'gaming', 'AdviceAnimals'];
+    $scope.subreddits = ['cats', 'pics', 'funny', 'gaming', 'AdviceAnimals', 'aww'];
+
+    var getRandomSubreddit = function() {
+      var sub = $scope.subreddits[Math.floor(Math.random() * $scope.subreddits.length)];
+
+      // ensure we get a new subreddit each time.
+      if (sub == $scope.subreddit) {
+        return getRandomSubreddit();
+      }
+
+      return sub;
+    };
 
     $scope.fetch = function() {
-      $scope.subreddit = $scope.subreddits[Math.floor(Math.random() * $scope.subreddits.length)];
+      $scope.subreddit = getRandomSubreddit();
       $http.jsonp('http://www.reddit.com/r/' + $scope.subreddit + '.json?limit=50&jsonp=JSON_CALLBACK').success(function(data) {
         $scope.posts = data.data.children;
       });

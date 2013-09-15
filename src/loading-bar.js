@@ -167,23 +167,22 @@ angular.module('chieffancypants.loadingBar', [])
         return status;
       }
 
-      console.log(this.includeSpinner);
+      function _complete() {
+        _set(1);
+        $timeout(function() {
+          $animate.leave(loadingBarContainer, function() {
+            status = 0;
+            started = false;
+          });
+          $animate.leave(spinner);
+        }, 500);
+      }
 
       return {
         start: _start,
         set: _set,
         status: _status,
-
-        complete: function () {
-          _set(1);
-          $timeout(function() {
-            $animate.leave(loadingBarContainer, function() {
-              status = 0;
-              started = false;
-            });
-            $animate.leave(spinner);
-          }, 500);
-        },
+        complete: _complete,
 
         includeSpinner: this.includeSpinner
       };
