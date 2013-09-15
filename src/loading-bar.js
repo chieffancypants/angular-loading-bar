@@ -127,7 +127,7 @@ angular.module('chieffancypants.loadingBar', [])
       $timeout.cancel(incTimeout);
       incTimeout = $timeout(function() {
         _inc();
-      }, 500);
+      }, 250);
     }
 
     /**
@@ -146,12 +146,12 @@ angular.module('chieffancypants.loadingBar', [])
       } else if (_status() >= 0.9) {
         rnd = 0.005;
       } else {
+        // TODO: Clamp value so it starts out fast initially
         rnd = (Math.random() / 25);
       }
 
       var pct = _status() + rnd;
       _set(pct);
-      console.log('status is', _status());
     }
 
     function _status() {
@@ -167,7 +167,6 @@ angular.module('chieffancypants.loadingBar', [])
         _set(1);
         $timeout(function() {
           $animate.leave(loadingBarContainer, function() {
-            console.log('removed loading bar');
             status = 0;
             started = false;
           });
