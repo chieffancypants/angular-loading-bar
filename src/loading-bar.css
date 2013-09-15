@@ -1,9 +1,9 @@
 
 /* Make clicks pass-through */
-#loading-bar {
+#loading-bar,
+#loading-bar-spinner {
   pointer-events: none;
   -webkit-pointer-events: none;
-
   -webkit-transition: 0.5s linear all;
   -moz-transition: 0.5s linear all;
   -o-transition: 0.5s linear all;
@@ -11,12 +11,16 @@
 }
 
 #loading-bar.ng-enter,
-#loading-bar.ng-leave.ng-leave-active {
+#loading-bar.ng-leave.ng-leave-active,
+#loading-bar-spinner.ng-enter,
+#loading-bar-spinner.ng-leave.ng-leave-active {
   opacity: 0;
 }
 
 #loading-bar.ng-enter.ng-enter-active,
-#loading-bar.ng-leave {
+#loading-bar.ng-leave,
+#loading-bar-spinner.ng-enter.ng-enter-active,
+#loading-bar-spinner.ng-leave {
   opacity: 1;
 }
 
@@ -26,7 +30,7 @@
   -o-transition: width 500ms;
   transition: width 500ms;
 
-  background: #29d;
+  background: #2c3e50;
   position: fixed;
   z-index: 2000;
   top: 0;
@@ -35,7 +39,6 @@
   height: 2px;
 }
 
-
 /* Fancy blur effect */
 #loading-bar .peg {
   display: block;
@@ -43,7 +46,7 @@
   right: 0px;
   width: 100px;
   height: 100%;
-  box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+  box-shadow: 0 0 10px #2c3e50, 0 0 5px #2c3e50;
   opacity: 1.0;
 
   -webkit-transform: rotate(3deg) translate(0px, -4px);
@@ -53,14 +56,12 @@
   transform: rotate(3deg) translate(0px, -4px);
 }
 
-
-
 #loading-bar-spinner {
   display: block;
   position: fixed;
   z-index: 100;
-  top: 15px;
-  right: 15px;
+  top: 10px;
+  left: 10px;
 }
 
 #loading-bar-spinner .spinner-icon {
@@ -68,8 +69,8 @@
   height: 14px;
 
   border:  solid 2px transparent;
-  border-top-color:  #29d;
-  border-left-color: #29d;
+  border-top-color:  #2c3e50;
+  border-left-color: #2c3e50;
   border-radius: 10px;
 
   -webkit-animation: loading-bar-spinner 400ms linear infinite;

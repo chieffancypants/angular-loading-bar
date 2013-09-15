@@ -1,160 +1,25 @@
 <!doctype html>
 <html>
   <head>
+    <!-- angular -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-animate.min.js"></script>
-    <script src="../src/loading-bar.js"></script>
-    <script src="app.js"></script>
 
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <!-- loadingbar -->
+    <script src="../src/loading-bar.js"></script>
     <link href='../src/loading-bar.css' rel='stylesheet' />
 
-    <!-- <link href='http://fonts.googleapis.com/css?family=Carrois+Gothic' rel='stylesheet' type='text/css'> -->
+    <!-- example app -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <script src="app.js"></script>
+    <link href='app.css' rel='stylesheet' />
     <link href='http://fonts.googleapis.com/css?family=Oxygen:300,400,700' rel='stylesheet' type='text/css'>
-
-    <style type="text/css">
-      body {
-        background-color: #fafafa;
-        /*padding: 25px;*/
-        font-family: 'Oxygen', sans;
-        width: 850px;
-        margin: auto;
-        overflow-y: scroll;
-      }
-      .thumbnail {
-        width: 70px;
-        height: 70px;
-      }
-      a {
-        font-size:16px;
-      }
-      .badge {
-        background-color: #428bca;
-      }
-      .meta, .meta-comments {
-        font-size:12px;
-        color: #666;
-        margin-bottom: 0;
-      }
-      .meta-comments {
-        font-weight: bold;
-      }
-
-      footer.navbar {
-        height: 65px;
-        width: 100%;
-        border-top: 1px solid #ccc;
-        box-shadow: 0 -1px 4px rgba(0,0,0,0.15);
-        margin: 0;
-        border-radius: 0;
-      }
-
-      .panel {
-        -webkit-transition: 0.75s ease-in-out all;
-        -moz-transition: 0.75s ease-in-out all;
-        -o-transition: 0.75s ease-in-out all;
-        transition: 0.75s ease-in-out all;
-      }
-      .panel.ng-enter {
-        opacity: 0;
-      }
-      .panel.ng-enter-active {
-        opacity: 1;
-        transition-delay: 0.5s;
-      }
-
-      .examples {
-        margin-bottom: 25px;
-        transition-delay: 0.5s;
-      }
-
-      .examples.ng-hide-add,
-      .examples.ng-hide-remove,
-      .loading-text.ng-hide-add,
-      .loading-text.ng-hide-remove {
-        -webkit-transition:all linear 0.5s;
-        -moz-transition:all linear 0.5s;
-        -o-transition:all linear 0.5s;
-        transition:all linear 0.5s;
-        display:block!important;
-      }
-      .examples.ng-hide-add,
-      .examples.ng-hide-remove {
-        transition-delay: 0.5s;
-      }
-
-      .examples.ng-hide-add.ng-hide-add-active,
-      .examples.ng-hide-remove,
-      .loading-text.ng-hide-add.ng-hide-add-active,
-      .loading-text.ng-hide-remove {
-        opacity:0;
-      }
-
-      .examples.ng-hide-add,
-      .examples.ng-hide-remove.ng-hide-remove-active,
-      .loading-text.ng-hide-add,
-      .loading-text.ng-hide-remove.ng-hide-remove-active {
-        opacity:1;
-      }
-
-      .examples .btn i {
-        color: #999;
-        top: 2px;
-      }
-
-      .example {
-        margin-bottom: 15px;
-      }
-      .example a {
-        font-size: 20px;
-      }
-      .example p {
-        margin:0;
-        color: #666;
-      }
-
-      .jumbotron {
-        color: #333;
-        background-color: #fff;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        border-radius: 5px;
-        padding-top: 5px;
-        padding-bottom: 10px;
-        margin-top: 15px;
-        -webkit-transition:all linear 0.5s;
-        -moz-transition:all linear 0.5s;
-        -o-transition:all linear 0.5s;
-        transition:all linear 0.5s;
-      }
-
-      .jumbotron h1 {
-        color: #333;
-        letter-spacing: -2px;
-      }
-
-      .jumbotron small {
-        color: #999;
-      }
-
-      h1 {
-        font-family: 'Oxygen', sans;
-        /*padding-bottom: 10px;*/
-      }
-
-      h4 {
-        font-family: 'Oxygen', sans;
-        color: #888;
-      }
-
-    </style>
-
   </head>
-  <body ng-app="LoadingBarExample" ng-controller="ExampleCtrl">
 
+  <body ng-app="LoadingBarExample" ng-controller="ExampleCtrl">
     <div class="jumbotron">
       <h1>Angular Loading Bar</h1>
       <p>An automatic loading bar using angular interceptors.<small>  It works automatically, so simply include it as a dependency and it will automatically display the progress of your $http requests.</small></p>
-
       <p>
         <a href="https://github.com/chieffancypants/angular-loading-bar" class="btn btn-primary btn-lg">
           <i class="glyphicon glyphicon-download"></i>&nbsp;&nbsp;Download
@@ -165,33 +30,14 @@
       </p>
     </div>
 
-
-      <div class="examples" ng-hide="fakeIntro">
-        <h4>Examples:</h4>
-        <div class="btn-group btn-group-justified">
-          <a href="#" class="btn btn-default btn-lg" ng-click="start()"><i class="glyphicon glyphicon-play-circle"></i> start()</a>
-          <a href="#" class="btn btn-default btn-lg" ng-click="complete()"><i class="glyphicon glyphicon-play-circle"></i> complete()</a>
-          <a href="#" class="btn btn-default btn-lg" ng-click="fetch()"><i class="glyphicon glyphicon-play-circle"></i> Real Example</a>
-        </div>
-      </div>
-<!--
-
     <div class="examples" ng-hide="fakeIntro">
-      <h1>Examples:</h1>
-
-      <div class="example">
-        <p><a href="" ng-click="fetch()"><i class="glyphicon glyphicon-play-circle"></i> Use a real XHR request</a></p>
-        <p>Uses a real XHR request to a random subreddit to show you a real-life example</p>
+      <!-- <h4>Examples:</h4> -->
+      <div class="btn-group btn-group-justified">
+        <a href="#" class="btn btn-primary btn-lg" ng-click="start()"><i class="glyphicon glyphicon-play-circle"></i> start()</a>
+        <a href="#" class="btn btn-primary btn-lg" ng-click="complete()"><i class="glyphicon glyphicon-play-circle"></i> complete()</a>
+        <a href="#" class="btn btn-primary btn-lg" ng-click="fetch()"><i class="glyphicon glyphicon-play-circle"></i> Real Example</a>
       </div>
-      <div class="example">
-        <p><a href="" ng-click="start()"><i class="glyphicon glyphicon-play-circle"></i> start()</a></p>
-        <p>Manually start the loading bar and begin incrementing it</p>
-      </div>
-      <div class="example">
-        <p><a href="" ng-click="complete()"><i class="glyphicon glyphicon-play-circle"></i> complete()</a></p>
-        <p>Complete the loading bar removing it from the DOM</p>
-      </div>
-    </div> -->
+    </div>
 
     <h4 class="loading-text" ng-show="subreddit">Showing 100 results for: /r/{{subreddit}}...</h4>
     <div ng-repeat="post in posts" class="panel panel-default">
