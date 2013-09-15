@@ -1,6 +1,10 @@
 
 
 angular.module('LoadingBarExample', ['chieffancypants.loadingBar', 'ngAnimate'])
+  .config(function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = true;
+  })
+
   .controller('ExampleCtrl', function ($scope, $http, $timeout, cfpLoadingBar) {
     $scope.posts = [];
     $scope.section = null;
