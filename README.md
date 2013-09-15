@@ -10,7 +10,7 @@ Angular 1.2+
 
 
 ## Basic Usage:
-To use, simply include the loading bar as a dependency in your angular module.  If you want pretty CSS transitions, please include `ngAnimate` as well.  That's it.
+To use, simply include the loading bar as a dependency in your angular module.  If you want pretty CSS transitions, please include `ngAnimate` as well.  That's it -- you're done!
 
 ```js
 angular.module('myApp', ['chieffancypants.loadingBar', 'ngAnimate'])
@@ -32,19 +32,29 @@ If you wish to use the loading bar without the interceptor, you can do that as w
 angular.module('myApp', ['cfpLoadingBar'])
 ```
 
-`start()` will insert to loading bar into the DOM, and display its progress at 1%.  It will automatically call `inc()` repeatedly to give the illusion that the page load is progressing.
+```js
 
-`inc()` increments the loading bar by a random amount between .1% and .9%.  It is important to note that the auto incrementing will begin to slow down at 70% and go very slowly at 90%.  This is to prevent the loading bar from appearing completed (or almost complete) before the XHR request has responded.
+cfpLoadingBar.start();
+// will insert the loading bar into the DOM, and display its progress at 1%.
+// It will automatically call `inc()` repeatedly to give the illusion that the page load is progressing.
 
-`set(number)` Set the loading bar to `n` percent where `n` is between 0 and 1.
+cfpLoadingBar.inc();
+// increments the loading bar by a random amount between .1% and .9%.
+// It is important to note that the auto incrementing will begin to slow down at 70%
+// and go very slowly at 90%.  This is to prevent the loading bar from appearing
+// completed (or almost complete) before the XHR request has responded. 
 
-`complete()` Set the loading bar's progress to 100%, and then remove it from the DOM.
+cfpLoadingBar.set(0.3) // Set the loading bar to 30%
+cfpLoadingBar.status() // Returns the loading bar's progress.
+// -> 0.3
 
-`status()` Returns the loading bar's progress.
+cfpLoadingBar.complete()
+// Set the loading bar's progress to 100%, and then remove it from the DOM.
 
+```
 
 ## Why I created this
-There are a couple projects similar to this out there, but none are ideal.  All implementations I've seen are based on the excellent [nprogress](https://github.com/rstacruz/nprogress) by rstacruz, which requires that you maintain state on behalf of the loading bar.  In other words, you're setting the value of the loading/progress bar manually from potentially many different locations.  This becomes complicated when you have a very large application with several services all making independant XHR requests.
+There are a couple projects similar to this out there, but none are ideal.  All implementations I've seen require that you maintain state on behalf of the loading bar.  In other words, you're setting the value of the loading/progress bar manually from potentially many different locations.  This becomes complicated when you have a very large application with several services all making independant XHR requests.
 
 Additionally, Angular was created as a highly testable framework, so it pains me to see Angular modules without tests.  That will not be the case here.
 
