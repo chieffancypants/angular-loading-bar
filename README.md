@@ -5,8 +5,7 @@ The idea is simple: Add a loading bar whenever an XHR request goes out in angula
 
 This is mostly cool because you simply include it in your app, and it works.  There's no complicated setup, and need to maintain the state of the loading bar; it's all handled automatically by the interceptor.
 
-## Requirements:
-Angular 1.2+
+**Requirements:** Angular 1.2+
 
 
 ## Basic Usage:
@@ -16,7 +15,7 @@ To use, simply include the loading bar as a dependency in your angular module.  
 angular.module('myApp', ['chieffancypants.loadingBar', 'ngAnimate'])
 ```
 
-## Documentation:
+## How it works:
 This library is split into two files, an $http `interceptor`, and a `service` that controls the loading bar's DOM elements.
 
 **Interceptor**  
@@ -31,6 +30,7 @@ If you wish to use the loading bar without the interceptor, you can do that as w
 ```js
 angular.module('myApp', ['cfpLoadingBar'])
 ```
+
 
 ```js
 
