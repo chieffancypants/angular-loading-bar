@@ -30,7 +30,7 @@
   -o-transition: width 500ms;
   transition: width 500ms;
 
-  background: #2c3e50;
+  background: #29d;
   position: fixed;
   z-index: 2000;
   top: 0;
@@ -46,7 +46,7 @@
   right: 0px;
   width: 100px;
   height: 100%;
-  box-shadow: 0 0 10px #2c3e50, 0 0 5px #2c3e50;
+  box-shadow: 0 0 10px #29d, 0 0 5px #29d;
   opacity: 1.0;
 
   -webkit-transform: rotate(3deg) translate(0px, -4px);
@@ -69,8 +69,8 @@
   height: 14px;
 
   border:  solid 2px transparent;
-  border-top-color:  #2c3e50;
-  border-left-color: #2c3e50;
+  border-top-color:  #29d;
+  border-left-color: #29d;
   border-radius: 10px;
 
   -webkit-animation: loading-bar-spinner 400ms linear infinite;

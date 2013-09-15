@@ -2,14 +2,15 @@ body {
   background-color: #ecf0f1;
   /*padding: 25px;*/
   font-family: 'Oxygen', sans;
-  width: 850px;
+  width: 85%;
   margin: auto;
   overflow-y: scroll;
 }
 .thumbnail {
   width: 70px;
   height: 70px;
-  border: 1px solid #F1C6C2;
+  /*border: 1px solid #F1C6C2;*/
+  border: 1px solid #CE8982
 }
 a {
   font-size:16px;
@@ -153,4 +154,20 @@ h1 {
 h4 {
   font-family: 'Oxygen', sans;
   color: #888;
+}
+
+
+/*
+ * override the default CSS as an example
+ */
+
+#loading-bar .bar {
+  background: #2c3e50;
+}
+#loading-bar .peg {
+  box-shadow: 0 0 10px #2c3e50, 0 0 5px #2c3e50;
+}
+#loading-bar-spinner .spinner-icon {
+  border-top-color:  #2c3e50;
+  border-left-color: #2c3e50;
 }
