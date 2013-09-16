@@ -1,0 +1,30 @@
+{
+  "name": "angular-loading-bar",
+  "version": "0.0.1",
+  "description": "An automatic loading bar for AngularJS",
+  "main": "src/loading-bar.js",
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/chieffancypants/angular-loading-bar.git"
+  },
+  "keywords": [
+    "angular",
+    "angularjs",
+    "loading",
+    "loadingbar",
+    "progress",
+    "progressbar"
+  ],
+  "author": "chieffancypants",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chieffancypants/angular-loading-bar/issues"
+  }
+}

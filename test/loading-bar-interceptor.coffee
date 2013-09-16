@@ -5,7 +5,7 @@ describe 'loadingBarInterceptor Service', ->
 	endpoint = '/service'
 
 	beforeEach ->
-		module 'kzo.services'
+		angular.module 'chieffancypants.loadingBar'
 		result = null
 		inject (_$http_, _$httpBackend_, _$document_) ->
 			$http = _$http_
