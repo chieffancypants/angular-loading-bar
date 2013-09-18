@@ -19,11 +19,12 @@
     "progress",
     "progressbar"
   ],
-  "author": "chieffancypants",
+  "author": "Wes Cruver",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/chieffancypants/angular-loading-bar/issues"
   },
+  "homepage": "https://chieffancypants.github.io/angular-loading-bar",
   "devDependencies": {
     "karma-script-launcher": "~0.1.0",
     "karma-chrome-launcher": "~0.1.0",
@@ -34,6 +35,11 @@
     "karma-coffee-preprocessor": "~0.1.0",
     "karma-phantomjs-launcher": "~0.1.0",
     "karma": "~0.10.2",
-    "karma-coverage": "~0.1.0"
+    "karma-coverage": "~0.1.0",
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-uglify": "~0.2.4",
+    "grunt-contrib-cssmin": "~0.6.1",
+    "grunt-karma": "~0.6.2"
   }
 }

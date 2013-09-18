@@ -1,0 +1,11 @@
+{
+  "name": "angular-loading-bar",
+  "version": "0.0.1",
+  "main": "build/loading-bar.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components",
+    "test"
+  ]
+}

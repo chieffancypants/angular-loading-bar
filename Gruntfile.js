@@ -1,0 +1,64 @@
+/*global module:false*/
+module.exports = function(grunt) {
+
+  grunt.initConfig({
+
+    // Metadata.
+    pkg: grunt.file.readJSON('package.json'),
+    banner: '/*! \n * <%= pkg.title || pkg.name %> v<%= pkg.version %>\n' +
+      ' * <%= pkg.homepage %>\n' +
+      ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
+      ' * License: <%= pkg.license %>\n' +
+      ' */\n',
+
+    // Task configuration.
+    uglify: {
+      options: {
+        banner: '<%= banner %>',
+        report: 'gzip'
+      },
+      build: {
+        src: 'src/loading-bar.js',
+        dest: 'build/loading-bar.min.js'
+      }
+    },
+
+    cssmin: {
+      options: {
+        banner: '<%= banner %>',
+        report: 'gzip'
+      },
+      minify: {
+        src: 'src/loading-bar.css',
+        dest: 'build/loading-bar.min.css'
+      }
+    },
+
+    karma: {
+      unit: {
+        configFile: 'test/karma.conf.js',
+        singleRun: true
+      }
+    },
+
+    jshint: {
+      jshintrc: '.jshintrc',
+      gruntfile: {
+        src: 'Gruntfile.js'
+      },
+      src: {
+        src: ['src/*.js']
+      }
+    }
+  });
+
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-karma');
+
+  grunt.registerTask('default', ['jshint', 'karma', 'uglify', 'cssmin']);
+  grunt.registerTask('test', ['karma']);
+  grunt.registerTask('build', ['default']);
+
+};

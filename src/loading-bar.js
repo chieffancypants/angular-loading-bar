@@ -96,9 +96,11 @@ angular.module('chieffancypants.loadingBar', [])
         loadingBar = loadingBarContainer.find('div').eq(0),
         spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>');
 
-      var started = false,
-        status = 0,
-        incTimeout;
+      var incTimeout,
+        started = false,
+        status = 0;
+
+      var includeSpinner = this.includeSpinner;
 
       /**
        * Inserts the loading bar element into the dom, and sets it to 1%
@@ -106,7 +108,8 @@ angular.module('chieffancypants.loadingBar', [])
       function _start() {
         started = true;
         $animate.enter(loadingBarContainer, $body);
-        if (this.includeSpinner) {
+
+        if (includeSpinner) {
           $animate.enter(spinner, $body);
         }
         _set(0.02);
