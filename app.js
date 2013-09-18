@@ -2,6 +2,7 @@
 
 angular.module('LoadingBarExample', ['chieffancypants.loadingBar', 'ngAnimate'])
   .config(function(cfpLoadingBarProvider) {
+    // true is the default, but I left this here as an example:
     cfpLoadingBarProvider.includeSpinner = true;
   })
 
@@ -24,6 +25,9 @@ angular.module('LoadingBarExample', ['chieffancypants.loadingBar', 'ngAnimate'])
 
     $scope.fetch = function() {
       $scope.subreddit = getRandomSubreddit();
+      // see how there's no need to keep track of these XHR requests?
+      // the interceptor is doing all the work in the background
+      // your controllers and services don't need to know anything about it!
       $http.jsonp('http://www.reddit.com/r/' + $scope.subreddit + '.json?limit=50&jsonp=JSON_CALLBACK').success(function(data) {
         $scope.posts = data.data.children;
       });
@@ -35,10 +39,10 @@ angular.module('LoadingBarExample', ['chieffancypants.loadingBar', 'ngAnimate'])
 
     $scope.complete = function () {
       cfpLoadingBar.complete();
-    }
+    };
 
 
-    // fake the initial load so first time users can see it right away:
+    // fake the initial load so first time users can see the bar right away:
     $scope.start();
     $scope.fakeIntro = true;
     $timeout(function() {

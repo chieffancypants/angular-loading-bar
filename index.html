@@ -20,13 +20,13 @@
   <body ng-app="LoadingBarExample" ng-controller="ExampleCtrl">
     <div class="jumbotron">
       <h1>Angular Loading Bar</h1>
-      <p>An automatic loading bar using angular interceptors.<small>  It works automatically, so simply include it as a dependency and it will automatically display the progress of your $http requests.</small></p>
+      <p>An automatic loading bar using angular interceptors.<small>  It works automatically, so simply include it as a dependency and it will automatically display the progress of your <code>$http</code> requests.</small></p>
       <p>
-        <a href="https://github.com/chieffancypants/angular-loading-bar/archive/0.0.1.zip" class="btn btn-primary btn-lg">
+        <a href="https://github.com/chieffancypants/angular-loading-bar/archive/master.zip" class="btn btn-primary btn-lg">
           <i class="glyphicon glyphicon-download"></i>&nbsp;&nbsp;Download
         </a>
         <a href="https://github.com/chieffancypants/angular-loading-bar" class="btn btn-default btn-lg">
-          <i class="glyphicon glyphicon-random"></i>&nbsp;&nbsp;Fork on GitHub
+          <i class="glyphicon glyphicon-share"></i>&nbsp;&nbsp;View on GitHub
         </a>
       </p>
     </div>
@@ -44,6 +44,24 @@
       </div>
     </div>
 
+    <!-- a little ghetto re-using `subreddit` on ng-if, but this is just an example and I don't want to create a directive -->
+    <div class="description" ng-hide="fakeIntro" ng-if="!subreddit">
+      <h4>What is this?</h4>
+      <p>There are a few projects like this one, but none that were automatic.  They all required you to maintain state on behalf of the progress bar, setting its position manually.  This is problematic when you have multiple services all making independent XHR requests.  You simply can't have loosly-coupled code in this scenario.</p>
+      <p>This project is different.  It automates the loading bar's progress, by using angular <code>interceptors</code>. Multiple requests within the same time period get bundled together such that each response increments the progress bar by the appropriate amount.</p>
+    </div>
+
+    <div class="usage" ng-hide="fakeIntro" ng-if="!subreddit">
+      <h4>How do I use it?</h4>
+      <p>Install it via npm or bower (or direct from GitHub)</p>
+      <pre>$ npm install angular-loading-bar
+$ bower install angular-loading-bar
+$ wget https://github.com/chieffancypants/angular-loading-bar/archive/master.zip</pre>
+
+      <p>To use, simply include it as a dependency in your app and you're done!</p>
+      <pre>angular.module('myApp', ['chieffancypants.loadingBar'])</pre>
+
+    </div>
     <h4 class="loading-text" ng-show="subreddit">Showing 100 results for: <span>/r/{{subreddit}}...</span></h4>
     <div ng-repeat="post in posts" class="panel panel-default">
       <div class="panel-body media">

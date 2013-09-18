@@ -1,3 +1,4 @@
+
 body {
   background-color: #ecf0f1;
   /*padding: 25px;*/
@@ -78,7 +79,11 @@ footer.navbar {
 .examples.ng-hide-add,
 .examples.ng-hide-remove,
 .loading-text.ng-hide-add,
-.loading-text.ng-hide-remove {
+.loading-text.ng-hide-remove,
+.description.ng-hide-add,
+.description.ng-hide-remove,
+.usage.ng-hide-add,
+.usage.ng-hide-remove {
   -webkit-transition:all linear 0.5s;
   -moz-transition:all linear 0.5s;
   -o-transition:all linear 0.5s;
@@ -89,18 +94,34 @@ footer.navbar {
 .examples.ng-hide-remove {
   transition-delay: 0.5s;
 }
+.description.ng-hide-add,
+.description.ng-hide-remove {
+  transition-delay: 0.75s;
+}
+.usage.ng-hide-add,
+.usage.ng-hide-remove {
+  transition-delay: 1s;
+}
 
 .examples.ng-hide-add.ng-hide-add-active,
 .examples.ng-hide-remove,
 .loading-text.ng-hide-add.ng-hide-add-active,
-.loading-text.ng-hide-remove {
+.loading-text.ng-hide-remove,
+.description.ng-hide-add.ng-hide-add-active,
+.description.ng-hide-remove,
+.usage.ng-hide-add.ng-hide-add-active,
+.usage.ng-hide-remove {
   opacity:0;
 }
 
 .examples.ng-hide-add,
 .examples.ng-hide-remove.ng-hide-remove-active,
 .loading-text.ng-hide-add,
-.loading-text.ng-hide-remove.ng-hide-remove-active {
+.loading-text.ng-hide-remove.ng-hide-remove-active,
+.description.ng-hide-add,
+.description.ng-hide-remove.ng-hide-remove-active,
+.usage.ng-hide-add,
+.usage.ng-hide-remove.ng-hide-remove-active {
   opacity:1;
 }
 
