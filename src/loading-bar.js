@@ -19,7 +19,7 @@
  * Registers itself as an Angular interceptor and listens for XHR requests.
  */
 angular.module('chieffancypants.loadingBar', [])
-  .config(['$httpProvider', function($httpProvider) {
+  .config(['$httpProvider', function ($httpProvider) {
 
     var interceptor = ['$q', 'cfpLoadingBar', function ($q, cfpLoadingBar) {
 
@@ -48,16 +48,13 @@ angular.module('chieffancypants.loadingBar', [])
         'request': function(config) {
           if (reqsTotal === 0) {
             cfpLoadingBar.start();
-            console.log('start that shit', reqsCompleted, reqsTotal);
           }
           reqsTotal++;
-          console.log('request', reqsCompleted, reqsTotal);
           return config;
         },
 
         'response': function(response) {
           reqsCompleted++;
-          console.log('set complete', reqsCompleted, reqsTotal);
           if (reqsCompleted === reqsTotal) {
             setComplete();
           } else {
@@ -68,7 +65,6 @@ angular.module('chieffancypants.loadingBar', [])
 
         'responseError': function(rejection) {
           reqsCompleted++;
-          console.log('set complete fail', reqsCompleted, reqsTotal);
           if (reqsCompleted === reqsTotal) {
             setComplete();
           } else {
@@ -186,6 +182,7 @@ angular.module('chieffancypants.loadingBar', [])
 
         includeSpinner: this.includeSpinner
       };
+
 
 
     }];     //
