@@ -19,7 +19,7 @@
  * Registers itself as an Angular interceptor and listens for XHR requests.
  */
 angular.module('chieffancypants.loadingBar', [])
-  .config(['$httpProvider', function($httpProvider) {
+  .config(['$httpProvider', function ($httpProvider) {
 
     var interceptor = ['$q', 'cfpLoadingBar', function ($q, cfpLoadingBar) {
 
@@ -48,16 +48,13 @@ angular.module('chieffancypants.loadingBar', [])
         'request': function(config) {
           if (reqsTotal === 0) {
             cfpLoadingBar.start();
-            console.log('start that shit', reqsCompleted, reqsTotal);
           }
           reqsTotal++;
-          console.log('request', reqsCompleted, reqsTotal);
           return config;
         },
 
         'response': function(response) {
           reqsCompleted++;
-          console.log('set complete', reqsCompleted, reqsTotal);
           if (reqsCompleted === reqsTotal) {
             setComplete();
           } else {
@@ -68,7 +65,6 @@ angular.module('chieffancypants.loadingBar', [])
 
         'responseError': function(rejection) {
           reqsCompleted++;
-          console.log('set complete fail', reqsCompleted, reqsTotal);
           if (reqsCompleted === reqsTotal) {
             setComplete();
           } else {
@@ -100,9 +96,11 @@ angular.module('chieffancypants.loadingBar', [])
         loadingBar = loadingBarContainer.find('div').eq(0),
         spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>');
 
-      var started = false,
-        status = 0,
-        incTimeout;
+      var incTimeout,
+        started = false,
+        status = 0;
+
+      var includeSpinner = this.includeSpinner;
 
       /**
        * Inserts the loading bar element into the dom, and sets it to 1%
@@ -110,7 +108,8 @@ angular.module('chieffancypants.loadingBar', [])
       function _start() {
         started = true;
         $animate.enter(loadingBarContainer, $body);
-        if (this.includeSpinner) {
+
+        if (includeSpinner) {
           $animate.enter(spinner, $body);
         }
         _set(0.02);
@@ -139,7 +138,7 @@ angular.module('chieffancypants.loadingBar', [])
       }
 
       /**
-       * Increments the loading bar by a random amount between .1% and .9%
+       * Increments the loading bar by a random amount
        * but slows down once it approaches 70%
        */
       function _inc() {
@@ -149,14 +148,21 @@ angular.module('chieffancypants.loadingBar', [])
 
         var rnd = 0;
 
-        // TODO: do this mathmatically instead of conditionally:
-        if (_status() >= 0.7 && _status() < 0.9) {
-          rnd = Math.random() / 50;
-        } else if (_status() >= 0.9) {
-          rnd = 0.005;
+        // TODO: do this mathmatically instead of through conditions
+
+        var stat = _status();
+        if (stat >= 0 && stat < 0.25) {
+          // Start out between 3 - 6% increments
+          rnd = (Math.random() * (5 - 3 + 1) + 3) / 100;
+        } else if (stat >= 0.25 && stat < 0.65) {
+          // increment between 0 - 3%
+          rnd = (Math.random() * 3) / 100;
+        } else if (stat >= 0.65 && stat < 0.9) {
+          // increment between 0 - 2%
+          rnd = (Math.random() * 2) / 100;
         } else {
-          // TODO: Clamp min value so it starts out fast initially
-          rnd = (Math.random() / 25);
+          // finally, increment it .5 %
+          rnd = 0.005;
         }
 
         var pct = _status() + rnd;
@@ -186,6 +192,7 @@ angular.module('chieffancypants.loadingBar', [])
 
         includeSpinner: this.includeSpinner
       };
+
 
 
     }];     //
