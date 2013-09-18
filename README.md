@@ -19,6 +19,14 @@ This is mostly cool because you simply include it in your app, and it works.  Th
 2. include the supplied CSS file (or create your own).
 3. That's it -- you're done!
 
+#### via bower:
+```
+$ bower install angular-loading-bar
+```
+#### via npm:
+```
+$ npm install angular-loading-bar
+```
 
 
 ## Why I created this
@@ -62,9 +70,9 @@ cfpLoadingBar.start();
 // It will automatically call `inc()` repeatedly to give the illusion that the page load is progressing.
 
 cfpLoadingBar.inc();
-// increments the loading bar by a random amount between .1% and .9%.
-// It is important to note that the auto incrementing will begin to slow down at 70%
-// and go very slowly at 90%.  This is to prevent the loading bar from appearing
+// increments the loading bar by a random amount.
+// It is important to note that the auto incrementing will begin to slow down as
+// the progress increases.  This is to prevent the loading bar from appearing
 // completed (or almost complete) before the XHR request has responded. 
 
 cfpLoadingBar.set(0.3) // Set the loading bar to 30%
