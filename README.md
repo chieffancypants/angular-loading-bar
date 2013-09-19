@@ -44,7 +44,15 @@ Additionally, Angular was created as a highly testable framework, so it pains me
 5. No jQuery dependencies
 
 
+## Configuration
+The insertion of the spinner can be controlled through configuration.  It's on by default, but if you'd like to turn it off, simply configure the service:
 
+```js
+angular.module('myApp', ['chieffancypants.loadingBar'])
+  .config(function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+  })
+```
 
 ## How it works:
 This library is split into two files, an $http `interceptor`, and a `service`:
