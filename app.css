@@ -196,3 +196,12 @@ h4 span {
   border-top-color:  #2c3e50;
   border-left-color: #2c3e50;
 }
+
+/*
+ * can't fit all the text on a narrow resolution, so hide it
+ */
+@media (max-width: 970px) {
+  .examples span {
+    display:none;
+  }
+}
