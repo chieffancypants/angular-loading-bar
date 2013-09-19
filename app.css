@@ -6,6 +6,7 @@ body {
   width: 85%;
   margin: auto;
   overflow-y: scroll;
+  padding-bottom: 90px; /* pad due to footer */
 }
 .thumbnail {
   width: 70px;
@@ -179,6 +180,17 @@ h4 {
 }
 h4 span {
   color: #e74c3c;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: #ecf0f1;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  box-shadow: 0 -30px 40px rgba(236, 240, 241, 1);
 }
 
 
