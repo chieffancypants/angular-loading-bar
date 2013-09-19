@@ -160,9 +160,12 @@ angular.module('chieffancypants.loadingBar', [])
         } else if (stat >= 0.65 && stat < 0.9) {
           // increment between 0 - 2%
           rnd = (Math.random() * 2) / 100;
-        } else {
+        } else if (stat >= 0.9 && stat < 0.97) {
           // finally, increment it .5 %
           rnd = 0.005;
+        } else {
+          // after 95%, don't increment:
+          rnd = 0;
         }
 
         var pct = _status() + rnd;
