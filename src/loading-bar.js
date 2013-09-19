@@ -44,31 +44,47 @@ angular.module('chieffancypants.loadingBar', [])
         reqsTotal = 0;
       }
 
+      function isCached(config) {
+        var cached = (config.cache !== undefined &&
+                config.cache.get(config.url) !== undefined);
+        if (config.cached !== undefined && cached != config.cached) {
+          return config.cached;
+        }
+        config.cached = cached;
+        return cached;
+      }
+
       return {
         'request': function(config) {
-          if (reqsTotal === 0) {
-            cfpLoadingBar.start();
+          if (!isCached(config)) {
+            if (reqsTotal === 0) {
+              cfpLoadingBar.start();
+            }
+            reqsTotal++;
           }
-          reqsTotal++;
           return config;
         },
 
         'response': function(response) {
-          reqsCompleted++;
-          if (reqsCompleted === reqsTotal) {
-            setComplete();
-          } else {
-            cfpLoadingBar.set(reqsCompleted / reqsTotal);
+          if (!isCached(response.config)) {
+            reqsCompleted++;
+            if (reqsCompleted === reqsTotal) {
+              setComplete();
+            } else {
+              cfpLoadingBar.set(reqsCompleted / reqsTotal);
+            }
           }
           return response;
         },
 
         'responseError': function(rejection) {
-          reqsCompleted++;
-          if (reqsCompleted === reqsTotal) {
-            setComplete();
-          } else {
-            cfpLoadingBar.set(reqsCompleted / reqsTotal);
+          if (!isCached(rejection.config)) {
+            reqsCompleted++;
+            if (reqsCompleted === reqsTotal) {
+              setComplete();
+            } else {
+              cfpLoadingBar.set(reqsCompleted / reqsTotal);
+            }
           }
           return $q.reject(rejection);
         }
