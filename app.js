@@ -50,6 +50,6 @@ angular.module('LoadingBarExample', ['chieffancypants.loadingBar', 'ngAnimate'])
     $timeout(function() {
       $scope.complete();
       $scope.fakeIntro = false;
-    }, 750);
+    }, 1250);
 
   });

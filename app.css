@@ -138,7 +138,9 @@ footer.navbar {
   background-color: #2ecc71;
   border: 1px solid #27ae60;
 }
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
   background-color: #32B96C;
   border: 1px solid #27ae60;
 }
