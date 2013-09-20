@@ -184,7 +184,7 @@ describe 'loadingBarInterceptor Service', ->
     expect(width2).toBeGreaterThan width
     expect(width2 - width).toBe 0.5
 
-    cfpLoadingBar.set(0.95)
+    cfpLoadingBar.set(0.97)
     lbar = angular.element(document.getElementById('loading-bar'))
     width = lbar.children().css('width').slice(0, -1)
     $timeout.flush()
@@ -193,13 +193,6 @@ describe 'loadingBarInterceptor Service', ->
     expect(width2 - width).toBe 0.5
 
     # stops incrementing:
-    cfpLoadingBar.set(0.97)
-    lbar = angular.element(document.getElementById('loading-bar'))
-    width = lbar.children().css('width').slice(0, -1)
-    $timeout.flush()
-    width2 = lbar.children().css('width').slice(0, -1)
-    expect(width2).toBe width
-
     cfpLoadingBar.set(0.99)
     lbar = angular.element(document.getElementById('loading-bar'))
     width = lbar.children().css('width').slice(0, -1)

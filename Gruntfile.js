@@ -38,6 +38,10 @@ module.exports = function(grunt) {
       unit: {
         configFile: 'test/karma.conf.js',
         singleRun: true
+      },
+      watch: {
+        configFile: 'test/karma.conf.js',
+        singleRun: false
       }
     },
 
@@ -57,8 +61,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('default', ['jshint', 'karma', 'uglify', 'cssmin']);
-  grunt.registerTask('test', ['karma']);
+  grunt.registerTask('default', ['jshint', 'karma:unit', 'uglify', 'cssmin']);
+  grunt.registerTask('test', ['karma:watch']);
   grunt.registerTask('build', ['default']);
 
 };

@@ -103,7 +103,7 @@ angular.module('chieffancypants.loadingBar', [])
       var includeSpinner = this.includeSpinner;
 
       /**
-       * Inserts the loading bar element into the dom, and sets it to 1%
+       * Inserts the loading bar element into the dom, and sets it to 2%
        */
       function _start() {
         started = true;
@@ -160,11 +160,11 @@ angular.module('chieffancypants.loadingBar', [])
         } else if (stat >= 0.65 && stat < 0.9) {
           // increment between 0 - 2%
           rnd = (Math.random() * 2) / 100;
-        } else if (stat >= 0.9 && stat < 0.97) {
+        } else if (stat >= 0.9 && stat < 0.99) {
           // finally, increment it .5 %
           rnd = 0.005;
         } else {
-          // after 95%, don't increment:
+          // after 99%, don't increment:
           rnd = 0;
         }
 
@@ -192,7 +192,6 @@ angular.module('chieffancypants.loadingBar', [])
         set: _set,
         status: _status,
         complete: _complete,
-
         includeSpinner: this.includeSpinner
       };
 
