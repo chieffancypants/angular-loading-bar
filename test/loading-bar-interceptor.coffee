@@ -40,6 +40,65 @@ describe 'loadingBarInterceptor Service', ->
     $timeout.verifyNoPendingTasks()
 
 
+  it 'should not increment if the response is cached in a cacheFactory', inject (cfpLoadingBar, $cacheFactory) ->
+    cache = $cacheFactory('loading-bar')
+    $httpBackend.expectGET(endpoint).respond response
+    $http.get(endpoint, cache: cache).then (data) ->
+      result = data
+
+    expect(cfpLoadingBar.status()).toBe 0
+    $httpBackend.flush(1)
+    expect(cfpLoadingBar.status()).toBe 1
+    cfpLoadingBar.complete() # set as complete
+    $timeout.flush()
+
+    $http.get(endpoint, cache: cache).then (data) ->
+      result = data
+    # no need to flush $httpBackend since the response is cached
+    expect(cfpLoadingBar.status()).toBe 0
+    $httpBackend.verifyNoOutstandingRequest()
+    $timeout.flush() # loading bar is animated, so flush timeout
+
+
+  it 'should not increment if the response is cached using $http.defaults.cache', inject (cfpLoadingBar, $cacheFactory) ->
+    $http.defaults.cache = $cacheFactory('loading-bar')
+    $httpBackend.expectGET(endpoint).respond response
+    $http.get(endpoint).then (data) ->
+      result = data
+
+    expect(cfpLoadingBar.status()).toBe 0
+    $httpBackend.flush(1)
+    expect(cfpLoadingBar.status()).toBe 1
+    cfpLoadingBar.complete() # set as complete
+    $timeout.flush()
+
+    $http.get(endpoint).then (data) ->
+      result = data
+    # no need to flush $httpBackend since the response is cached
+    expect(cfpLoadingBar.status()).toBe 0
+    $httpBackend.verifyNoOutstandingRequest()
+    $timeout.flush() # loading bar is animated, so flush timeout
+
+
+  it 'should not increment if the response is cached', inject (cfpLoadingBar) ->
+    $httpBackend.expectGET(endpoint).respond response
+    $http.get(endpoint, cache: true).then (data) ->
+      result = data
+
+    expect(cfpLoadingBar.status()).toBe 0
+    $httpBackend.flush(1)
+    expect(cfpLoadingBar.status()).toBe 1
+    cfpLoadingBar.complete() # set as complete
+    $timeout.flush()
+
+    $http.get(endpoint, cache: true).then (data) ->
+      result = data
+    # no need to flush $httpBackend since the response is cached
+    expect(cfpLoadingBar.status()).toBe 0
+    $httpBackend.verifyNoOutstandingRequest()
+    $timeout.flush() # loading bar is animated, so flush timeout
+
+
   it 'should increment the loading bar when not all requests have been recieved', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response
     $httpBackend.expectGET(endpoint).respond response

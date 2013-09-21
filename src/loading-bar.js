@@ -21,7 +21,7 @@
 angular.module('chieffancypants.loadingBar', [])
   .config(['$httpProvider', function ($httpProvider) {
 
-    var interceptor = ['$q', 'cfpLoadingBar', function ($q, cfpLoadingBar) {
+    var interceptor = ['$q', '$cacheFactory', 'cfpLoadingBar', function ($q, $cacheFactory, cfpLoadingBar) {
 
       /**
        * The total number of requests made
@@ -45,8 +45,27 @@ angular.module('chieffancypants.loadingBar', [])
       }
 
       function isCached(config) {
-        var cached = (config.cache !== undefined &&
-                config.cache.get(config.url) !== undefined);
+        if (config.method != 'GET' || config.cache === false) {
+          config.cached = false;
+          return false;
+        }
+
+        var cache;
+        var defaults = $httpProvider.defaults;
+
+        if (config.cache === true && defaults.cache === undefined) {
+          cache = $cacheFactory.get('$http');
+        }
+        else if (defaults.cache !== undefined) {
+          cache = defaults.cache;
+        }
+        else {
+          cache = config.cache;
+        }
+
+        var cached = cache !== undefined ?
+          cache.get(config.url) !== undefined : false;
+
         if (config.cached !== undefined && cached != config.cached) {
           return config.cached;
         }
