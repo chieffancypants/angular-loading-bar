@@ -88,10 +88,13 @@ angular.module('chieffancypants.loadingBar', [])
   .provider('cfpLoadingBar', function() {
 
     this.includeSpinner = true;
+    this.loadingBarParentSelector = 'body';
 
     this.$get = ['$document', '$timeout', '$animate', function ($document, $timeout, $animate) {
 
-      var $body = $document.find('body'),
+      var $loadingBarParentSelector = this.loadingBarParentSelector;
+
+      var $parent = $document.find($loadingBarParentSelector),
         loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'),
         loadingBar = loadingBarContainer.find('div').eq(0),
         spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>');
@@ -107,10 +110,10 @@ angular.module('chieffancypants.loadingBar', [])
        */
       function _start() {
         started = true;
-        $animate.enter(loadingBarContainer, $body);
+        $animate.enter(loadingBarContainer, $parent);
 
         if (includeSpinner) {
-          $animate.enter(spinner, $body);
+          $animate.enter(spinner, $parent);
         }
         _set(0.02);
       }
@@ -192,7 +195,8 @@ angular.module('chieffancypants.loadingBar', [])
         set: _set,
         status: _status,
         complete: _complete,
-        includeSpinner: this.includeSpinner
+        includeSpinner: this.includeSpinner,
+        loadingBarParentSelector: this.loadingBarParentSelector,
       };
 
 
