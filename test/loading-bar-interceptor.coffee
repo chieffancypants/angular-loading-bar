@@ -113,7 +113,6 @@ describe 'loadingBarInterceptor Service', ->
 
     $httpBackend.flush()
     expect(cfpLoadingBar.status()).toBe 1
-    $httpBackend.verifyNoOutstandingRequest()
     $timeout.flush() # loading bar is animated, so flush timeout
 
 
@@ -130,40 +129,38 @@ describe 'loadingBarInterceptor Service', ->
     $httpBackend.flush()
     expect(cfpLoadingBar.status()).toBe 1
 
-    $httpBackend.verifyNoOutstandingRequest()
     $timeout.flush()
 
 
 
-  it 'should insert the loadingbar into the DOM when a request is sent', ->
+  it 'should insert the loadingbar into the DOM when a request is sent', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response
     $httpBackend.expectGET(endpoint).respond response
     $http.get(endpoint)
     $http.get(endpoint)
 
     $httpBackend.flush(1)
-    divs = angular.element($document[0].body).find('div')
 
-    injected = isLoadingBarInjected $document[0].body
+    injected = isLoadingBarInjected $document.find(cfpLoadingBar.parentSelector)
 
     expect(injected).toBe true
     $httpBackend.flush()
     $timeout.flush()
 
 
-  it 'should remove the loading bar when all requests have been received', ->
+  it 'should remove the loading bar when all requests have been received', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response
     $httpBackend.expectGET(endpoint).respond response
     $http.get(endpoint)
     $http.get(endpoint)
 
     $timeout.flush() # loading bar is animated, so flush timeout
-    expect(isLoadingBarInjected($document[0].body)).toBe true
+    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe true
 
     $httpBackend.flush()
     $timeout.flush()
 
-    expect(isLoadingBarInjected($document[0].body)).toBe false
+    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe false
 
   it 'should get and set status', inject (cfpLoadingBar) ->
     cfpLoadingBar.start()
