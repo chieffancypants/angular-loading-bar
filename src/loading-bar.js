@@ -44,29 +44,32 @@ angular.module('chieffancypants.loadingBar', [])
         reqsTotal = 0;
       }
 
+      /**
+       * Determine if the response has already been cached
+       * @param  {Object}  config the config option from the request
+       * @return {Boolean} retrns true if cached, otherwise false
+       */
       function isCached(config) {
-        if (config.method != 'GET' || config.cache === false) {
+        var cache;
+        var defaults = $httpProvider.defaults;
+
+        if (config.method !== 'GET' || config.cache === false) {
           config.cached = false;
           return false;
         }
 
-        var cache;
-        var defaults = $httpProvider.defaults;
-
         if (config.cache === true && defaults.cache === undefined) {
           cache = $cacheFactory.get('$http');
-        }
-        else if (defaults.cache !== undefined) {
+        } else if (defaults.cache !== undefined) {
           cache = defaults.cache;
-        }
-        else {
+        } else {
           cache = config.cache;
         }
 
         var cached = cache !== undefined ?
           cache.get(config.url) !== undefined : false;
 
-        if (config.cached !== undefined && cached != config.cached) {
+        if (config.cached !== undefined && cached !== config.cached) {
           return config.cached;
         }
         config.cached = cached;
