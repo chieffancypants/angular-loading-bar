@@ -137,6 +137,7 @@ angular.module('chieffancypants.loadingBar', [])
         spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>');
 
       var incTimeout,
+		completeTimeout,
         started = false,
         status = 0;
 
@@ -147,6 +148,7 @@ angular.module('chieffancypants.loadingBar', [])
        */
       function _start() {
         started = true;
+        $timeout.cancel(completeTimeout);
         $animate.enter(loadingBarContainer, $parent);
 
         if (includeSpinner) {
@@ -218,7 +220,7 @@ angular.module('chieffancypants.loadingBar', [])
 
       function _complete() {
         _set(1);
-        $timeout(function() {
+        completeTimeout = $timeout(function() {
           $animate.leave(loadingBarContainer, function() {
             status = 0;
             started = false;
@@ -231,6 +233,7 @@ angular.module('chieffancypants.loadingBar', [])
         start: _start,
         set: _set,
         status: _status,
+        inc: _inc,
         complete: _complete,
         includeSpinner: this.includeSpinner,
         parentSelector: this.parentSelector,
