@@ -98,6 +98,23 @@ describe 'loadingBarInterceptor Service', ->
     $httpBackend.verifyNoOutstandingRequest()
     $timeout.flush() # loading bar is animated, so flush timeout
 
+  it 'should not cache when the request is a POST', inject (cfpLoadingBar) ->
+    $httpBackend.expectPOST(endpoint).respond response
+    $http.post(endpoint, {message: 'post'}).then (data) ->
+      result = data
+    expect(cfpLoadingBar.status()).toBe 0
+    $httpBackend.flush(1)
+    expect(cfpLoadingBar.status()).toBe 1
+    $timeout.flush()
+
+
+    $httpBackend.expectPOST(endpoint).respond response
+    $http.post(endpoint, {message: 'post'}).then (data) ->
+      result = data
+    expect(cfpLoadingBar.status()).toBe 0
+    $httpBackend.flush()
+    expect(cfpLoadingBar.status()).toBe 1
+    $timeout.flush()
 
   it 'should increment the loading bar when not all requests have been recieved', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response
