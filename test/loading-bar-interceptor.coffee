@@ -1,15 +1,16 @@
-isLoadingBarInjected = (doc) ->
-  injected = false
-  divs = angular.element(doc).find('div')
-  for i in divs
-    if angular.element(i).attr('id') is 'loading-bar'
-      injected = true
-      break
-  return injected
 
 describe 'loadingBarInterceptor Service', ->
 
-  $http = $httpBackend = $document = $timeout = result = loadingBar = null
+  isLoadingBarInjected = () ->
+    injected = false
+    divs = $rootElement.find('div')
+    for i in divs
+      if angular.element(i).attr('id') is 'loading-bar'
+        injected = true
+        break
+    return injected
+
+  $http = $httpBackend = $rootElement = $timeout = result = loadingBar = null
   response = {message:'OK'}
   endpoint = '/service'
 
@@ -19,10 +20,10 @@ describe 'loadingBarInterceptor Service', ->
       return
 
     result = null
-    inject (_$http_, _$httpBackend_, _$document_, _$timeout_) ->
+    inject (_$http_, _$httpBackend_, _$rootElement_, _$timeout_) ->
       $http = _$http_
       $httpBackend = _$httpBackend_
-      $document = _$document_
+      $rootElement = _$rootElement_
       $timeout = _$timeout_
 
   beforeEach ->
@@ -33,6 +34,8 @@ describe 'loadingBarInterceptor Service', ->
           low = high
           high = temp
         return this.actual > low && this.actual < high
+
+
 
 
   afterEach ->
@@ -158,7 +161,7 @@ describe 'loadingBarInterceptor Service', ->
 
     $httpBackend.flush(1)
 
-    injected = isLoadingBarInjected $document.find(cfpLoadingBar.parentSelector)
+    injected = isLoadingBarInjected $rootElement.find(cfpLoadingBar.parentSelector)
 
     expect(injected).toBe true
     $httpBackend.flush()
@@ -172,12 +175,12 @@ describe 'loadingBarInterceptor Service', ->
     $http.get(endpoint)
 
     $timeout.flush() # loading bar is animated, so flush timeout
-    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe true
+    expect(isLoadingBarInjected($rootElement.find(cfpLoadingBar.parentSelector))).toBe true
 
     $httpBackend.flush()
     $timeout.flush()
 
-    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe false
+    expect(isLoadingBarInjected($rootElement.find(cfpLoadingBar.parentSelector))).toBe false
 
   it 'should get and set status', inject (cfpLoadingBar) ->
     cfpLoadingBar.start()

@@ -126,13 +126,23 @@ angular.module('chieffancypants.loadingBar', [])
   .provider('cfpLoadingBar', function() {
 
     this.includeSpinner = true;
-    this.parentSelector = 'body';
+    this.parentSelector = null;
 
-    this.$get = ['$document', '$timeout', '$animate', function ($document, $timeout, $animate) {
+    this.$get = ['$rootElement', '$timeout', '$animate', function ($rootElement, $timeout, $animate) {
+      var $parent;
 
-      var $parentSelector = this.parentSelector,
-        $parent = $document.find($parentSelector),
-        loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'),
+      if (!this.parentSelector) {
+        $parent = $rootElement;
+      } else {
+        $parent = $rootElement.find(this.parentSelector);
+      }
+
+      // if the parentSelector isn't found, alert the developer instead of
+      if ($parent.length === 0) {
+        throw new Error('Could not attach the loading bar to the DOM: selector ("' + this.parentSelector + '") not found');
+      }
+
+      var loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'),
         loadingBar = loadingBarContainer.find('div').eq(0),
         spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>');
 
@@ -170,9 +180,9 @@ angular.module('chieffancypants.loadingBar', [])
         loadingBar.css('width', pct);
         status = n;
 
-        // increment loadingbar to give the illusion that there is always progress
-        // but make sure to cancel the previous timeouts so we don't have multiple
-        // incs running at the same time.
+        // increment loadingbar to give the illusion that there is always
+        // progress but make sure to cancel the previous timeouts so we don't
+        // have multiple incs running at the same time.
         $timeout.cancel(incTimeout);
         incTimeout = $timeout(function() {
           _inc();
