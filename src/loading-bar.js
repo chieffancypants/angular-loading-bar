@@ -137,7 +137,7 @@ angular.module('chieffancypants.loadingBar', [])
         spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>');
 
       var incTimeout,
-		completeTimeout,
+        completeTimeout,
         started = false,
         status = 0;
 
