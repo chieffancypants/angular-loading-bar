@@ -58,15 +58,28 @@ module.exports = function(grunt) {
       src: {
         src: ['src/*.js']
       }
+    },
+
+    concat: {
+      build: {
+        options: {
+          banner: '<%= banner %>'
+        },
+        files: {
+          'build/loading-bar.css': 'src/loading-bar.css',
+          'build/loading-bar.js':  'src/loading-bar.js',
+        }
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('default', ['jshint', 'karma:unit', 'uglify', 'cssmin']);
+  grunt.registerTask('default', ['jshint', 'karma:unit', 'uglify', 'cssmin', 'concat:build']);
   grunt.registerTask('test', ['karma:watch']);
   grunt.registerTask('build', ['default']);
 
