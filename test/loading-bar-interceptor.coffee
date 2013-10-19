@@ -1,15 +1,22 @@
-isLoadingBarInjected = (doc) ->
+isLoadingBarInjected = (rootEl) ->
   injected = false
-  divs = angular.element(doc).find('div')
+  divs = angular.element(rootEl).find('div')
   for i in divs
     if angular.element(i).attr('id') is 'loading-bar'
       injected = true
       break
   return injected
 
+findById = (rootEl, id) ->
+  divs = angular.element(rootEl).find('div')
+  for i in divs
+    i = angular.element(i)
+    if i.attr('id') is id
+      return i
+
 describe 'loadingBarInterceptor Service', ->
 
-  $http = $httpBackend = $document = $timeout = result = loadingBar = null
+  $http = $httpBackend = $rootElement = $timeout = result = loadingBar = $document = null
   response = {message:'OK'}
   endpoint = '/service'
 
@@ -19,11 +26,12 @@ describe 'loadingBarInterceptor Service', ->
       return
 
     result = null
-    inject (_$http_, _$httpBackend_, _$document_, _$timeout_) ->
+    inject (_$http_, _$httpBackend_, _$rootElement_, _$timeout_, _$document_) ->
       $http = _$http_
       $httpBackend = _$httpBackend_
-      $document = _$document_
+      $rootElement = _$rootElement_
       $timeout = _$timeout_
+      $document = _$document_
 
   beforeEach ->
     this.addMatchers
@@ -59,7 +67,6 @@ describe 'loadingBarInterceptor Service', ->
     $httpBackend.verifyNoOutstandingRequest()
     $timeout.flush() # loading bar is animated, so flush timeout
 
-
   it 'should not increment if the response is cached using $http.defaults.cache', inject (cfpLoadingBar, $cacheFactory) ->
     $http.defaults.cache = $cacheFactory('loading-bar')
     $httpBackend.expectGET(endpoint).respond response
@@ -78,7 +85,6 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 0
     $httpBackend.verifyNoOutstandingRequest()
     $timeout.flush() # loading bar is animated, so flush timeout
-
 
   it 'should not increment if the response is cached', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response
@@ -116,6 +122,7 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 1
     $timeout.flush()
 
+
   it 'should increment the loading bar when not all requests have been recieved', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response
     $httpBackend.expectGET(endpoint).respond response
@@ -132,7 +139,6 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 1
     $timeout.flush() # loading bar is animated, so flush timeout
 
-
   it 'should count http errors as responses so the loading bar can complete', inject (cfpLoadingBar) ->
     # $httpBackend.expectGET(endpoint).respond response
     $httpBackend.expectGET(endpoint).respond 401
@@ -148,8 +154,6 @@ describe 'loadingBarInterceptor Service', ->
 
     $timeout.flush()
 
-
-
   it 'should insert the loadingbar into the DOM when a request is sent', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response
     $httpBackend.expectGET(endpoint).respond response
@@ -158,12 +162,11 @@ describe 'loadingBarInterceptor Service', ->
 
     $httpBackend.flush(1)
 
-    injected = isLoadingBarInjected $document.find(cfpLoadingBar.parentSelector)
+    injected = isLoadingBarInjected $rootElement
 
     expect(injected).toBe true
     $httpBackend.flush()
     $timeout.flush()
-
 
   it 'should remove the loading bar when all requests have been received', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response
@@ -172,12 +175,12 @@ describe 'loadingBarInterceptor Service', ->
     $http.get(endpoint)
 
     $timeout.flush() # loading bar is animated, so flush timeout
-    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe true
+    expect(isLoadingBarInjected($rootElement)).toBe true
 
     $httpBackend.flush()
     $timeout.flush()
 
-    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe false
+    expect(isLoadingBarInjected($rootElement)).toBe false
 
   it 'should get and set status', inject (cfpLoadingBar) ->
     cfpLoadingBar.start()
@@ -199,7 +202,7 @@ describe 'loadingBarInterceptor Service', ->
 
     # increments between 3 - 6%
     cfpLoadingBar.set(0.1)
-    lbar = angular.element(document.getElementById('loading-bar'))
+    lbar = findById($rootElement, 'loading-bar')
     width = lbar.children().css('width').slice(0, -1)
     $timeout.flush()
     width2 = lbar.children().css('width').slice(0, -1)
@@ -207,7 +210,7 @@ describe 'loadingBarInterceptor Service', ->
     expect(width2 - width).toBeBetween(3, 6)
 
     cfpLoadingBar.set(0.2)
-    lbar = angular.element(document.getElementById('loading-bar'))
+    lbar = findById($rootElement, 'loading-bar')
     width = lbar.children().css('width').slice(0, -1)
     $timeout.flush()
     width2 = lbar.children().css('width').slice(0, -1)
@@ -216,7 +219,7 @@ describe 'loadingBarInterceptor Service', ->
 
     # increments between 0 - 3%
     cfpLoadingBar.set(0.25)
-    lbar = angular.element(document.getElementById('loading-bar'))
+    lbar = findById($rootElement, 'loading-bar')
     width = lbar.children().css('width').slice(0, -1)
     $timeout.flush()
     width2 = lbar.children().css('width').slice(0, -1)
@@ -224,7 +227,7 @@ describe 'loadingBarInterceptor Service', ->
     expect(width2 - width).toBeBetween(0, 3)
 
     cfpLoadingBar.set(0.5)
-    lbar = angular.element(document.getElementById('loading-bar'))
+    lbar = findById($rootElement, 'loading-bar')
     width = lbar.children().css('width').slice(0, -1)
     $timeout.flush()
     width2 = lbar.children().css('width').slice(0, -1)
@@ -233,7 +236,7 @@ describe 'loadingBarInterceptor Service', ->
 
     # increments between 0 - 2%
     cfpLoadingBar.set(0.65)
-    lbar = angular.element(document.getElementById('loading-bar'))
+    lbar = findById($rootElement, 'loading-bar')
     width = lbar.children().css('width').slice(0, -1)
     $timeout.flush()
     width2 = lbar.children().css('width').slice(0, -1)
@@ -241,7 +244,7 @@ describe 'loadingBarInterceptor Service', ->
     expect(width2 - width).toBeBetween(0, 2)
 
     cfpLoadingBar.set(0.75)
-    lbar = angular.element(document.getElementById('loading-bar'))
+    lbar = findById($rootElement, 'loading-bar')
     width = lbar.children().css('width').slice(0, -1)
     $timeout.flush()
     width2 = lbar.children().css('width').slice(0, -1)
@@ -250,7 +253,7 @@ describe 'loadingBarInterceptor Service', ->
 
     # increments 0.5%
     cfpLoadingBar.set(0.9)
-    lbar = angular.element(document.getElementById('loading-bar'))
+    lbar = findById($rootElement, 'loading-bar')
     width = lbar.children().css('width').slice(0, -1)
     $timeout.flush()
     width2 = lbar.children().css('width').slice(0, -1)
@@ -258,7 +261,7 @@ describe 'loadingBarInterceptor Service', ->
     expect(width2 - width).toBe 0.5
 
     cfpLoadingBar.set(0.97)
-    lbar = angular.element(document.getElementById('loading-bar'))
+    lbar = findById($rootElement, 'loading-bar')
     width = lbar.children().css('width').slice(0, -1)
     $timeout.flush()
     width2 = lbar.children().css('width').slice(0, -1)
@@ -267,7 +270,7 @@ describe 'loadingBarInterceptor Service', ->
 
     # stops incrementing:
     cfpLoadingBar.set(0.99)
-    lbar = angular.element(document.getElementById('loading-bar'))
+    lbar = findById($rootElement, 'loading-bar')
     width = lbar.children().css('width').slice(0, -1)
     $timeout.flush()
     width2 = lbar.children().css('width').slice(0, -1)
@@ -276,7 +279,6 @@ describe 'loadingBarInterceptor Service', ->
 
     cfpLoadingBar.complete()
     $timeout.flush()
-
 
   it 'should not set the status if the loading bar has not yet been started', inject (cfpLoadingBar) ->
     cfpLoadingBar.set(0.5)
@@ -294,7 +296,7 @@ describe 'loadingBarInterceptor Service', ->
   it 'should hide the spinner if configured', inject (cfpLoadingBar) ->
     # verify it works by default:
     cfpLoadingBar.start()
-    spinner = document.getElementById('loading-bar-spinner')
+    spinner = findById($rootElement, 'loading-bar-spinner')
     expect(spinner).not.toBeNull()
     cfpLoadingBar.complete()
     $timeout.flush()
@@ -302,7 +304,7 @@ describe 'loadingBarInterceptor Service', ->
     # now configure it to not be injected:
     cfpLoadingBar.includeSpinner = false
     cfpLoadingBar.start()
-    spinner = document.getElementById('loading-bar-spinner')
+    spinner = findById($rootElement, 'loading-bar-spinner')
     expect(spinner).toBeNull
     cfpLoadingBar.complete()
     $timeout.flush()

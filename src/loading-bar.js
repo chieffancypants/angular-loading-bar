@@ -127,18 +127,26 @@ angular.module('chieffancypants.loadingBar', [])
   .provider('cfpLoadingBar', function() {
 
     this.includeSpinner = true;
-    this.parentSelector = 'body';
+    this.parentSelector = null;
 
-    this.$get = ['$document', '$timeout', '$animate', function ($document, $timeout, $animate) {
+    this.$get = ['$rootElement', '$timeout', '$animate', function ($rootElement, $timeout, $animate) {
 
-      var $parentSelector = this.parentSelector,
-        $parent = $document.find($parentSelector),
-        loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'),
+      var loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'),
         loadingBar = loadingBarContainer.find('div').eq(0),
         spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>');
 
+      // set $parent to the element found, or $rootElement
+      var $parent;
+      if (this.parentSelector) {
+        $parent = $rootElement.find(this.parentSelector);
+      } else {
+        $parent = $rootElement;
+      }
+
+      console.log($parent);
+
       var incTimeout,
-		completeTimeout,
+        completeTimeout,
         started = false,
         status = 0;
 
@@ -231,13 +239,13 @@ angular.module('chieffancypants.loadingBar', [])
       }
 
       return {
-        start: _start,
-        set: _set,
-        status: _status,
-        inc: _inc,
-        complete: _complete,
-        includeSpinner: this.includeSpinner,
-        parentSelector: this.parentSelector,
+        start          : _start,
+        set            : _set,
+        status         : _status,
+        inc            : _inc,
+        complete       : _complete,
+        includeSpinner : this.includeSpinner,
+        parentSelector : this.parentSelector,
       };
 
 
