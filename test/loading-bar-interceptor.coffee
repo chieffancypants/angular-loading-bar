@@ -14,34 +14,21 @@ findById = (rootEl, id) ->
     if i.attr('id') is id
       return i
 
-describe 'loadingBarInterceptor Service', ->
+endpoint = '/service'
+response = {message: 'OK'}
 
-  $http = $httpBackend = $rootElement = $timeout = result = loadingBar = $document = null
-  response = {message:'OK'}
-  endpoint = '/service'
+
+describe 'loadingBar Interceptor', ->
+
+  $http = $httpBackend = $timeout = null
 
   beforeEach ->
-    module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
-      loadingBar = cfpLoadingBarProvider
-      return
+    module 'chieffancypants.loadingBar'
 
-    result = null
-    inject (_$http_, _$httpBackend_, _$rootElement_, _$timeout_, _$document_) ->
+    inject (_$http_, _$httpBackend_, _$timeout_) ->
       $http = _$http_
       $httpBackend = _$httpBackend_
-      $rootElement = _$rootElement_
       $timeout = _$timeout_
-      $document = _$document_
-
-  beforeEach ->
-    this.addMatchers
-      toBeBetween: (high, low) ->
-        if low > high
-          temp = low
-          low = high
-          high = temp
-        return this.actual > low && this.actual < high
-
 
   afterEach ->
     $httpBackend.verifyNoOutstandingRequest()
@@ -122,7 +109,6 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 1
     $timeout.flush()
 
-
   it 'should increment the loading bar when not all requests have been recieved', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response
     $httpBackend.expectGET(endpoint).respond response
@@ -154,7 +140,55 @@ describe 'loadingBarInterceptor Service', ->
 
     $timeout.flush()
 
+
+
+describe 'Loading Bar Service', ->
+
+  $http = $httpBackend = $rootElement = $timeout = result = loadingBar = $document = null
+
+  beforeEach ->
+    module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
+      cfpLoadingBarProvider.includeSpinner = false
+      loadingBar = cfpLoadingBarProvider
+      return
+
+    result = null
+    inject (_$http_, _$httpBackend_, _$rootElement_, _$document_, _$timeout_) ->
+      $http = _$http_
+      $httpBackend = _$httpBackend_
+      $timeout = _$timeout_
+      $rootElement = _$rootElement_
+      $document = _$document_
+
+    this.addMatchers
+      toBeBetween: (high, low) ->
+        if low > high
+          temp = low
+          low = high
+          high = temp
+        return this.actual > low && this.actual < high
+
+  afterEach ->
+    $httpBackend.verifyNoOutstandingRequest()
+    $timeout.verifyNoPendingTasks()
+
+
   it 'should insert the loadingbar into the DOM when a request is sent', inject (cfpLoadingBar) ->
+    $httpBackend.expectGET(endpoint).respond response
+    $httpBackend.expectGET(endpoint).respond response
+    $http.get(endpoint)
+    $http.get(endpoint)
+
+    $httpBackend.flush(1)
+
+    injected = isLoadingBarInjected $rootElement
+
+    expect(injected).toBe true
+    $httpBackend.flush()
+    $timeout.flush()
+
+  it 'should insert the loadingbar into a specified parent element', inject (cfpLoadingBar) ->
+    cfpLoadingBar.parentSelector = 'div'
     $httpBackend.expectGET(endpoint).respond response
     $httpBackend.expectGET(endpoint).respond response
     $http.get(endpoint)
@@ -276,7 +310,6 @@ describe 'loadingBarInterceptor Service', ->
     width2 = lbar.children().css('width').slice(0, -1)
     expect(width2).toBe width
 
-
     cfpLoadingBar.complete()
     $timeout.flush()
 
@@ -293,16 +326,27 @@ describe 'loadingBarInterceptor Service', ->
     cfpLoadingBar.complete()
     $timeout.flush()
 
-  it 'should hide the spinner if configured', inject (cfpLoadingBar) ->
-    # verify it works by default:
-    cfpLoadingBar.start()
-    spinner = findById($rootElement, 'loading-bar-spinner')
-    expect(spinner).not.toBeNull()
-    cfpLoadingBar.complete()
-    $timeout.flush()
 
-    # now configure it to not be injected:
-    cfpLoadingBar.includeSpinner = false
+
+describe 'Tests around non-defaults', ->
+
+  $http = $httpBackend = $rootElement = $timeout = loadingBar = $document = null
+
+  beforeEach ->
+    module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
+      cfpLoadingBarProvider.includeSpinner = false
+      # cfpLoadingBarProvider.parentSelector = 'div'
+      loadingBar = cfpLoadingBarProvider
+      return
+
+    inject (_$http_, _$httpBackend_, _$rootElement_, _$document_, _$timeout_) ->
+      $http = _$http_
+      $httpBackend = _$httpBackend_
+      $timeout = _$timeout_
+      $rootElement = _$rootElement_
+      $document = _$document_
+
+  it 'should hide the spinner if configured', inject (cfpLoadingBar) ->
     cfpLoadingBar.start()
     spinner = findById($rootElement, 'loading-bar-spinner')
     expect(spinner).toBeNull

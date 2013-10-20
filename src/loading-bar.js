@@ -143,8 +143,6 @@ angular.module('chieffancypants.loadingBar', [])
         $parent = $rootElement;
       }
 
-      console.log($parent);
-
       var incTimeout,
         completeTimeout,
         started = false,
@@ -247,8 +245,6 @@ angular.module('chieffancypants.loadingBar', [])
         includeSpinner : this.includeSpinner,
         parentSelector : this.parentSelector,
       };
-
-
 
     }];     //
   });       // wtf javascript. srsly
