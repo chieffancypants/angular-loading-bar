@@ -1,5 +1,5 @@
 /*! 
- * angular-loading-bar v0.0.4
+ * angular-loading-bar v0.0.5
  * https://chieffancypants.github.io/angular-loading-bar
  * Copyright (c) 2013 Wes Cruver
  * License: MIT
@@ -97,7 +97,7 @@ angular.module('chieffancypants.loadingBar', [])
         'response': function(response) {
           if (!isCached(response.config)) {
             reqsCompleted++;
-            if (reqsCompleted === reqsTotal) {
+            if (reqsCompleted >= reqsTotal) {
               setComplete();
             } else {
               cfpLoadingBar.set(reqsCompleted / reqsTotal);
@@ -109,7 +109,7 @@ angular.module('chieffancypants.loadingBar', [])
         'responseError': function(rejection) {
           if (!isCached(rejection.config)) {
             reqsCompleted++;
-            if (reqsCompleted === reqsTotal) {
+            if (reqsCompleted >= reqsTotal) {
               setComplete();
             } else {
               cfpLoadingBar.set(reqsCompleted / reqsTotal);
