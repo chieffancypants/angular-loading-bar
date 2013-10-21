@@ -91,7 +91,7 @@ angular.module('chieffancypants.loadingBar', [])
         'response': function(response) {
           if (!isCached(response.config)) {
             reqsCompleted++;
-            if (reqsCompleted === reqsTotal) {
+            if (reqsCompleted >= reqsTotal) {
               setComplete();
             } else {
               cfpLoadingBar.set(reqsCompleted / reqsTotal);
@@ -103,7 +103,7 @@ angular.module('chieffancypants.loadingBar', [])
         'responseError': function(rejection) {
           if (!isCached(rejection.config)) {
             reqsCompleted++;
-            if (reqsCompleted === reqsTotal) {
+            if (reqsCompleted >= reqsTotal) {
               setComplete();
             } else {
               cfpLoadingBar.set(reqsCompleted / reqsTotal);
