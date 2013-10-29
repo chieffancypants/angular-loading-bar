@@ -1,3 +1,4 @@
+
 /*
  * angular-loading-bar
  *
@@ -21,7 +22,7 @@
 angular.module('chieffancypants.loadingBar', [])
   .config(['$httpProvider', function ($httpProvider) {
 
-    var interceptor = ['$q', 'cfpLoadingBar', function ($q, cfpLoadingBar) {
+    var interceptor = ['$q', '$cacheFactory', 'cfpLoadingBar', function ($q, $cacheFactory, cfpLoadingBar) {
 
       /**
        * The total number of requests made
@@ -44,31 +45,69 @@ angular.module('chieffancypants.loadingBar', [])
         reqsTotal = 0;
       }
 
+      /**
+       * Determine if the response has already been cached
+       * @param  {Object}  config the config option from the request
+       * @return {Boolean} retrns true if cached, otherwise false
+       */
+      function isCached(config) {
+        var cache;
+        var defaults = $httpProvider.defaults;
+
+        if (config.method !== 'GET' || config.cache === false) {
+          config.cached = false;
+          return false;
+        }
+
+        if (config.cache === true && defaults.cache === undefined) {
+          cache = $cacheFactory.get('$http');
+        } else if (defaults.cache !== undefined) {
+          cache = defaults.cache;
+        } else {
+          cache = config.cache;
+        }
+
+        var cached = cache !== undefined ?
+          cache.get(config.url) !== undefined : false;
+
+        if (config.cached !== undefined && cached !== config.cached) {
+          return config.cached;
+        }
+        config.cached = cached;
+        return cached;
+      }
+
       return {
         'request': function(config) {
-          if (reqsTotal === 0) {
-            cfpLoadingBar.start();
+          if (!isCached(config)) {
+            if (reqsTotal === 0) {
+              cfpLoadingBar.start();
+            }
+            reqsTotal++;
           }
-          reqsTotal++;
           return config;
         },
 
         'response': function(response) {
-          reqsCompleted++;
-          if (reqsCompleted === reqsTotal) {
-            setComplete();
-          } else {
-            cfpLoadingBar.set(reqsCompleted / reqsTotal);
+          if (!isCached(response.config)) {
+            reqsCompleted++;
+            if (reqsCompleted >= reqsTotal) {
+              setComplete();
+            } else {
+              cfpLoadingBar.set(reqsCompleted / reqsTotal);
+            }
           }
           return response;
         },
 
         'responseError': function(rejection) {
-          reqsCompleted++;
-          if (reqsCompleted === reqsTotal) {
-            setComplete();
-          } else {
-            cfpLoadingBar.set(reqsCompleted / reqsTotal);
+          if (!isCached(rejection.config)) {
+            reqsCompleted++;
+            if (reqsCompleted >= reqsTotal) {
+              setComplete();
+            } else {
+              cfpLoadingBar.set(reqsCompleted / reqsTotal);
+            }
           }
           return $q.reject(rejection);
         }
@@ -88,29 +127,33 @@ angular.module('chieffancypants.loadingBar', [])
   .provider('cfpLoadingBar', function() {
 
     this.includeSpinner = true;
+    this.parentSelector = 'body';
 
     this.$get = ['$document', '$timeout', '$animate', function ($document, $timeout, $animate) {
 
-      var $body = $document.find('body'),
+      var $parentSelector = this.parentSelector,
+        $parent = $document.find($parentSelector),
         loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'),
         loadingBar = loadingBarContainer.find('div').eq(0),
         spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>');
 
       var incTimeout,
+		completeTimeout,
         started = false,
         status = 0;
 
       var includeSpinner = this.includeSpinner;
 
       /**
-       * Inserts the loading bar element into the dom, and sets it to 1%
+       * Inserts the loading bar element into the dom, and sets it to 2%
        */
       function _start() {
         started = true;
-        $animate.enter(loadingBarContainer, $body);
+        $timeout.cancel(completeTimeout);
+        $animate.enter(loadingBarContainer, $parent);
 
         if (includeSpinner) {
-          $animate.enter(spinner, $body);
+          $animate.enter(spinner, $parent);
         }
         _set(0.02);
       }
@@ -160,11 +203,11 @@ angular.module('chieffancypants.loadingBar', [])
         } else if (stat >= 0.65 && stat < 0.9) {
           // increment between 0 - 2%
           rnd = (Math.random() * 2) / 100;
-        } else if (stat >= 0.9 && stat < 0.97) {
+        } else if (stat >= 0.9 && stat < 0.99) {
           // finally, increment it .5 %
           rnd = 0.005;
         } else {
-          // after 95%, don't increment:
+          // after 99%, don't increment:
           rnd = 0;
         }
 
@@ -178,7 +221,7 @@ angular.module('chieffancypants.loadingBar', [])
 
       function _complete() {
         _set(1);
-        $timeout(function() {
+        completeTimeout = $timeout(function() {
           $animate.leave(loadingBarContainer, function() {
             status = 0;
             started = false;
@@ -191,9 +234,10 @@ angular.module('chieffancypants.loadingBar', [])
         start: _start,
         set: _set,
         status: _status,
+        inc: _inc,
         complete: _complete,
-
-        includeSpinner: this.includeSpinner
+        includeSpinner: this.includeSpinner,
+        parentSelector: this.parentSelector,
       };
 
 
