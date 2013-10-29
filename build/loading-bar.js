@@ -133,9 +133,10 @@ angular.module('chieffancypants.loadingBar', [])
   .provider('cfpLoadingBar', function() {
 
     this.includeSpinner = true;
+    this.includeBar = true;
     this.parentSelector = 'body';
 
-    this.$get = ['$document', '$timeout', '$animate', function ($document, $timeout, $animate) {
+    this.$get = ['$document', '$timeout', '$animate', '$rootScope', function ($document, $timeout, $animate, $rootScope) {
 
       var $parentSelector = this.parentSelector,
         $parent = $document.find($parentSelector),
@@ -149,14 +150,18 @@ angular.module('chieffancypants.loadingBar', [])
         status = 0;
 
       var includeSpinner = this.includeSpinner;
+      var includeBar = this.includeBar;
 
       /**
        * Inserts the loading bar element into the dom, and sets it to 2%
        */
       function _start() {
+        $rootScope.$broadcast('cfpLoadingBarStarted');
         started = true;
         $timeout.cancel(completeTimeout);
-        $animate.enter(loadingBarContainer, $parent);
+        if(includeBar){
+          $animate.enter(loadingBarContainer, $parent);
+        }
 
         if (includeSpinner) {
           $animate.enter(spinner, $parent);
@@ -226,6 +231,7 @@ angular.module('chieffancypants.loadingBar', [])
       }
 
       function _complete() {
+        $rootScope.$broadcast('cfpLoadingBarCompleted');
         _set(1);
         completeTimeout = $timeout(function() {
           $animate.leave(loadingBarContainer, function() {
@@ -243,7 +249,7 @@ angular.module('chieffancypants.loadingBar', [])
         inc: _inc,
         complete: _complete,
         includeSpinner: this.includeSpinner,
-        parentSelector: this.parentSelector,
+        parentSelector: this.parentSelector
       };
 
 
