@@ -139,7 +139,7 @@ angular.module('chieffancypants.loadingBar', [])
         spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>');
 
       var incTimeout,
-		completeTimeout,
+        completeTimeout,
         started = false,
         status = 0;
 
@@ -150,10 +150,11 @@ angular.module('chieffancypants.loadingBar', [])
        * Inserts the loading bar element into the dom, and sets it to 2%
        */
       function _start() {
-        $rootScope.$broadcast('cfpLoadingBarStarted');
+        $rootScope.$broadcast('cfpLoadingBar:started');
         started = true;
         $timeout.cancel(completeTimeout);
-        if(includeBar){
+
+        if (includeBar) {
           $animate.enter(loadingBarContainer, $parent);
         }
 
@@ -225,7 +226,7 @@ angular.module('chieffancypants.loadingBar', [])
       }
 
       function _complete() {
-        $rootScope.$broadcast('cfpLoadingBarCompleted');
+        $rootScope.$broadcast('cfpLoadingBar:completed');
         _set(1);
         completeTimeout = $timeout(function() {
           $animate.leave(loadingBarContainer, function() {
