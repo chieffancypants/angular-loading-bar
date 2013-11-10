@@ -127,8 +127,11 @@ angular.module('chieffancypants.loadingBar', [])
   /**
    * Loading Bar
    *
-   * This service handles actually adding and removing the element from the DOM.
-   * Because this is such a light-weight element, the
+   * This service handles adding and removing the actual element in the DOM.
+   * Generally, best practices for DOM manipulation is to take place in a
+   * directive, but because the element itself is injected in the DOM only upon
+   * XHR requests, and it's likely needed on every view, the best option is to
+   * use a service.
    */
   .provider('cfpLoadingBar', function() {
 
