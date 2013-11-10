@@ -1,4 +1,3 @@
-
 /*
  * angular-loading-bar
  *
@@ -79,11 +78,13 @@ angular.module('chieffancypants.loadingBar', [])
 
       return {
         'request': function(config) {
-          if (!isCached(config)) {
-            if (reqsTotal === 0) {
-              cfpLoadingBar.start();
-            }
-            reqsTotal++;
+          if (!config.ignoreLoadingBar) {
+            if (!isCached(config)) {
+              if (reqsTotal === 0) {
+                cfpLoadingBar.start();
+              }
+              reqsTotal++;
+            } 
           }
           return config;
         },
