@@ -45,6 +45,8 @@ Additionally, Angular was created as a highly testable framework, so it pains me
 
 
 ## Configuration
+
+**Turn the spinner on or off:**  
 The insertion of the spinner can be controlled through configuration.  It's on by default, but if you'd like to turn it off, simply configure the service:
 
 ```js
@@ -53,6 +55,28 @@ angular.module('myApp', ['chieffancypants.loadingBar'])
     cfpLoadingBarProvider.includeSpinner = false;
   })
 ```
+
+**Turn the loading bar on or off:**  
+Like the spinner configuration above, the loading bar can also be turned off for cases where you only want the spinner:
+
+```js
+angular.module('myApp', ['chieffancypants.loadingBar'])
+  .config(function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeBar = false;
+  })
+```
+
+**Ignoring particular XHR requests:**  
+The loading bar can also be forced to ignore certain requests, for example, when long-polling or periodically sending debugging information back to the server.
+
+```js
+$http.get('/status', {
+  ignoreLoadingBar: true
+});
+
+```
+
+
 
 ## How it works:
 This library is split into two files, an $http `interceptor`, and a `service`:
