@@ -1,4 +1,3 @@
-
 /*
  * angular-loading-bar
  *
@@ -79,7 +78,9 @@ angular.module('chieffancypants.loadingBar', [])
 
       return {
         'request': function(config) {
-          if (!isCached(config)) {
+          // Check to make sure this request hasn't already been cached and that
+          // the requester didn't explicitly ask us to ignore this request:
+          if (!config.ignoreLoadingBar && !isCached(config)) {
             if (reqsTotal === 0) {
               cfpLoadingBar.start();
             }
@@ -121,15 +122,19 @@ angular.module('chieffancypants.loadingBar', [])
   /**
    * Loading Bar
    *
-   * This service handles actually adding and removing the element from the DOM.
-   * Because this is such a light-weight element, the
+   * This service handles adding and removing the actual element in the DOM.
+   * Generally, best practices for DOM manipulation is to take place in a
+   * directive, but because the element itself is injected in the DOM only upon
+   * XHR requests, and it's likely needed on every view, the best option is to
+   * use a service.
    */
   .provider('cfpLoadingBar', function() {
 
     this.includeSpinner = true;
+    this.includeBar = true;
     this.parentSelector = 'body';
 
-    this.$get = ['$document', '$timeout', '$animate', function ($document, $timeout, $animate) {
+    this.$get = ['$document', '$timeout', '$animate', '$rootScope', function ($document, $timeout, $animate, $rootScope) {
 
       var $parentSelector = this.parentSelector,
         $parent = $document.find($parentSelector),
@@ -138,19 +143,22 @@ angular.module('chieffancypants.loadingBar', [])
         spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>');
 
       var incTimeout,
-		completeTimeout,
         started = false,
         status = 0;
 
       var includeSpinner = this.includeSpinner;
+      var includeBar = this.includeBar;
 
       /**
        * Inserts the loading bar element into the dom, and sets it to 2%
        */
       function _start() {
+        $rootScope.$broadcast('cfpLoadingBar:started');
         started = true;
-        $timeout.cancel(completeTimeout);
-        $animate.enter(loadingBarContainer, $parent);
+
+        if (includeBar) {
+          $animate.enter(loadingBarContainer, $parent);
+        }
 
         if (includeSpinner) {
           $animate.enter(spinner, $parent);
@@ -171,9 +179,9 @@ angular.module('chieffancypants.loadingBar', [])
         loadingBar.css('width', pct);
         status = n;
 
-        // increment loadingbar to give the illusion that there is always progress
-        // but make sure to cancel the previous timeouts so we don't have multiple
-        // incs running at the same time.
+        // increment loadingbar to give the illusion that there is always
+        // progress but make sure to cancel the previous timeouts so we don't
+        // have multiple incs running at the same time.
         $timeout.cancel(incTimeout);
         incTimeout = $timeout(function() {
           _inc();
@@ -182,7 +190,7 @@ angular.module('chieffancypants.loadingBar', [])
 
       /**
        * Increments the loading bar by a random amount
-       * but slows down once it approaches 70%
+       * but slows down as it progresses
        */
       function _inc() {
         if (_status() >= 1) {
@@ -220,14 +228,14 @@ angular.module('chieffancypants.loadingBar', [])
       }
 
       function _complete() {
+        $rootScope.$broadcast('cfpLoadingBar:completed');
         _set(1);
-        completeTimeout = $timeout(function() {
-          $animate.leave(loadingBarContainer, function() {
-            status = 0;
-            started = false;
-          });
-          $animate.leave(spinner);
-        }, 500);
+
+        $animate.leave(loadingBarContainer, function() {
+          status = 0;
+          started = false;
+        });
+        $animate.leave(spinner);
       }
 
       return {
@@ -237,7 +245,7 @@ angular.module('chieffancypants.loadingBar', [])
         inc: _inc,
         complete: _complete,
         includeSpinner: this.includeSpinner,
-        parentSelector: this.parentSelector,
+        parentSelector: this.parentSelector
       };
 
 
