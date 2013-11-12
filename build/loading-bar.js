@@ -4,7 +4,6 @@
  * Copyright (c) 2013 Wes Cruver
  * License: MIT
  */
-
 /*
  * angular-loading-bar
  *
@@ -85,7 +84,9 @@ angular.module('chieffancypants.loadingBar', [])
 
       return {
         'request': function(config) {
-          if (!isCached(config)) {
+          // Check to make sure this request hasn't already been cached and that
+          // the requester didn't explicitly ask us to ignore this request:
+          if (!config.ignoreLoadingBar && !isCached(config)) {
             if (reqsTotal === 0) {
               cfpLoadingBar.start();
             }
@@ -148,7 +149,6 @@ angular.module('chieffancypants.loadingBar', [])
         spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>');
 
       var incTimeout,
-        completeTimeout,
         started = false,
         status = 0;
 
@@ -161,7 +161,7 @@ angular.module('chieffancypants.loadingBar', [])
       function _start() {
         $rootScope.$broadcast('cfpLoadingBar:started');
         started = true;
-        $timeout.cancel(completeTimeout);
+        // $timeout.cancel(completeTimeout);
 
         if (includeBar) {
           $animate.enter(loadingBarContainer, $parent);
@@ -186,9 +186,9 @@ angular.module('chieffancypants.loadingBar', [])
         loadingBar.css('width', pct);
         status = n;
 
-        // increment loadingbar to give the illusion that there is always progress
-        // but make sure to cancel the previous timeouts so we don't have multiple
-        // incs running at the same time.
+        // increment loadingbar to give the illusion that there is always
+        // progress but make sure to cancel the previous timeouts so we don't
+        // have multiple incs running at the same time.
         $timeout.cancel(incTimeout);
         incTimeout = $timeout(function() {
           _inc();
@@ -197,7 +197,7 @@ angular.module('chieffancypants.loadingBar', [])
 
       /**
        * Increments the loading bar by a random amount
-       * but slows down once it approaches 70%
+       * but slows down as it progresses
        */
       function _inc() {
         if (_status() >= 1) {
@@ -237,13 +237,12 @@ angular.module('chieffancypants.loadingBar', [])
       function _complete() {
         $rootScope.$broadcast('cfpLoadingBar:completed');
         _set(1);
-        completeTimeout = $timeout(function() {
-          $animate.leave(loadingBarContainer, function() {
-            status = 0;
-            started = false;
-          });
-          $animate.leave(spinner);
-        }, 500);
+
+        $animate.leave(loadingBarContainer, function() {
+          status = 0;
+          started = false;
+        });
+        $animate.leave(spinner);
       }
 
       return {
