@@ -291,19 +291,50 @@ describe 'loadingBarInterceptor Service', ->
     cfpLoadingBar.complete()
     $timeout.flush()
 
-  it 'should hide the spinner if configured', inject (cfpLoadingBar) ->
-    # verify it works by default:
+  it 'should broadcast started and completed events', inject (cfpLoadingBar, $rootScope) ->
+    startedEventCalled = false
+    completedEventCalled = false
+
+    $rootScope.$on 'cfpLoadingBar:started', (event) ->
+      startedEventCalled = true
+
+    $rootScope.$on 'cfpLoadingBar:completed', (event) ->
+      completedEventCalled = true
+
+    expect(startedEventCalled).toBe false
+    expect(completedEventCalled).toBe false
+
     cfpLoadingBar.start()
-    spinner = document.getElementById('loading-bar-spinner')
-    expect(spinner).not.toBeNull()
+    expect(startedEventCalled).toBe true
+
+    cfpLoadingBar.complete()
+    expect(completedEventCalled).toBe true
+    $timeout.flush()
+
+  it 'should debounce the calls to start()', inject (cfpLoadingBar, $rootScope) ->
+    startedEventCalled = 0
+    $rootScope.$on 'cfpLoadingBar:started', (event) ->
+      startedEventCalled += 1
+
+    cfpLoadingBar.start()
+    expect(startedEventCalled).toBe 1
+    cfpLoadingBar.start()
+    expect(startedEventCalled).toBe 1 # Should still be one, as complete was never called:
     cfpLoadingBar.complete()
     $timeout.flush()
 
-    # now configure it to not be injected:
-    cfpLoadingBar.includeSpinner = false
     cfpLoadingBar.start()
-    spinner = document.getElementById('loading-bar-spinner')
-    expect(spinner).toBeNull
+    expect(startedEventCalled).toBe 2
     cfpLoadingBar.complete()
+    $timeout.flush()
+
+  it 'should ignore requests when ignoreLoadingBar is true', inject (cfpLoadingBar) ->
+    $httpBackend.expectGET(endpoint).respond response
+    $http.get(endpoint, {ignoreLoadingBar: true})
+    $httpBackend.flush()
+
+    injected = isLoadingBarInjected $document.find(cfpLoadingBar.parentSelector)
+    expect(injected).toBe false
+
     $timeout.flush()
 
