@@ -1,5 +1,5 @@
 /*! 
- * angular-loading-bar v0.0.5
+ * angular-loading-bar v0.1.0
  * https://chieffancypants.github.io/angular-loading-bar
  * Copyright (c) 2013 Wes Cruver
  * License: MIT
