@@ -10,8 +10,9 @@
 
 
 (function() {
+'use strict';
 
-  'use strict';
+angular.module('angular-loading-bar', ['chieffancypants.loadingBar']);
 
 /**
  * loadingBarInterceptor service
