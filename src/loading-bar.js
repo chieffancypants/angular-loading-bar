@@ -10,9 +10,13 @@
 
 
 (function() {
+
 'use strict';
 
+// Alias the loading bar so it can be included using a simpler
+// (and maybe more professional) module name:
 angular.module('angular-loading-bar', ['chieffancypants.loadingBar']);
+
 
 /**
  * loadingBarInterceptor service
