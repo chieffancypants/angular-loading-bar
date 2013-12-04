@@ -121,3 +121,7 @@ Credit goes to [rstacruz](https://github.com/rstacruz) for his excellent [nProgr
 
 ## License:
 Licensed under the MIT license
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/chieffancypants/angular-loading-bar/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
