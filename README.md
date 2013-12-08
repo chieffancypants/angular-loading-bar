@@ -70,11 +70,28 @@ angular.module('myApp', ['chieffancypants.loadingBar'])
 The loading bar can also be forced to ignore certain requests, for example, when long-polling or periodically sending debugging information back to the server.
 
 ```js
+// ignore particular $http requests:
 $http.get('/status', {
   ignoreLoadingBar: true
 });
 
 ```
+
+
+```js
+// ignore particular $resource requests:
+.factory('Restaurant', function($resource) {
+  return $resource('/api/restaurant/:id', {id: '@id'}, {
+    query: {
+      method: 'GET',
+      isArray: true,
+      ignoreLoadingBar: true
+    }
+  });
+});
+
+```
+
 
 
 
