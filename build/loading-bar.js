@@ -7,7 +7,7 @@
 /*
  * angular-loading-bar
  *
- * intercepts XHR requests and creates a loading bar when that shit happens.
+ * intercepts XHR requests and creates a loading bar.
  * Based on the excellent nprogress work by rstacruz (more info in readme)
  *
  * (c) 2013 Wes Cruver
@@ -16,9 +16,13 @@
 
 
 (function() {
+
 'use strict';
 
+// Alias the loading bar so it can be included using a simpler
+// (and maybe more professional) module name:
 angular.module('angular-loading-bar', ['chieffancypants.loadingBar']);
+
 
 /**
  * loadingBarInterceptor service
