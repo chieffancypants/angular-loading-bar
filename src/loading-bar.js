@@ -26,7 +26,7 @@ angular.module('angular-loading-bar', ['chieffancypants.loadingBar']);
 angular.module('chieffancypants.loadingBar', [])
   .config(['$httpProvider', function ($httpProvider) {
 
-    var interceptor = ['$q', '$cacheFactory', 'cfpLoadingBar', function ($q, $cacheFactory, cfpLoadingBar) {
+    var interceptor = ['$q', '$cacheFactory', '$timeout', 'cfpLoadingBar', function ($q, $cacheFactory, $timeout, cfpLoadingBar) {
 
       /**
        * The total number of requests made
@@ -44,6 +44,7 @@ angular.module('chieffancypants.loadingBar', [])
        * loading bar from the DOM.
        */
       function setComplete() {
+        $timeout.cancel(startTimeout);
         cfpLoadingBar.complete();
         reqsCompleted = 0;
         reqsTotal = 0;
@@ -81,13 +82,17 @@ angular.module('chieffancypants.loadingBar', [])
         return cached;
       }
 
+      var startTimeout;
+
       return {
         'request': function(config) {
           // Check to make sure this request hasn't already been cached and that
           // the requester didn't explicitly ask us to ignore this request:
           if (!config.ignoreLoadingBar && !isCached(config)) {
             if (reqsTotal === 0) {
-              cfpLoadingBar.start();
+              startTimeout = $timeout(function() {
+                cfpLoadingBar.start();
+              }, 100);
             }
             reqsTotal++;
           }
@@ -176,6 +181,7 @@ angular.module('chieffancypants.loadingBar', [])
         if (includeSpinner) {
           $animate.enter(spinner, $parent);
         }
+
         _set(0.02);
       }
 
