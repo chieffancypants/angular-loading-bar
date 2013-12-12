@@ -38,6 +38,10 @@ angular.module('chieffancypants.loadingBar', [])
        */
       var reqsCompleted = 0;
 
+      /**
+       * The amount of time spent fetching before showing the loading bar
+       */
+      var latencyThreshold = cfpLoadingBar.latencyThreshold || 100;
 
       /**
        * calls cfpLoadingBar.complete() which removes the
@@ -92,7 +96,7 @@ angular.module('chieffancypants.loadingBar', [])
             if (reqsTotal === 0) {
               startTimeout = $timeout(function() {
                 cfpLoadingBar.start();
-              }, 100);
+              }, latencyThreshold);
             }
             reqsTotal++;
           }
