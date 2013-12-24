@@ -86,10 +86,12 @@ angular.module('chieffancypants.loadingBar', [])
           // Check to make sure this request hasn't already been cached and that
           // the requester didn't explicitly ask us to ignore this request:
           if (!config.ignoreLoadingBar && !isCached(config)) {
+            cfpLoadingBar._loading(config.url);
             if (reqsTotal === 0) {
               cfpLoadingBar.start();
             }
             reqsTotal++;
+            cfpLoadingBar.set(reqsCompleted / reqsTotal);
           }
           return config;
         },
@@ -97,6 +99,7 @@ angular.module('chieffancypants.loadingBar', [])
         'response': function(response) {
           if (!isCached(response.config)) {
             reqsCompleted++;
+            cfpLoadingBar._loaded(response.config.url);
             if (reqsCompleted >= reqsTotal) {
               setComplete();
             } else {
@@ -109,6 +112,7 @@ angular.module('chieffancypants.loadingBar', [])
         'responseError': function(rejection) {
           if (!isCached(rejection.config)) {
             reqsCompleted++;
+            cfpLoadingBar._loaded(response.config.url);
             if (reqsCompleted >= reqsTotal) {
               setComplete();
             } else {
@@ -254,12 +258,22 @@ angular.module('chieffancypants.loadingBar', [])
         }, 500);
       }
 
+      function _loading(url) {
+         $rootScope.$broadcast('cfpLoadingBar:loading', url);
+      }
+
+      function _loaded(url) {
+         $rootScope.$broadcast('cfpLoadingBar:loaded', url);
+      }
+
       return {
         start          : _start,
         set            : _set,
         status         : _status,
         inc            : _inc,
         complete       : _complete,
+        _loading       : _loading,
+        _loaded        : _loaded,
         includeSpinner : this.includeSpinner,
         parentSelector : this.parentSelector
       };
