@@ -259,11 +259,11 @@ angular.module('chieffancypants.loadingBar', [])
       }
 
       function _loading(url) {
-         $rootScope.$broadcast('cfpLoadingBar:loading:' + url);
+         $rootScope.$broadcast('cfpLoadingBar:loading', url);
       }
 
       function _loaded(url) {
-         $rootScope.$broadcast('cfpLoadingBar:loaded:' + url);
+         $rootScope.$broadcast('cfpLoadingBar:loaded', url);
       }
 
       return {
