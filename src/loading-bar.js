@@ -90,6 +90,7 @@ angular.module('chieffancypants.loadingBar', [])
               cfpLoadingBar.start();
             }
             reqsTotal++;
+            cfpLoadingBar.set(reqsCompleted / reqsTotal);
           }
           return config;
         },
