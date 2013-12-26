@@ -1,7 +1,7 @@
 /*
  * angular-loading-bar
  *
- * intercepts XHR requests and creates a loading bar when that shit happens.
+ * intercepts XHR requests and creates a loading bar.
  * Based on the excellent nprogress work by rstacruz (more info in readme)
  *
  * (c) 2013 Wes Cruver
@@ -11,7 +11,12 @@
 
 (function() {
 
-  'use strict';
+'use strict';
+
+// Alias the loading bar so it can be included using a simpler
+// (and maybe more professional) module name:
+angular.module('angular-loading-bar', ['chieffancypants.loadingBar']);
+
 
 /**
  * loadingBarInterceptor service
@@ -143,6 +148,7 @@ angular.module('chieffancypants.loadingBar', [])
         spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>');
 
       var incTimeout,
+        completeTimeout,
         started = false,
         status = 0;
 
@@ -153,6 +159,13 @@ angular.module('chieffancypants.loadingBar', [])
        * Inserts the loading bar element into the dom, and sets it to 2%
        */
       function _start() {
+        $timeout.cancel(completeTimeout);
+
+        // do not continually broadcast the started event:
+        if (started) {
+          return;
+        }
+
         $rootScope.$broadcast('cfpLoadingBar:started');
         started = true;
 
@@ -231,21 +244,24 @@ angular.module('chieffancypants.loadingBar', [])
         $rootScope.$broadcast('cfpLoadingBar:completed');
         _set(1);
 
-        $animate.leave(loadingBarContainer, function() {
-          status = 0;
-          started = false;
-        });
-        $animate.leave(spinner);
+        // Attempt to aggregate any start/complete calls within 500ms:
+        completeTimeout = $timeout(function() {
+          $animate.leave(loadingBarContainer, function() {
+            status = 0;
+            started = false;
+          });
+          $animate.leave(spinner);
+        }, 500);
       }
 
       return {
-        start: _start,
-        set: _set,
-        status: _status,
-        inc: _inc,
-        complete: _complete,
-        includeSpinner: this.includeSpinner,
-        parentSelector: this.parentSelector
+        start          : _start,
+        set            : _set,
+        status         : _status,
+        inc            : _inc,
+        complete       : _complete,
+        includeSpinner : this.includeSpinner,
+        parentSelector : this.parentSelector
       };
 
 
