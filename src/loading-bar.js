@@ -26,7 +26,7 @@ angular.module('angular-loading-bar', ['chieffancypants.loadingBar']);
 angular.module('chieffancypants.loadingBar', [])
   .config(['$httpProvider', function ($httpProvider) {
 
-    var interceptor = ['$q', '$cacheFactory', 'cfpLoadingBar', function ($q, $cacheFactory, cfpLoadingBar) {
+    var interceptor = ['$q', '$cacheFactory', '$rootScope', 'cfpLoadingBar', function ($q, $cacheFactory, $rootScope, cfpLoadingBar) {
 
       /**
        * The total number of requests made
@@ -86,7 +86,7 @@ angular.module('chieffancypants.loadingBar', [])
           // Check to make sure this request hasn't already been cached and that
           // the requester didn't explicitly ask us to ignore this request:
           if (!config.ignoreLoadingBar && !isCached(config)) {
-            cfpLoadingBar._loading(config.url);
+            $rootScope.$broadcast('cfpLoadingBar:loading', {url: config.url});
             if (reqsTotal === 0) {
               cfpLoadingBar.start();
             }
@@ -98,7 +98,7 @@ angular.module('chieffancypants.loadingBar', [])
         'response': function(response) {
           if (!isCached(response.config)) {
             reqsCompleted++;
-            cfpLoadingBar._loaded(response.config.url);
+            $rootScope.$broadcast('cfpLoadingBar:loaded', {url: response.config.url});
             if (reqsCompleted >= reqsTotal) {
               setComplete();
             } else {
@@ -111,7 +111,7 @@ angular.module('chieffancypants.loadingBar', [])
         'responseError': function(rejection) {
           if (!isCached(rejection.config)) {
             reqsCompleted++;
-            cfpLoadingBar._loaded(response.config.url);
+            $rootScope.$broadcast('cfpLoadingBar:loaded', {url: rejection.config.url});
             if (reqsCompleted >= reqsTotal) {
               setComplete();
             } else {
@@ -257,26 +257,15 @@ angular.module('chieffancypants.loadingBar', [])
         }, 500);
       }
 
-      function _loading(url) {
-         $rootScope.$broadcast('cfpLoadingBar:loading', { url: url });
-      }
-
-      function _loaded(url) {
-         $rootScope.$broadcast('cfpLoadingBar:loaded', { url: url });
-      }
-
       return {
         start          : _start,
         set            : _set,
         status         : _status,
         inc            : _inc,
         complete       : _complete,
-        _loading       : _loading,
-        _loaded        : _loaded,
         includeSpinner : this.includeSpinner,
         parentSelector : this.parentSelector
       };
-
 
 
     }];     //
