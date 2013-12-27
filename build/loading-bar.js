@@ -1,5 +1,5 @@
 /*! 
- * angular-loading-bar v0.1.1
+ * angular-loading-bar v0.2.0
  * https://chieffancypants.github.io/angular-loading-bar
  * Copyright (c) 2013 Wes Cruver
  * License: MIT
@@ -97,6 +97,7 @@ angular.module('chieffancypants.loadingBar', [])
               cfpLoadingBar.start();
             }
             reqsTotal++;
+            cfpLoadingBar.set(reqsCompleted / reqsTotal);
           }
           return config;
         },
