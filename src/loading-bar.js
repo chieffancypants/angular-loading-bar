@@ -41,7 +41,7 @@ angular.module('chieffancypants.loadingBar', [])
       /**
        * The amount of time spent fetching before showing the loading bar
        */
-      var latencyThreshold = cfpLoadingBar.latencyThreshold || 100;
+      var latencyThreshold = cfpLoadingBar.latencyThreshold;
 
       /**
        * calls cfpLoadingBar.complete() which removes the
@@ -146,6 +146,7 @@ angular.module('chieffancypants.loadingBar', [])
 
     this.includeSpinner = true;
     this.includeBar = true;
+    this.latencyThreshold = 100;
     this.parentSelector = 'body';
 
     this.$get = ['$document', '$timeout', '$animate', '$rootScope', function ($document, $timeout, $animate, $rootScope) {
@@ -265,13 +266,14 @@ angular.module('chieffancypants.loadingBar', [])
       }
 
       return {
-        start          : _start,
-        set            : _set,
-        status         : _status,
-        inc            : _inc,
-        complete       : _complete,
-        includeSpinner : this.includeSpinner,
-        parentSelector : this.parentSelector
+        start            : _start,
+        set              : _set,
+        status           : _status,
+        inc              : _inc,
+        complete         : _complete,
+        includeSpinner   : this.includeSpinner,
+        latencyThreshold : this.latencyThreshold,
+        parentSelector   : this.parentSelector
       };
 
 
