@@ -1,12 +1,19 @@
 {
   "name": "angular-loading-bar",
   "version": "0.1.1",
-  "main": ["src/loading-bar.js", "src/loading-bar.css"],
+  "main": [
+    "src/loading-bar.js",
+    "src/loading-bar.css"
+  ],
   "ignore": [
     "**/.*",
     "node_modules",
     "components",
     "test",
     "example"
-  ]
+  ],
+  "devDependencies": {
+    "angular-mocks": "~1.2.9",
+    "angular-animate": "~1.2.9"
+  }
 }

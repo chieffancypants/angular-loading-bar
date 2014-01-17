@@ -157,10 +157,10 @@ describe 'loadingBarInterceptor Service', ->
     $http.get(endpoint)
 
     $httpBackend.flush(1)
+    $timeout.flush() # flush the latencyThreshold timeout
 
-    injected = isLoadingBarInjected $document.find(cfpLoadingBar.parentSelector)
+    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe true
 
-    expect(injected).toBe true
     $httpBackend.flush()
     $timeout.flush()
 
@@ -171,7 +171,9 @@ describe 'loadingBarInterceptor Service', ->
     $http.get(endpoint)
     $http.get(endpoint)
 
-    $timeout.flush() # loading bar is animated, so flush timeout
+    $httpBackend.flush(1)
+    $timeout.flush() # flush the latencyThreshold timeout
+
     expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe true
 
     $httpBackend.flush()
