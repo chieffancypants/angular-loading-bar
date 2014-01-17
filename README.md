@@ -3,7 +3,7 @@ angular-loading-bar
 
 The idea is simple: Add a loading bar / progress bar whenever an XHR request goes out in angular.  Multiple requests within the same time period get bundled together such that each response increments the progress bar by the appropriate amount.
 
-This is mostly cool because you simply include it in your app, and it works.  There's no complicated setup, and need to maintain the state of the loading bar; it's all handled automatically by the interceptor.
+This is mostly cool because you simply include it in your app, and it works.  There's no complicated setup, and no need to maintain the state of the loading bar; it's all handled automatically by the interceptor.
 
 **Requirements:** AngularJS 1.2+
 
@@ -96,7 +96,7 @@ $http.get('/status', {
 
 
 ## How it works:
-This library is split into two files, an $http `interceptor`, and a `service`:
+This library is split into two components, an $http `interceptor`, and a `service`:
 
 **Interceptor**  
 The interceptor simply listens for all outgoing XHR requests, and then instructs the loadingBar service to start, stop, and increment accordingly.  There is no public API for the interceptor.
