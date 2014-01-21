@@ -1,7 +1,7 @@
 /*! 
- * angular-loading-bar v0.2.0
+ * angular-loading-bar v0.3.0
  * https://chieffancypants.github.io/angular-loading-bar
- * Copyright (c) 2013 Wes Cruver
+ * Copyright (c) 2014 Wes Cruver
  * License: MIT
  */
 /*
@@ -32,7 +32,7 @@ angular.module('angular-loading-bar', ['chieffancypants.loadingBar']);
 angular.module('chieffancypants.loadingBar', [])
   .config(['$httpProvider', function ($httpProvider) {
 
-    var interceptor = ['$q', '$cacheFactory', '$rootScope', 'cfpLoadingBar', function ($q, $cacheFactory, $rootScope, cfpLoadingBar) {
+    var interceptor = ['$q', '$cacheFactory', '$timeout', '$rootScope', 'cfpLoadingBar', function ($q, $cacheFactory, $timeout, $rootScope, cfpLoadingBar) {
 
       /**
        * The total number of requests made
@@ -44,12 +44,23 @@ angular.module('chieffancypants.loadingBar', [])
        */
       var reqsCompleted = 0;
 
+      /**
+       * The amount of time spent fetching before showing the loading bar
+       */
+      var latencyThreshold = cfpLoadingBar.latencyThreshold;
+
+      /**
+       * $timeout handle for latencyThreshold
+       */
+      var startTimeout;
+
 
       /**
        * calls cfpLoadingBar.complete() which removes the
        * loading bar from the DOM.
        */
       function setComplete() {
+        $timeout.cancel(startTimeout);
         cfpLoadingBar.complete();
         reqsCompleted = 0;
         reqsTotal = 0;
@@ -87,6 +98,7 @@ angular.module('chieffancypants.loadingBar', [])
         return cached;
       }
 
+
       return {
         'request': function(config) {
           // Check to make sure this request hasn't already been cached and that
@@ -94,7 +106,9 @@ angular.module('chieffancypants.loadingBar', [])
           if (!config.ignoreLoadingBar && !isCached(config)) {
             $rootScope.$broadcast('cfpLoadingBar:loading', {url: config.url});
             if (reqsTotal === 0) {
-              cfpLoadingBar.start();
+              startTimeout = $timeout(function() {
+                cfpLoadingBar.start();
+              }, latencyThreshold);
             }
             reqsTotal++;
             cfpLoadingBar.set(reqsCompleted / reqsTotal);
@@ -147,6 +161,7 @@ angular.module('chieffancypants.loadingBar', [])
 
     this.includeSpinner = true;
     this.includeBar = true;
+    this.latencyThreshold = 100;
     this.parentSelector = 'body';
 
     this.$get = ['$document', '$timeout', '$animate', '$rootScope', function ($document, $timeout, $animate, $rootScope) {
@@ -186,6 +201,7 @@ angular.module('chieffancypants.loadingBar', [])
         if (includeSpinner) {
           $animate.enter(spinner, $parent);
         }
+
         _set(0.02);
       }
 
@@ -265,13 +281,14 @@ angular.module('chieffancypants.loadingBar', [])
       }
 
       return {
-        start          : _start,
-        set            : _set,
-        status         : _status,
-        inc            : _inc,
-        complete       : _complete,
-        includeSpinner : this.includeSpinner,
-        parentSelector : this.parentSelector
+        start            : _start,
+        set              : _set,
+        status           : _status,
+        inc              : _inc,
+        complete         : _complete,
+        includeSpinner   : this.includeSpinner,
+        latencyThreshold : this.latencyThreshold,
+        parentSelector   : this.parentSelector
       };
 
 
