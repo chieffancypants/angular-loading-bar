@@ -1,7 +1,7 @@
 /*! 
- * angular-loading-bar v0.2.0
+ * angular-loading-bar v0.3.0
  * https://chieffancypants.github.io/angular-loading-bar
- * Copyright (c) 2013 Wes Cruver
+ * Copyright (c) 2014 Wes Cruver
  * License: MIT
  */
 
@@ -10,10 +10,10 @@
 #loading-bar-spinner {
   pointer-events: none;
   -webkit-pointer-events: none;
-  -webkit-transition: 0.5s linear all;
-  -moz-transition: 0.5s linear all;
-  -o-transition: 0.5s linear all;
-  transition: 0.5s linear all;
+  -webkit-transition: 350ms linear all;
+  -moz-transition: 350ms linear all;
+  -o-transition: 350ms linear all;
+  transition: 350ms linear all;
 }
 
 #loading-bar.ng-enter,
