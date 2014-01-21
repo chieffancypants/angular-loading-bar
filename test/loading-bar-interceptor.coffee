@@ -47,6 +47,8 @@ describe 'loadingBarInterceptor Service', ->
       result = data
 
     expect(cfpLoadingBar.status()).toBe 0
+    $timeout.flush()
+    $timeout.flush()
     $httpBackend.flush(1)
     expect(cfpLoadingBar.status()).toBe 1
     cfpLoadingBar.complete() # set as complete
@@ -67,6 +69,8 @@ describe 'loadingBarInterceptor Service', ->
       result = data
 
     expect(cfpLoadingBar.status()).toBe 0
+    $timeout.flush()
+    $timeout.flush()
     $httpBackend.flush(1)
     expect(cfpLoadingBar.status()).toBe 1
     cfpLoadingBar.complete() # set as complete
@@ -86,6 +90,8 @@ describe 'loadingBarInterceptor Service', ->
       result = data
 
     expect(cfpLoadingBar.status()).toBe 0
+    $timeout.flush()
+    $timeout.flush()
     $httpBackend.flush(1)
     expect(cfpLoadingBar.status()).toBe 1
     cfpLoadingBar.complete() # set as complete
@@ -102,7 +108,10 @@ describe 'loadingBarInterceptor Service', ->
     $httpBackend.expectPOST(endpoint).respond response
     $http.post(endpoint, {message: 'post'}).then (data) ->
       result = data
+
     expect(cfpLoadingBar.status()).toBe 0
+    $timeout.flush()
+    $timeout.flush()
     $httpBackend.flush(1)
     expect(cfpLoadingBar.status()).toBe 1
     $timeout.flush()
@@ -111,7 +120,10 @@ describe 'loadingBarInterceptor Service', ->
     $httpBackend.expectPOST(endpoint).respond response
     $http.post(endpoint, {message: 'post'}).then (data) ->
       result = data
+
     expect(cfpLoadingBar.status()).toBe 0
+    $timeout.flush()
+    $timeout.flush()
     $httpBackend.flush()
     expect(cfpLoadingBar.status()).toBe 1
     $timeout.flush()
@@ -125,6 +137,8 @@ describe 'loadingBarInterceptor Service', ->
       result = data
 
     expect(cfpLoadingBar.status()).toBe 0
+    $timeout.flush()
+    $timeout.flush()
     $httpBackend.flush(1)
     expect(cfpLoadingBar.status()).toBe 0.5
 
@@ -141,6 +155,8 @@ describe 'loadingBarInterceptor Service', ->
     $http.get(endpoint)
 
     expect(cfpLoadingBar.status()).toBe 0
+    $timeout.flush()
+    $timeout.flush()
     $httpBackend.flush(1)
     expect(cfpLoadingBar.status()).toBe 0.5
     $httpBackend.flush()
@@ -157,10 +173,10 @@ describe 'loadingBarInterceptor Service', ->
     $http.get(endpoint)
 
     $httpBackend.flush(1)
+    $timeout.flush() # flush the latencyThreshold timeout
 
-    injected = isLoadingBarInjected $document.find(cfpLoadingBar.parentSelector)
+    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe true
 
-    expect(injected).toBe true
     $httpBackend.flush()
     $timeout.flush()
 
@@ -171,7 +187,9 @@ describe 'loadingBarInterceptor Service', ->
     $http.get(endpoint)
     $http.get(endpoint)
 
-    $timeout.flush() # loading bar is animated, so flush timeout
+    $httpBackend.flush(1)
+    $timeout.flush() # flush the latencyThreshold timeout
+
     expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe true
 
     $httpBackend.flush()
