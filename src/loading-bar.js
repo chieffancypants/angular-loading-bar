@@ -44,6 +44,12 @@ angular.module('chieffancypants.loadingBar', [])
       var latencyThreshold = cfpLoadingBar.latencyThreshold;
 
       /**
+       * $timeout handle for latencyThreshold
+       */
+      var startTimeout;
+
+
+      /**
        * calls cfpLoadingBar.complete() which removes the
        * loading bar from the DOM.
        */
@@ -86,7 +92,6 @@ angular.module('chieffancypants.loadingBar', [])
         return cached;
       }
 
-      var startTimeout;
 
       return {
         'request': function(config) {
