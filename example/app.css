@@ -168,10 +168,13 @@ h4 span {
 #loading-bar .bar {
   background: #2c3e50;
 }
-#loading-bar .peg {
-  box-shadow: 0 0 10px #2c3e50, 0 0 5px #2c3e50;
-}
 #loading-bar-spinner .spinner-icon {
   border-top-color:  #2c3e50;
   border-left-color: #2c3e50;
+}
+#loading-bar .peg {
+  -moz-box-shadow: #2c3e50 1px 0 6px 1px;
+  -ms-box-shadow: #2c3e50 1px 0 6px 1px;
+  -webkit-box-shadow: #2c3e50 1px 0 6px 1px;
+  box-shadow: #2c3e50 1px 0 6px 1px;
 }
