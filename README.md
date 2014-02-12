@@ -7,6 +7,8 @@ This is mostly cool because you simply include it in your app, and it works.  Th
 
 **Requirements:** AngularJS 1.2+
 
+**File Size:** 2.4Kb minified, 0.5Kb gzipped
+
 
 ## Usage:
 
