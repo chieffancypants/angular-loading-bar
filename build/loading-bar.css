@@ -65,7 +65,7 @@
 #loading-bar-spinner {
   display: block;
   position: fixed;
-  z-index: 100;
+  z-index: 2000;
   top: 10px;
   left: 10px;
 }
