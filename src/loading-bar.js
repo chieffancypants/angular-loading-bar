@@ -162,7 +162,7 @@ angular.module('chieffancypants.loadingBar', [])
 
       var $parentSelector = this.parentSelector,
         $parent = $document.find($parentSelector),
-        loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'),
+        loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div><div class="peg-arrow"></div></div></div>'),
         loadingBar = loadingBarContainer.find('div').eq(0),
         spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>');
 
