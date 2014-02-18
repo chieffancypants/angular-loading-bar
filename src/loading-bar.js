@@ -44,9 +44,19 @@ angular.module('chieffancypants.loadingBar', [])
       var latencyThreshold = cfpLoadingBar.latencyThreshold;
 
       /**
+       * The amount of time spent before actually stopping the bar
+       */
+      var stopThreshold = cfpLoadingBar.stopThreshold;
+
+      /**
        * $timeout handle for latencyThreshold
        */
       var startTimeout;
+
+      /**
+       * $timeout handle for the stop timeout.
+       */
+      var stopTimeout;
 
 
       /**
@@ -55,9 +65,15 @@ angular.module('chieffancypants.loadingBar', [])
        */
       function setComplete() {
         $timeout.cancel(startTimeout);
-        cfpLoadingBar.complete();
-        reqsCompleted = 0;
-        reqsTotal = 0;
+
+        // Don't stop the bar immediately because if we get 
+        // a request immediately after stopping it, it looks like
+        // it goes back, and the effect is not really good.
+        stopTimeout = $timeout(function () {
+          cfpLoadingBar.complete();
+          reqsCompleted = 0;
+          reqsTotal = 0;
+        }, stopThreshold);
       }
 
       /**
@@ -99,6 +115,10 @@ angular.module('chieffancypants.loadingBar', [])
           // the requester didn't explicitly ask us to ignore this request:
           if (!config.ignoreLoadingBar && !isCached(config)) {
             $rootScope.$broadcast('cfpLoadingBar:loading', {url: config.url});
+
+            // Cancel the stop timeout because we just got another request.
+            $timeout.cancel(stopTimeout);
+
             if (reqsTotal === 0) {
               startTimeout = $timeout(function() {
                 cfpLoadingBar.start();
@@ -156,6 +176,7 @@ angular.module('chieffancypants.loadingBar', [])
     this.includeSpinner = true;
     this.includeBar = true;
     this.latencyThreshold = 100;
+    this.stopThreshold = 0;
     this.parentSelector = 'body';
 
     this.$get = ['$document', '$timeout', '$animate', '$rootScope', function ($document, $timeout, $animate, $rootScope) {
@@ -282,6 +303,7 @@ angular.module('chieffancypants.loadingBar', [])
         complete         : _complete,
         includeSpinner   : this.includeSpinner,
         latencyThreshold : this.latencyThreshold,
+        stopThreshold    : this.stopThreshold,
         parentSelector   : this.parentSelector
       };
 
