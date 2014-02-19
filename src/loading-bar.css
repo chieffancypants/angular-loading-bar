@@ -37,24 +37,18 @@
   left: 0;
   width: 100%;
   height: 2px;
+  border-bottom-right-radius: 1px;
+  border-top-right-radius: 1px;
 }
 
 /* Fancy blur effect */
 #loading-bar .peg {
-  opacity: .6;
-  width: 180px;
-  right: -80px;
-  clip: rect(-6px,90px,14px,-6px);
-}
-
-#loading-bar .peg-arrow {
-  opacity: .6;
-  width: 20px;
+  opacity: .45;
+  width: 70px;
   right: 0;
-  clip: rect(-6px,22px,14px,10px);
 }
 
-#loading-bar .peg-arrow, #loading-bar .peg {
+#loading-bar .peg:before, #loading-bar .peg {
   position: absolute;
   top: 0;
   height: 2px;
@@ -65,6 +59,16 @@
   -moz-border-radius: 100%;
   -webkit-border-radius: 100%;
   border-radius: 100%;
+}
+
+#loading-bar .peg:before {
+  opacity: 0.3;
+  width: 30px;
+  height: 0;
+  top: 1px;
+  right: -1px;
+  clip: rect(-5px,65px,33px,-5px);
+  content: ' ';
 }
 
 #loading-bar-spinner {
