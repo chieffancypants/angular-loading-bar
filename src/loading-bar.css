@@ -43,15 +43,12 @@
 
 /* Fancy blur effect */
 #loading-bar .peg {
-  opacity: .45;
+  position: absolute;
   width: 70px;
   right: 0;
-}
-
-#loading-bar .peg:before, #loading-bar .peg {
-  position: absolute;
   top: 0;
   height: 2px;
+  opacity: .45;
   -moz-box-shadow: #29d 1px 0 6px 1px;
   -ms-box-shadow: #29d 1px 0 6px 1px;
   -webkit-box-shadow: #29d 1px 0 6px 1px;
@@ -59,16 +56,6 @@
   -moz-border-radius: 100%;
   -webkit-border-radius: 100%;
   border-radius: 100%;
-}
-
-#loading-bar .peg:before {
-  opacity: 0.3;
-  width: 30px;
-  height: 0;
-  top: 1px;
-  right: -1px;
-  clip: rect(-5px,65px,33px,-5px);
-  content: ' ';
 }
 
 #loading-bar-spinner {
