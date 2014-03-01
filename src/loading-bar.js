@@ -121,7 +121,7 @@ angular.module('chieffancypants.loadingBar', [])
               }
             }
           }
-      }
+      };
 
     /**
      * In case that you are using Angular in combination with non-angular 3d party libraries,
