@@ -92,47 +92,67 @@ angular.module('chieffancypants.loadingBar', [])
         return cached;
       }
 
+      var actions = {
+        start: function(config)
+          {
+            // Check to make sure this request hasn't already been cached and that
+            // the requester didn't explicitly ask us to ignore this request:
+            if (!config.ignoreLoadingBar && !isCached(config)) {
+              $rootScope.$broadcast('cfpLoadingBar:loading', {url: config.url});
+                if (reqsTotal === 0) {
+                  startTimeout = $timeout(function() {
+                    cfpLoadingBar.start();
+                  }, latencyThreshold);
+                }
+                reqsTotal++;
+                cfpLoadingBar.set(reqsCompleted / reqsTotal);
+              }
+          },
+
+          done: function(response)
+          {
+            if (!isCached(response.config)) {
+              reqsCompleted++;
+              $rootScope.$broadcast('cfpLoadingBar:loaded', {url: response.config.url});
+              if (reqsCompleted >= reqsTotal) {
+                setComplete();
+              } else {
+                cfpLoadingBar.set(reqsCompleted / reqsTotal);
+              }
+            }
+          }
+      }
+
+    /**
+     * In case that you are using Angular in combination with non-angular 3d party libraries,
+     * You can fire custom 'start' and 'done' request events.
+     * Make sure 'config' looks like this: {url: "the requested url", cached: true/false}
+     * And 'response' like this: {config: {url: "the requested url", METHOD: "GET/POST", cached: true/false}}
+     */
+    $rootScope.$on('cfpLoadingBar:start', function(e, config){
+        actions.start(config);
+        e.stopPropagation();
+    });
+
+    $rootScope.$on('cfpLoadingBar:done', function(e, response){
+        actions.done(response);
+        e.stopPropagation();
+    });
+
 
       return {
         'request': function(config) {
-          // Check to make sure this request hasn't already been cached and that
-          // the requester didn't explicitly ask us to ignore this request:
-          if (!config.ignoreLoadingBar && !isCached(config)) {
-            $rootScope.$broadcast('cfpLoadingBar:loading', {url: config.url});
-            if (reqsTotal === 0) {
-              startTimeout = $timeout(function() {
-                cfpLoadingBar.start();
-              }, latencyThreshold);
-            }
-            reqsTotal++;
-            cfpLoadingBar.set(reqsCompleted / reqsTotal);
-          }
+          actions.start(config);
           return config;
         },
 
         'response': function(response) {
-          if (!isCached(response.config)) {
-            reqsCompleted++;
-            $rootScope.$broadcast('cfpLoadingBar:loaded', {url: response.config.url});
-            if (reqsCompleted >= reqsTotal) {
-              setComplete();
-            } else {
-              cfpLoadingBar.set(reqsCompleted / reqsTotal);
-            }
-          }
+          actions.done(response);
           return response;
         },
 
         'responseError': function(rejection) {
-          if (!isCached(rejection.config)) {
-            reqsCompleted++;
-            $rootScope.$broadcast('cfpLoadingBar:loaded', {url: rejection.config.url});
-            if (reqsCompleted >= reqsTotal) {
-              setComplete();
-            } else {
-              cfpLoadingBar.set(reqsCompleted / reqsTotal);
-            }
-          }
+          actions.done(rejection);
           return $q.reject(rejection);
         }
       };
