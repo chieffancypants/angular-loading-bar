@@ -127,7 +127,7 @@ angular.module('chieffancypants.loadingBar', [])
      * In case that you are using Angular in combination with non-angular 3d party libraries,
      * You can fire custom 'start' and 'done' request events.
      * Make sure 'config' looks like this: {url: "the requested url", cached: true/false}
-     * And 'response' like this: {config: {url: "the requested url", METHOD: "GET/POST", cached: true/false}}
+     * And 'response' like this: {url: "the requested url", METHOD: "GET/POST", cached: true/false}
      */
     $rootScope.$on('cfpLoadingBar:start', function(e, config){
         actions.start(config);
@@ -135,7 +135,7 @@ angular.module('chieffancypants.loadingBar', [])
     });
 
     $rootScope.$on('cfpLoadingBar:done', function(e, response){
-        actions.done(response);
+        actions.done({config: response});
         e.stopPropagation();
     });
 
