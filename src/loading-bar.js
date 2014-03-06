@@ -115,7 +115,7 @@ angular.module('chieffancypants.loadingBar', [])
         },
 
         'response': function(response) {
-          if ('config' in response && !isCached(response.config)) {
+          if (response && 'config' in response && !isCached(response.config)) {
             reqsCompleted++;
             $rootScope.$broadcast('cfpLoadingBar:loaded', {url: response.config.url});
             if (reqsCompleted >= reqsTotal) {
@@ -128,7 +128,7 @@ angular.module('chieffancypants.loadingBar', [])
         },
 
         'responseError': function(rejection) {
-          if ('config' in rejection && !isCached(rejection.config)) {
+          if (rejection && 'config' in rejection && !isCached(rejection.config)) {
             reqsCompleted++;
             $rootScope.$broadcast('cfpLoadingBar:loaded', {url: rejection.config.url});
             if (reqsCompleted >= reqsTotal) {
