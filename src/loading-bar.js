@@ -69,9 +69,9 @@ angular.module('chieffancypants.loadingBar', [])
         var cache;
         var defaults = $httpProvider.defaults;
 
-	if (!config) {
-	  return false;
-	}
+        if (!config) {
+          return false;
+        }
 
         if (config.method !== 'GET' || config.cache === false) {
           config.cached = false;
