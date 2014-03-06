@@ -101,7 +101,7 @@ angular.module('chieffancypants.loadingBar', [])
         'request': function(config) {
           // Check to make sure this request hasn't already been cached and that
           // the requester didn't explicitly ask us to ignore this request:
-          if (!config.ignoreLoadingBar && !isCached(config)) {
+          if (config && !config.ignoreLoadingBar && !isCached(config)) {
             $rootScope.$broadcast('cfpLoadingBar:loading', {url: config.url});
             if (reqsTotal === 0) {
               startTimeout = $timeout(function() {
@@ -115,7 +115,7 @@ angular.module('chieffancypants.loadingBar', [])
         },
 
         'response': function(response) {
-          if (!isCached(response.config)) {
+          if ('config' in response && !isCached(response.config)) {
             reqsCompleted++;
             $rootScope.$broadcast('cfpLoadingBar:loaded', {url: response.config.url});
             if (reqsCompleted >= reqsTotal) {
@@ -128,7 +128,7 @@ angular.module('chieffancypants.loadingBar', [])
         },
 
         'responseError': function(rejection) {
-          if (!isCached(rejection.config)) {
+          if ('config' in rejection && !isCached(rejection.config)) {
             reqsCompleted++;
             $rootScope.$broadcast('cfpLoadingBar:loaded', {url: rejection.config.url});
             if (reqsCompleted >= reqsTotal) {
