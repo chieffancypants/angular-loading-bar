@@ -168,7 +168,6 @@ angular.module('chieffancypants.loadingBar', [])
     this.$get = ['$document', '$timeout', '$animate', '$rootScope', function ($document, $timeout, $animate, $rootScope) {
 
       var $parentSelector = this.parentSelector,
-        $parent = $document.find($parentSelector),
         loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'),
         loadingBar = loadingBarContainer.find('div').eq(0),
         spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>');
@@ -186,6 +185,7 @@ angular.module('chieffancypants.loadingBar', [])
        * Inserts the loading bar element into the dom, and sets it to 2%
        */
       function _start() {
+        var $parent = $document.find($parentSelector);
         $timeout.cancel(completeTimeout);
 
         // do not continually broadcast the started event:
