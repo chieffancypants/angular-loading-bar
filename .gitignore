@@ -1,3 +1,6 @@
 node_modules
 test/coverage
 bower_components
+npm-debug.log
+.idea
+
