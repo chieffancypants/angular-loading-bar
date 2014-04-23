@@ -1,3 +1,11 @@
+/*!
+ * angular-loading-bar v0.4.0
+ * https://chieffancypants.github.io/angular-loading-bar
+ * Copyright (c) 2014 Wes Cruver
+ * License: MIT
+ */
+
+/* Make clicks pass-through */
 %base-bar {
   pointer-events: none;
   -webkit-pointer-events: none;
