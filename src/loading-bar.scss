@@ -5,32 +5,37 @@
  * License: MIT
  */
 
+$bar-background: #29D !default;
+$bar-transition-timing: 350ms !default;
+$bar-spinner-timing: 400ms !default;
+$bar-height: 2px !default;
+
 /* Make clicks pass-through */
 %base-bar {
   pointer-events: none;
   -webkit-pointer-events: none;
-  -webkit-transition: 350ms linear all;
-  -moz-transition: 350ms linear all;
-  -o-transition: 350ms linear all;
-  transition: 350ms linear all;
+  -webkit-transition: $bar-transition-timing linear all;
+  -moz-transition: $bar-transition-timing linear all;
+  -o-transition: $bar-transition-timing linear all;
+  transition: $bar-transition-timing linear all;
 }
 
 #loading-bar {
   @extend %base-bar;
 
   .bar {
-    -webkit-transition: width 350ms;
-    -moz-transition: width 350ms;
-    -o-transition: width 350ms;
-    transition: width 350ms;
+    -webkit-transition: width $bar-transition-timing;
+    -moz-transition: width $bar-transition-timing;
+    -o-transition: width $bar-transition-timing;
+    transition: width $bar-transition-timing;
 
-    background: #29d;
+    background: $bar-background;
     position: fixed;
     z-index: 2000;
     top: 0;
     left: 0;
     width: 100%;
-    height: 2px;
+    height: $bar-height;
     border-bottom-right-radius: 1px;
     border-top-right-radius: 1px;
   }
@@ -41,12 +46,12 @@
     width: 70px;
     right: 0;
     top: 0;
-    height: 2px;
+    height: $bar-height;
     opacity: .45;
-    -moz-box-shadow: #29d 1px 0 6px 1px;
-    -ms-box-shadow: #29d 1px 0 6px 1px;
-    -webkit-box-shadow: #29d 1px 0 6px 1px;
-    box-shadow: #29d 1px 0 6px 1px;
+    -moz-box-shadow: $bar-background 1px 0 6px 1px;
+    -ms-box-shadow: $bar-background 1px 0 6px 1px;
+    -webkit-box-shadow: $bar-background 1px 0 6px 1px;
+    box-shadow: $bar-background 1px 0 6px 1px;
     -moz-border-radius: 100%;
     -webkit-border-radius: 100%;
     border-radius: 100%;
@@ -76,16 +81,16 @@
     width: 14px;
     height: 14px;
 
-    border:  solid 2px transparent;
-    border-top-color:  #29d;
-    border-left-color: #29d;
+    border: solid 2px transparent;
+    border-top-color:  $bar-background;
+    border-left-color: $bar-background;
     border-radius: 10px;
 
-    -webkit-animation: loading-bar-spinner 400ms linear infinite;
-    -moz-animation:    loading-bar-spinner 400ms linear infinite;
-    -ms-animation:     loading-bar-spinner 400ms linear infinite;
-    -o-animation:      loading-bar-spinner 400ms linear infinite;
-    animation:         loading-bar-spinner 400ms linear infinite;
+    -webkit-animation: loading-bar-spinner $bar-spinner-timing linear infinite;
+    -moz-animation:    loading-bar-spinner $bar-spinner-timing linear infinite;
+    -ms-animation:     loading-bar-spinner $bar-spinner-timing linear infinite;
+    -o-animation:      loading-bar-spinner $bar-spinner-timing linear infinite;
+    animation:         loading-bar-spinner $bar-spinner-timing linear infinite;
   }
 
   &.ng-enter,
