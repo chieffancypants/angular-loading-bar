@@ -1,0 +1,126 @@
+/*!
+ * angular-loading-bar v0.4.0
+ * https://chieffancypants.github.io/angular-loading-bar
+ * Copyright (c) 2014 Wes Cruver
+ * License: MIT
+ */
+
+$bar-background: #29D !default;
+$bar-transition-timing: 350ms !default;
+$bar-spinner-timing: 400ms !default;
+$bar-height: 2px !default;
+
+/* Make clicks pass-through */
+%base-bar {
+  pointer-events: none;
+  -webkit-pointer-events: none;
+  -webkit-transition: $bar-transition-timing linear all;
+  -moz-transition: $bar-transition-timing linear all;
+  -o-transition: $bar-transition-timing linear all;
+  transition: $bar-transition-timing linear all;
+}
+
+#loading-bar {
+  @extend %base-bar;
+
+  .bar {
+    -webkit-transition: width $bar-transition-timing;
+    -moz-transition: width $bar-transition-timing;
+    -o-transition: width $bar-transition-timing;
+    transition: width $bar-transition-timing;
+
+    background: $bar-background;
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: $bar-height;
+    border-bottom-right-radius: 1px;
+    border-top-right-radius: 1px;
+  }
+
+  /* Fancy blur effect */
+  .peg {
+    position: absolute;
+    width: 70px;
+    right: 0;
+    top: 0;
+    height: $bar-height;
+    opacity: .45;
+    -moz-box-shadow: $bar-background 1px 0 6px 1px;
+    -ms-box-shadow: $bar-background 1px 0 6px 1px;
+    -webkit-box-shadow: $bar-background 1px 0 6px 1px;
+    box-shadow: $bar-background 1px 0 6px 1px;
+    -moz-border-radius: 100%;
+    -webkit-border-radius: 100%;
+    border-radius: 100%;
+  }
+
+  &.ng-enter,
+  &.ng-leave.ng-leave-active {
+    opacity: 0;
+  }
+
+  &.ng-enter.ng-enter-active,
+  &.ng-leave {
+    opacity: 1;
+  }
+}
+
+#loading-bar-spinner {
+  @extend %base-bar;
+
+  display: block;
+  position: fixed;
+  z-index: 2000;
+  top: 10px;
+  left: 10px;
+
+  .spinner-icon {
+    width: 14px;
+    height: 14px;
+
+    border: solid 2px transparent;
+    border-top-color:  $bar-background;
+    border-left-color: $bar-background;
+    border-radius: 10px;
+
+    -webkit-animation: loading-bar-spinner $bar-spinner-timing linear infinite;
+    -moz-animation:    loading-bar-spinner $bar-spinner-timing linear infinite;
+    -ms-animation:     loading-bar-spinner $bar-spinner-timing linear infinite;
+    -o-animation:      loading-bar-spinner $bar-spinner-timing linear infinite;
+    animation:         loading-bar-spinner $bar-spinner-timing linear infinite;
+  }
+
+  &.ng-enter,
+  &.ng-leave.ng-leave-active {
+    opacity: 0;
+  }
+
+  &.ng-enter.ng-enter-active,
+  &.ng-leave {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes loading-bar-spinner {
+  0%   { -webkit-transform: rotate(0deg);   transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@-moz-keyframes loading-bar-spinner {
+  0%   { -moz-transform: rotate(0deg);   transform: rotate(0deg); }
+  100% { -moz-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@-o-keyframes loading-bar-spinner {
+  0%   { -o-transform: rotate(0deg);   transform: rotate(0deg); }
+  100% { -o-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@-ms-keyframes loading-bar-spinner {
+  0%   { -ms-transform: rotate(0deg);   transform: rotate(0deg); }
+  100% { -ms-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@keyframes loading-bar-spinner {
+  0%   { transform: rotate(0deg);   transform: rotate(0deg); }
+  100% { transform: rotate(360deg); transform: rotate(360deg); }
+}
