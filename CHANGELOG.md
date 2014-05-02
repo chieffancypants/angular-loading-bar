@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+## 0.4.1
+- Fix for route views defined on body where loading bar is also attached ([#56](https://github.com/chieffancypants/angular-loading-bar/issues/56))
+
 ## 0.4.0
 - Initial load percentage is now configurable ([#47](https://github.com/chieffancypants/angular-loading-bar/issues/47))
 - Peg graphic reworked so the loadingbar does not require CSS changes when not at the very top of the page ([#42](https://github.com/chieffancypants/angular-loading-bar/issues/42), [#45](https://github.com/chieffancypants/angular-loading-bar/issues/45), [#10](https://github.com/chieffancypants/angular-loading-bar/issues/10))
