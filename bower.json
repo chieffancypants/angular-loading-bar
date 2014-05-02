@@ -9,8 +9,10 @@
     "test",
     "example"
   ],
-  "devDependencies": {
-    "angular-mocks": "~1.2.9",
+  "dependencies": {
     "angular-animate": "~1.2.9"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.2.9"
   }
 }
