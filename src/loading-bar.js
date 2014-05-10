@@ -13,9 +13,9 @@
 
 'use strict';
 
-// Alias the loading bar so it can be included using a simpler
-// (and maybe more professional) module name:
-angular.module('angular-loading-bar', ['chieffancypants.loadingBar']);
+// Alias the loading bar for various backwards compatibilities since the project has matured:
+angular.module('angular-loading-bar', ['cfp.loadingBarInterceptor']);
+angular.module('chieffancypants.loadingBar', ['cfp.loadingBarInterceptor']);
 
 
 /**
@@ -23,7 +23,7 @@ angular.module('angular-loading-bar', ['chieffancypants.loadingBar']);
  *
  * Registers itself as an Angular interceptor and listens for XHR requests.
  */
-angular.module('chieffancypants.loadingBar', [])
+angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
   .config(['$httpProvider', function ($httpProvider) {
 
     var interceptor = ['$q', '$cacheFactory', '$timeout', '$rootScope', 'cfpLoadingBar', function ($q, $cacheFactory, $timeout, $rootScope, cfpLoadingBar) {
@@ -139,18 +139,19 @@ angular.module('chieffancypants.loadingBar', [])
     }];
 
     $httpProvider.interceptors.push(interceptor);
-  }])
+  }]);
 
 
-  /**
-   * Loading Bar
-   *
-   * This service handles adding and removing the actual element in the DOM.
-   * Generally, best practices for DOM manipulation is to take place in a
-   * directive, but because the element itself is injected in the DOM only upon
-   * XHR requests, and it's likely needed on every view, the best option is to
-   * use a service.
-   */
+/**
+ * Loading Bar
+ *
+ * This service handles adding and removing the actual element in the DOM.
+ * Generally, best practices for DOM manipulation is to take place in a
+ * directive, but because the element itself is injected in the DOM only upon
+ * XHR requests, and it's likely needed on every view, the best option is to
+ * use a service.
+ */
+angular.module('cfp.loadingBar', [])
   .provider('cfpLoadingBar', function() {
 
     this.includeSpinner = true;

@@ -356,3 +356,36 @@ describe 'loadingBarInterceptor Service', ->
 
     $timeout.flush()
 
+
+describe 'LoadingBar only', ->
+  cfpLoadingBar = $document = $timeout = null
+
+  beforeEach ->
+    module 'cfp.loadingBar'
+
+    inject (_$http_, _$httpBackend_, _$document_, _$timeout_, _cfpLoadingBar_) ->
+      $timeout = _$timeout_
+      $document = _$document_
+      cfpLoadingBar = _cfpLoadingBar_
+
+  it 'should be capable of being used alone', ->
+    # just a simple quick test to make sure:
+    cfpLoadingBar.start()
+    $timeout.flush()
+
+    # test setting progress
+    cfpLoadingBar.set(0.4)
+    expect(cfpLoadingBar.status()).toBe 0.4
+
+    # make sure it was injected into the DOM:
+    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe true
+
+    cfpLoadingBar.set(0.9)
+    expect(cfpLoadingBar.status()).toBe 0.9
+
+    # test the complete call, which should remove it from the DOM
+    cfpLoadingBar.complete()
+    $timeout.flush()
+    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe false
+
+
