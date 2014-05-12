@@ -15,7 +15,7 @@ This is mostly cool because you simply include it in your app, and it works.  Th
 1. include the loading bar as a dependency for your app.  If you want animations, include `ngAnimate` as well.
 
     ```js
-    angular.module('myApp', ['chieffancypants.loadingBar', 'ngAnimate'])
+    angular.module('myApp', ['angular-loading-bar', 'ngAnimate'])
     ```
     
 2. include the supplied CSS file (or create your own).
@@ -52,20 +52,20 @@ Additionally, Angular was created as a highly testable framework, so it pains me
 The insertion of the spinner can be controlled through configuration.  It's on by default, but if you'd like to turn it off, simply configure the service:
 
 ```js
-angular.module('myApp', ['chieffancypants.loadingBar'])
-  .config(function(cfpLoadingBarProvider) {
+angular.module('myApp', ['angular-loading-bar'])
+  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = false;
-  })
+  }])
 ```
 
 **Turn the loading bar on or off:**  
 Like the spinner configuration above, the loading bar can also be turned off for cases where you only want the spinner:
 
 ```js
-angular.module('myApp', ['chieffancypants.loadingBar'])
-  .config(function(cfpLoadingBarProvider) {
+angular.module('myApp', ['angular-loading-bar'])
+  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeBar = false;
-  })
+  }])
 ```
 
 **Ignoring particular XHR requests:**  
