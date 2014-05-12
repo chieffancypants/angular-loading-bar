@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+## 0.4.2
+- Split loading bar into different modules so they can be included separately ([#46](https://github.com/chieffancypants/angular-loading-bar/issues/46))
+
 ## 0.4.1
 - Fix for route views defined on body where loading bar is also attached ([#56](https://github.com/chieffancypants/angular-loading-bar/issues/56))
 

@@ -12,7 +12,7 @@ This is mostly cool because you simply include it in your app, and it works.  Th
 
 ## Usage:
 
-1. include the loading bar as a dependency for your app.  If you want animations, include `ngAnimate` as well.
+1. include the loading bar as a dependency for your app.  If you want animations, include `ngAnimate` as well. *note: ngAnimate is optional*
 
     ```js
     angular.module('myApp', ['angular-loading-bar', 'ngAnimate'])
@@ -98,19 +98,19 @@ $http.get('/status', {
 
 
 ## How it works:
-This library is split into two components, an $http `interceptor`, and a `service`:
+This library is split into two modules, an $http `interceptor`, and a `service`:
 
 **Interceptor**  
-The interceptor simply listens for all outgoing XHR requests, and then instructs the loadingBar service to start, stop, and increment accordingly.  There is no public API for the interceptor.
+The interceptor simply listens for all outgoing XHR requests, and then instructs the loadingBar service to start, stop, and increment accordingly.  There is no public API for the interceptor.  It can be used stand-alone by including `cfp.loadingBarInterceptor` as a dependency for your module.
 
 **Service**  
 The service is responsible for the presentation of the loading bar.  It injects the loading bar into the DOM, adjusts the width whenever `set()` is called, and `complete()`s the whole show by removing the loading bar from the DOM.
 
 ## Service API (advanced usage)
-Under normal circumstances you won't need to use this.  However, if you wish to use the loading bar without the interceptor, you can do that as well.  Simply include the loading bar service as a dependency instead of the interceptor in your angular module:
+Under normal circumstances you won't need to use this.  However, if you wish to use the loading bar without the interceptor, you can do that as well.  Simply include the loading bar service as a dependency instead of the main `angular-loading-bar` module:
 
 ```js
-angular.module('myApp', ['cfpLoadingBar'])
+angular.module('myApp', ['cfp.loadingBar'])
 ```
 
 
@@ -140,7 +140,3 @@ Credit goes to [rstacruz](https://github.com/rstacruz) for his excellent [nProgr
 
 ## License:
 Licensed under the MIT license
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/chieffancypants/angular-loading-bar/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
