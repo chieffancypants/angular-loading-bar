@@ -53,13 +53,12 @@
 
     <div class="usage" ng-hide="fakeIntro" ng-if="!subreddit">
       <h4>How do I use it?</h4>
-      <p>Install it via npm or bower (or direct from GitHub)</p>
+      <p>Install it via npm or bower</p>
       <pre>$ npm install angular-loading-bar
-$ bower install angular-loading-bar
-$ wget https://github.com/chieffancypants/angular-loading-bar/archive/master.zip</pre>
+$ bower install angular-loading-bar</pre>
 
       <p>To use, simply include it as a dependency in your app and you're done!</p>
-      <pre>angular.module('myApp', ['chieffancypants.loadingBar'])</pre>
+      <pre>angular.module('myApp', ['angular-loading-bar'])</pre>
 
     </div>
     <h4 class="loading-text" ng-show="subreddit">Showing a few results for: <span>/r/{{subreddit}}...</span></h4>
