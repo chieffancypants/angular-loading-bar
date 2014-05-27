@@ -32,7 +32,7 @@
 
   background: #29d;
   position: fixed;
-  z-index: 2000;
+  z-index: 10002;
   top: 0;
   left: 0;
   width: 100%;
@@ -61,7 +61,7 @@
 #loading-bar-spinner {
   display: block;
   position: fixed;
-  z-index: 2000;
+  z-index: 10002;
   top: 10px;
   left: 10px;
 }
