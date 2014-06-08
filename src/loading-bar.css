@@ -1,7 +1,8 @@
 
 /* Make clicks pass-through */
 #loading-bar,
-#loading-bar-spinner {
+#loading-bar-spinner,
+#loading-veil{
   pointer-events: none;
   -webkit-pointer-events: none;
   -webkit-transition: 350ms linear all;
@@ -80,6 +81,16 @@
   -ms-animation:     loading-bar-spinner 400ms linear infinite;
   -o-animation:      loading-bar-spinner 400ms linear infinite;
   animation:         loading-bar-spinner 400ms linear infinite;
+}
+
+#loading-veil {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #000000;
+    height: 100%;
+    width: 100%;
+    opacity: .45;
 }
 
 @-webkit-keyframes loading-bar-spinner {
