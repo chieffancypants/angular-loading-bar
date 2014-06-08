@@ -155,6 +155,7 @@ angular.module('cfp.loadingBar', [])
   .provider('cfpLoadingBar', function() {
 
     this.includeSpinner = true;
+    this.includeVeil = true;
     this.includeBar = true;
     this.latencyThreshold = 100;
     this.startSize = 0.02;
@@ -165,7 +166,8 @@ angular.module('cfp.loadingBar', [])
       var $parentSelector = this.parentSelector,
         loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'),
         loadingBar = loadingBarContainer.find('div').eq(0),
-        spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>');
+        spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>'),
+        veil = angular.element('<div id="loading-veil"></div>');
 
       var incTimeout,
         completeTimeout,
@@ -173,6 +175,7 @@ angular.module('cfp.loadingBar', [])
         status = 0;
 
       var includeSpinner = this.includeSpinner;
+      var includeVeil = this.includeVeil;
       var includeBar = this.includeBar;
       var startSize = this.startSize;
 
@@ -199,7 +202,11 @@ angular.module('cfp.loadingBar', [])
           $animate.enter(spinner, $parent);
         }
 
-        _set(startSize);
+        if (includeVeil) {
+          $animate.enter(veil, $parent);
+        }
+
+          _set(startSize);
       }
 
       /**
@@ -274,6 +281,7 @@ angular.module('cfp.loadingBar', [])
             started = false;
           });
           $animate.leave(spinner);
+          $animate.leave(veil);
         }, 500);
       }
 
