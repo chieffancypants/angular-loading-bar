@@ -169,7 +169,7 @@ angular.module('cfp.loadingBar', [])
         spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>'),
         veil = angular.element('<div id="loading-veil"></div>');
 
-      var incTimeout,
+        var incTimeout,
         completeTimeout,
         started = false,
         status = 0;
