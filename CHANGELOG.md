@@ -1,6 +1,10 @@
 Changelog
 ==========
 
+## 0.4.3
+- update z-index to work with other css frameworks ([#69](https://github.com/chieffancypants/angular-loading-bar/pull/69))
+- ignoreLoadingBar not ignored when calculating percentage complete ([#70](https://github.com/chieffancypants/angular-loading-bar/pull/70))
+
 ## 0.4.2
 - Split loading bar into different modules so they can be included separately ([#46](https://github.com/chieffancypants/angular-loading-bar/issues/46))
 
