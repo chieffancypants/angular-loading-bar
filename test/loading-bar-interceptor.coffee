@@ -356,6 +356,41 @@ describe 'loadingBarInterceptor Service', ->
 
     $timeout.flush()
 
+  it 'should ignore responses when ignoreLoadingBar is true (#70)', inject (cfpLoadingBar) ->
+    $httpBackend.expectGET(endpoint).respond response
+    $httpBackend.expectGET('/service2').respond response
+
+    $http.get(endpoint, {ignoreLoadingBar: true})
+    $http.get('/service2')
+
+    expect(cfpLoadingBar.status()).toBe 0
+    $httpBackend.flush(1) # flush only the ignored request
+    expect(cfpLoadingBar.status()).toBe 0
+
+    $timeout.flush()
+    $httpBackend.flush()
+
+    expect(cfpLoadingBar.status()).toBe 1
+    $timeout.flush() # loading bar is animated, so flush timeout
+
+  it 'should ignore errors when ignoreLoadingBar is true (#70)', inject (cfpLoadingBar) ->
+    $httpBackend.expectGET(endpoint).respond 400
+    $httpBackend.expectGET('/service2').respond 400
+
+    $http.get(endpoint, {ignoreLoadingBar: true})
+    $http.get('/service2')
+
+    expect(cfpLoadingBar.status()).toBe 0
+    $httpBackend.flush(1) # flush only the ignored request
+    expect(cfpLoadingBar.status()).toBe 0
+
+    $timeout.flush()
+    $httpBackend.flush()
+
+    expect(cfpLoadingBar.status()).toBe 1
+    $timeout.flush() # loading bar is animated, so flush timeout
+
+
 
 describe 'LoadingBar only', ->
   cfpLoadingBar = $document = $timeout = null
