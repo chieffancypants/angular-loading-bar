@@ -15,7 +15,7 @@ angular.module('LoadingBarExample', ['chieffancypants.loadingBar', 'ngAnimate'])
       var sub = $scope.subreddits[Math.floor(Math.random() * $scope.subreddits.length)];
 
       // ensure we get a new subreddit each time.
-      if (sub == $scope.subreddit) {
+      if (sub === $scope.subreddit) {
         return getRandomSubreddit();
       }
 
@@ -35,7 +35,7 @@ angular.module('LoadingBarExample', ['chieffancypants.loadingBar', 'ngAnimate'])
 
     $scope.complete = function () {
       cfpLoadingBar.complete();
-    }
+    };
 
 
     // fake the initial load so first time users can see it right away:
