@@ -39,7 +39,12 @@
         <a href="#" class="btn btn-primary btn-lg" ng-click="complete()">
           <i class="glyphicon glyphicon-play-circle"></i> <span>cfpLoadingBar.</span>complete()
         </a>
-        <a href="#" class="btn btn-primary btn-lg" ng-click="fetch()"><i class="glyphicon glyphicon-play-circle"></i> Real Example <span> (from reddit)</span></a>
+        <a href="#" class="btn btn-primary btn-lg" ng-click="fetch()">
+          <i class="glyphicon glyphicon-play-circle"></i> Real Example <span> (from reddit)</span>
+        </a>
+        <a href="#" class="btn btn-primary btn-lg" ng-click="fetchChain()">
+          <i class="glyphicon glyphicon-play-circle"></i> Chained Example
+        </a>
       </div>
     </div>
 
@@ -59,6 +64,13 @@
         </div>
       </div>
     </div>
+
+    <h4 class="loading-text" ng-show="subweather">Showing weather for 30 cities...</span></h4>
+    <ul ng-show="subweather">
+      <li ng-repeat="forecast in forecasts">
+        <strong ng-bind="forecast.city"></strong> is experiencing <span ng-bind="forecast.condition"></span>
+      </li>
+    </ul>
 
   </body>
 </html>
