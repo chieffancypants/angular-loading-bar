@@ -5,7 +5,7 @@ angular.module('LoadingBarExample', ['chieffancypants.loadingBar', 'ngAnimate'])
     cfpLoadingBarProvider.includeSpinner = true;
   })
 
-  .controller('ExampleCtrl', function ($scope, $http, $timeout, $q, $log, cfpLoadingBar) {
+  .controller('ExampleCtrl', function ($scope, $http, $timeout, $q, cfpLoadingBar) {
     $scope.posts = [];
     $scope.section = null;
     $scope.subreddit = null;
@@ -167,9 +167,6 @@ angular.module('LoadingBarExample', ['chieffancypants.loadingBar', 'ngAnimate'])
       }
 
       initialDeferred.resolve();
-      $q.all(promises).then(function() {
-        $log.log('COMPLETE!');
-      });
     };
 
     $scope.start = function() {
