@@ -65,7 +65,7 @@
       </div>
     </div>
 
-    <h4 class="loading-text" ng-show="subweather">Showing weather for 30 cities...</span></h4>
+    <h4 class="loading-text" ng-show="subweather">Showing weather for {{weatherCities.length}} cities...</span></h4>
     <ul ng-show="subweather">
       <li ng-repeat="forecast in forecasts">
         <strong ng-bind="forecast.city"></strong> is experiencing <span ng-bind="forecast.condition"></span>

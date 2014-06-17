@@ -24,7 +24,7 @@ angular.module('LoadingBarExample', ['chieffancypants.loadingBar', 'ngAnimate'])
       return sub;
     };
 
-    var weatherCities = [
+    $scope.weatherCities = [
       "Fort Worth,Texas",
       "Lincoln,NE",
       "Kansas City,Missouri",
@@ -148,7 +148,7 @@ angular.module('LoadingBarExample', ['chieffancypants.loadingBar', 'ngAnimate'])
         return function() {
           var config = {};
           if (setExpectedRequests) {
-            config.loadingBarShouldExpect = weatherCities.length;
+            config.loadingBarShouldExpect = $scope.weatherCities.length;
           }
           return $http.get(weatherUrl + city, config).success(function(data) {
             $scope.forecasts.push({
@@ -159,7 +159,7 @@ angular.module('LoadingBarExample', ['chieffancypants.loadingBar', 'ngAnimate'])
         };
       };
 
-      var cities = angular.copy(weatherCities);
+      var cities = angular.copy($scope.weatherCities);
 
       while ((currentCity = cities.pop())) {
         var newPromise = promises[promises.length - 1].finally(makeRequestForCity(currentCity, promises.length === 1));
