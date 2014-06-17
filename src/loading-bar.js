@@ -39,6 +39,11 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
       var reqsCompleted = 0;
 
       /**
+       * The number of expected requests not yet completed
+       */
+      var reqsExpected = 0;
+
+      /**
        * The amount of time spent fetching before showing the loading bar
        */
       var latencyThreshold = cfpLoadingBar.latencyThreshold;
@@ -104,7 +109,18 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
                 cfpLoadingBar.start();
               }, latencyThreshold);
             }
-            reqsTotal++;
+            if (angular.isNumber(config.loadingBarShouldExpect)) {
+              // an object is provided, so this is defining a group of requests
+              reqsTotal += config.loadingBarShouldExpect;
+              reqsExpected += config.loadingBarShouldExpect;
+            }
+            if (reqsExpected > 0) {
+              // this is an expected request, so we've already incremented the total requests
+              reqsExpected--;
+            } else {
+              // the request is a standard request, so increment the total requests
+              reqsTotal++;
+            }
             cfpLoadingBar.set(reqsCompleted / reqsTotal);
           }
           return config;
