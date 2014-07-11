@@ -393,14 +393,15 @@ describe 'loadingBarInterceptor Service', ->
 
 
 describe 'LoadingBar only', ->
-  cfpLoadingBar = $document = $timeout = null
+  cfpLoadingBar = $document = $timeout = $animate = null
 
   beforeEach ->
-    module 'cfp.loadingBar'
+    module 'cfp.loadingBar', 'ngAnimateMock'
 
-    inject (_$http_, _$httpBackend_, _$document_, _$timeout_, _cfpLoadingBar_) ->
+    inject (_$http_, _$httpBackend_, _$document_, _$timeout_, _$animate_, _cfpLoadingBar_) ->
       $timeout = _$timeout_
       $document = _$document_
+      $animate = _$animate_
       cfpLoadingBar = _cfpLoadingBar_
 
   it 'should be capable of being used alone', ->
@@ -423,4 +424,22 @@ describe 'LoadingBar only', ->
     $timeout.flush()
     expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe false
 
+  it 'should start after multiple calls to complete()', ->
+    cfpLoadingBar.start()
+    $timeout.flush()
+    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe true
+
+    cfpLoadingBar.complete()
+    cfpLoadingBar.complete()
+    cfpLoadingBar.start()
+    $timeout.flush()
+    $animate.triggerCallbacks()
+    
+    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe true
+
+    cfpLoadingBar.complete()
+    $timeout.flush()
+    $animate.triggerCallbacks()
+    
+    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe false
 
