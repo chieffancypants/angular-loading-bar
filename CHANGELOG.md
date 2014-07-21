@@ -1,6 +1,10 @@
 Changelog
 ==========
 
+## 0.5.0
+- Added spinner template configuration ([#82](https://github.com/chieffancypants/angular-loading-bar/pull/82))
+- $timeout was not canceled properly ([#79](https://github.com/chieffancypants/angular-loading-bar/pull/79))
+
 ## 0.4.3
 - update z-index to work with other css frameworks ([#69](https://github.com/chieffancypants/angular-loading-bar/pull/69))
 - ignoreLoadingBar not ignored when calculating percentage complete ([#70](https://github.com/chieffancypants/angular-loading-bar/pull/70))
