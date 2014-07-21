@@ -20,8 +20,8 @@
 'use strict';
 
 // Alias the loading bar for various backwards compatibilities since the project has matured:
-angular.module('angular-loading-bar', ['cfp.loadingBarInterceptor']);
-angular.module('chieffancypants.loadingBar', ['cfp.loadingBarInterceptor']);
+angular.module('angular-loading-bar', ['cfp.loadingBarInterceptor', 'cfp.loadingBarDirectives']);
+angular.module('chieffancypants.loadingBar', ['cfp.loadingBarInterceptor', 'cfp.loadingBarDirectives']);
 
 
 /**
@@ -147,6 +147,35 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
     $httpProvider.interceptors.push(interceptor);
   }]);
 
+
+  /**
+   * Loading Bar Spinner Directive
+   *
+   * This will allow the users to place the element anywhere in the DOM as per Issue #66
+   */
+  angular.module('cfp.loadingBarDirectives', [])
+    .directive('cfpLoadingIndicator', function() {
+      return {
+        template: '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>',
+        replace: true,
+        restrict: 'EA',
+        link: function postLink(scope, element) {
+          var startEvent = 'cfpLoadingBar:loading';
+          var endEvent = 'cfpLoadingBar:completed';
+
+          function startProgress() {
+            element.show();
+          }
+
+          function endProgress() {
+            element.hide();
+          }
+
+          scope.$on(startEvent, startProgress);
+          scope.$on(endEvent, endProgress);
+        }
+      };
+    });
 
 /**
  * Loading Bar
