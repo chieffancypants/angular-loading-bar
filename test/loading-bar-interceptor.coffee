@@ -9,21 +9,22 @@ isLoadingBarInjected = (doc) ->
 
 describe 'loadingBarInterceptor Service', ->
 
-  $http = $httpBackend = $document = $timeout = result = loadingBar = null
+  $http = $httpBackend = $document = $timeout = result = loadingBar = $animate = null
   response = {message:'OK'}
   endpoint = '/service'
 
   beforeEach ->
-    module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
+    module 'ngAnimateMock', 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
       loadingBar = cfpLoadingBarProvider
       return
 
     result = null
-    inject (_$http_, _$httpBackend_, _$document_, _$timeout_) ->
+    inject (_$http_, _$httpBackend_, _$document_, _$timeout_, _$animate_) ->
       $http = _$http_
       $httpBackend = _$httpBackend_
       $document = _$document_
       $timeout = _$timeout_
+      $animate = _$animate_
 
   beforeEach ->
     this.addMatchers
@@ -53,6 +54,8 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 1
     cfpLoadingBar.complete() # set as complete
     $timeout.flush()
+    $animate.triggerCallbacks()
+
 
     $http.get(endpoint, cache: cache).then (data) ->
       result = data
@@ -75,6 +78,8 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 1
     cfpLoadingBar.complete() # set as complete
     $timeout.flush()
+    $animate.triggerCallbacks()
+
 
     $http.get(endpoint).then (data) ->
       result = data
@@ -96,6 +101,8 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 1
     cfpLoadingBar.complete() # set as complete
     $timeout.flush()
+    $animate.triggerCallbacks()
+
 
     $http.get(endpoint, cache: true).then (data) ->
       result = data
@@ -115,6 +122,7 @@ describe 'loadingBarInterceptor Service', ->
     $httpBackend.flush(1)
     expect(cfpLoadingBar.status()).toBe 1
     $timeout.flush()
+    $animate.triggerCallbacks()
 
 
     $httpBackend.expectPOST(endpoint).respond response
@@ -340,6 +348,8 @@ describe 'loadingBarInterceptor Service', ->
     expect(startedEventCalled).toBe 1 # Should still be one, as complete was never called:
     cfpLoadingBar.complete()
     $timeout.flush()
+    $animate.triggerCallbacks()
+
 
     cfpLoadingBar.start()
     expect(startedEventCalled).toBe 2
@@ -393,14 +403,15 @@ describe 'loadingBarInterceptor Service', ->
 
 
 describe 'LoadingBar only', ->
-  cfpLoadingBar = $document = $timeout = null
+  cfpLoadingBar = $document = $timeout = $animate = null
 
   beforeEach ->
-    module 'cfp.loadingBar'
+    module 'cfp.loadingBar', 'ngAnimateMock'
 
-    inject (_$http_, _$httpBackend_, _$document_, _$timeout_, _cfpLoadingBar_) ->
+    inject (_$http_, _$httpBackend_, _$document_, _$timeout_, _$animate_, _cfpLoadingBar_) ->
       $timeout = _$timeout_
       $document = _$document_
+      $animate = _$animate_
       cfpLoadingBar = _cfpLoadingBar_
 
   it 'should be capable of being used alone', ->
@@ -423,4 +434,22 @@ describe 'LoadingBar only', ->
     $timeout.flush()
     expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe false
 
+  it 'should start after multiple calls to complete()', ->
+    cfpLoadingBar.start()
+    $timeout.flush()
+    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe true
+
+    cfpLoadingBar.complete()
+    cfpLoadingBar.complete()
+    cfpLoadingBar.start()
+    $timeout.flush()
+    $animate.triggerCallbacks()
+
+    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe true
+
+    cfpLoadingBar.complete()
+    $timeout.flush()
+    $animate.triggerCallbacks()
+
+    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe false
 

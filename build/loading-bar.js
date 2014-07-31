@@ -1,5 +1,5 @@
 /*! 
- * angular-loading-bar v0.4.3
+ * angular-loading-bar v0.5.0
  * https://chieffancypants.github.io/angular-loading-bar
  * Copyright (c) 2014 Wes Cruver
  * License: MIT
@@ -165,13 +165,14 @@ angular.module('cfp.loadingBar', [])
     this.latencyThreshold = 100;
     this.startSize = 0.02;
     this.parentSelector = 'body';
+    this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
 
     this.$get = ['$document', '$timeout', '$animate', '$rootScope', function ($document, $timeout, $animate, $rootScope) {
 
       var $parentSelector = this.parentSelector,
         loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'),
         loadingBar = loadingBarContainer.find('div').eq(0),
-        spinner = angular.element('<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>');
+        spinner = angular.element(this.spinnerTemplate);
 
       var incTimeout,
         completeTimeout,
@@ -272,6 +273,8 @@ angular.module('cfp.loadingBar', [])
       function _complete() {
         $rootScope.$broadcast('cfpLoadingBar:completed');
         _set(1);
+
+        $timeout.cancel(completeTimeout);
 
         // Attempt to aggregate any start/complete calls within 500ms:
         completeTimeout = $timeout(function() {
