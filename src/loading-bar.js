@@ -160,13 +160,18 @@ angular.module('cfp.loadingBar', [])
     this.startSize = 0.02;
     this.parentSelector = 'body';
     this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
+    this.spinnerOnlyClass = '';
+    this.spinnerSelector = this.parentSelector;
 
     this.$get = ['$document', '$timeout', '$animate', '$rootScope', function ($document, $timeout, $animate, $rootScope) {
 
       var $parentSelector = this.parentSelector,
         loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'),
         loadingBar = loadingBarContainer.find('div').eq(0),
-        spinner = angular.element(this.spinnerTemplate);
+        loadingBarPeg = loadingBarContainer.find('div').eq(1),
+        spinner = angular.element(this.spinnerTemplate),
+          spinnerSelector = this.spinnerSelector,
+          spinnerOnlyClass = this.spinnerOnlyClass;
 
       var incTimeout,
         completeTimeout,
@@ -181,7 +186,8 @@ angular.module('cfp.loadingBar', [])
        * Inserts the loading bar element into the dom, and sets it to 2%
        */
       function _start() {
-        var $parent = $document.find($parentSelector);
+        var $parent = angular.element(document.querySelector($parentSelector));
+        var spinnerParent = angular.element(document.querySelector(spinnerSelector));
         $timeout.cancel(completeTimeout);
 
         // do not continually broadcast the started event:
@@ -197,7 +203,11 @@ angular.module('cfp.loadingBar', [])
         }
 
         if (includeSpinner) {
-          $animate.enter(spinner, $parent);
+            if( this.spinnerOnlyClass===''){
+                $animate.enter(spinner, spinnerParent);
+            }else{
+            angular.element(spinnerParent).addClass(spinnerOnlyClass);
+            }
         }
 
         _set(startSize);
@@ -276,7 +286,9 @@ angular.module('cfp.loadingBar', [])
             status = 0;
             started = false;
           });
-          $animate.leave(spinner);
+          $animate.leave(spinner,function(){
+              angular.element(document.querySelector(spinnerSelector)).removeClass(spinnerOnlyClass);
+          });
         }, 500);
       }
 
@@ -289,7 +301,9 @@ angular.module('cfp.loadingBar', [])
         includeSpinner   : this.includeSpinner,
         latencyThreshold : this.latencyThreshold,
         parentSelector   : this.parentSelector,
-        startSize        : this.startSize
+        startSize        : this.startSize,
+        spinnerOnlyClass : this.spinnerOnlyClass,
+        spinnerSelector  : this.spinnerSelector
       };
 
 

@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+    <!-- angular -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-animate.min.js"></script>
+
+    <!-- loadingbar -->
+    <script src="../../src/loading-bar.js"></script>
+    <link href='../../src/loading-bar.css' rel='stylesheet'/>
+
+    <!-- example app -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <script src="app.js"></script>
+    <link href='app.css' rel='stylesheet'/>
+    <link href='http://fonts.googleapis.com/css?family=Oxygen:300,400,700' rel='stylesheet' type='text/css'>
+</head>
+
+<body ng-app="LoadingBarExample" ng-controller="ExampleCtrl">
+<div class="jumbotron">
+    <h1>Angular Loading Bar</h1>
+
+    <p>An automatic loading bar using angular interceptors.
+        <small> It works automatically, so simply include it as a dependency and it will automatically display the
+            progress of your $http requests.
+        </small>
+    </p>
+    <p>
+        <a href="https://github.com/chieffancypants/angular-loading-bar" class="btn btn-primary btn-lg">
+            <i class="glyphicon glyphicon-download"></i>&nbsp;&nbsp;Download
+        </a>
+        <a href="https://github.com/chieffancypants/angular-loading-bar" class="btn btn-default btn-lg">
+            <i class="glyphicon glyphicon-random"></i>&nbsp;&nbsp;Fork on GitHub
+        </a>
+    </p>
+</div>
+<div class="row">
+    <div class="col-lg-1 col-centered container-input">
+        <input id="loading-input"/>
+    </div>
+</div>
+<div class="examples" ng-hide="fakeIntro">
+    <!-- <h4>Examples:</h4> -->
+    <div class="btn-group btn-group-justified">
+        <a href="#" class="btn btn-primary btn-lg" ng-click="start()">
+            <i class="glyphicon glyphicon-play-circle"></i> <span>cfpLoadingBar.</span>start()
+        </a>
+        <a href="#" class="btn btn-primary btn-lg" ng-click="complete()">
+            <i class="glyphicon glyphicon-play-circle"></i> <span>cfpLoadingBar.</span>complete()
+        </a>
+        <a href="#" class="btn btn-primary btn-lg" ng-click="fetch()"><i class="glyphicon glyphicon-play-circle"></i>
+            Real Example <span> (from reddit)</span></a>
+    </div>
+</div>
+
+<h4 class="loading-text" ng-show="subreddit">Showing 100 results for: <span>/r/{{subreddit}}...</span></h4>
+
+<div ng-repeat="post in posts" class="panel panel-default">
+    <div class="panel-body media">
+        <span class="badge pull-right">{{post.data.score}}</span>
+
+        <div class="pull-left" ng-if="post.data.thumbnail">
+            <img class="thumbnail" ng-src="{{post.data.thumbnail}}">
+        </div>
+        <div class="">
+            <div class="">
+                <a href="{{post.data.url}}">{{post.data.title}}</a>
+
+                <p class="meta">by {{post.data.author}}</p>
+
+                <p class="meta-comments">{{post.data.num_comments}} comments</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
