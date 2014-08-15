@@ -104,7 +104,20 @@ $http.get('/status', {
 
 ```
 
+#### Placing the spinner as a class
+```js
+//your custom class
+cfpLoadingBarProvider.spinnerOnlyClass = 'custom-spinner';
 
+//The chosen element to place the spinner 
+cfpLoadingBarProvider.spinnerSelector = '#element-id';
+```
+
+#### Place the elements in any selector
+```js
+//by id for example
+cfpLoadingBarProvider.parentSelector = '#element-id';
+```
 
 
 ## How it works:
