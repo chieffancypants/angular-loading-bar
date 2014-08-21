@@ -145,6 +145,17 @@ cfpLoadingBar.complete()
 
 ```
 
+## Events
+The loading bar broadcasts the following events over $rootScope allowing further customization:
+
+**`cfpLoadingBar:loading`** triggered upon each XHR request that is not already cached
+
+**`cfpLoadingBar:loaded`** triggered each time an XHR request recieves a response (either successful or error)
+
+**`cfpLoadingBar:started`** triggered once upon the first XHR request.  Will trigger again if another request goes out after `cfpLoadingBar:completed` has triggered.
+
+**`cfpLoadingBar:completed`** triggered once when the all XHR requests have returned (either successfully or not)
+
 ## Credits: 
 Credit goes to [rstacruz](https://github.com/rstacruz) for his excellent [nProgress](https://github.com/rstacruz/nprogress).
 
