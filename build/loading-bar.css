@@ -50,7 +50,8 @@
 /* Fancy blur effect */
 #loading-bar .peg {
   position: absolute;
-  width: 70px;
+  width:100%;
+  max-width: 70px;
   right: 0;
   top: 0;
   height: 2px;

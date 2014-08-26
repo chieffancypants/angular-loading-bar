@@ -203,7 +203,7 @@ angular.module('cfp.loadingBar', [])
         }
 
         if (includeSpinner) {
-            if( this.spinnerOnlyClass===''){
+            if(spinnerOnlyClass===''){
                 $animate.enter(spinner, spinnerParent);
             }else{
             angular.element(spinnerParent).addClass(spinnerOnlyClass);
