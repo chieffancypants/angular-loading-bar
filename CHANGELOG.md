@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+## 0.5.1
+- Reworked cache logic to allow cache:true ([#96](https://github.com/chieffancypants/angular-loading-bar/pull/96))
+
 ## 0.5.0
 - Added spinner template configuration ([#82](https://github.com/chieffancypants/angular-loading-bar/pull/82))
 - $timeout was not canceled properly ([#79](https://github.com/chieffancypants/angular-loading-bar/pull/79))

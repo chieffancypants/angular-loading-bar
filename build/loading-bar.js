@@ -1,5 +1,5 @@
 /*! 
- * angular-loading-bar v0.5.0
+ * angular-loading-bar v0.5.1
  * https://chieffancypants.github.io/angular-loading-bar
  * Copyright (c) 2014 Wes Cruver
  * License: MIT
@@ -73,19 +73,15 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
        */
       function isCached(config) {
         var cache;
+        var defaultCache = $cacheFactory.get('$http');
         var defaults = $httpProvider.defaults;
 
-        if (config.method !== 'GET' || config.cache === false) {
-          config.cached = false;
-          return false;
-        }
-
-        if (config.cache === true && defaults.cache === undefined) {
-          cache = $cacheFactory.get('$http');
-        } else if (defaults.cache !== undefined) {
-          cache = defaults.cache;
-        } else {
-          cache = config.cache;
+        // Choose the proper cache source. Borrowed from angular: $http service
+        if ((config.cache || defaults.cache) && config.cache !== false &&
+          (config.method === 'GET' || config.method === 'JSONP')) {
+            cache = angular.isObject(config.cache) ? config.cache
+              : angular.isObject(defaults.cache) ? defaults.cache
+              : defaultCache;
         }
 
         var cached = cache !== undefined ?
