@@ -157,8 +157,8 @@ angular.module('cfp.loadingBar', [])
     this.parentSelector = 'body';
     this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
 
-    this.$get = ['$document', '$timeout', '$animate', '$rootScope', function ($document, $timeout, $animate, $rootScope) {
-
+    this.$get = ['$injector', '$document', '$timeout', '$rootScope', function ($injector, $document, $timeout, $rootScope) {
+      var $animate;
       var $parentSelector = this.parentSelector,
         loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'),
         loadingBar = loadingBarContainer.find('div').eq(0),
@@ -177,6 +177,10 @@ angular.module('cfp.loadingBar', [])
        * Inserts the loading bar element into the dom, and sets it to 2%
        */
       function _start() {
+        if (!$animate) {
+          $animate = $injector.get('$animate');  
+        }
+        
         var $parent = $document.find($parentSelector);
         $timeout.cancel(completeTimeout);
 
@@ -261,6 +265,9 @@ angular.module('cfp.loadingBar', [])
       }
 
       function _complete() {
+        if (!$animate) {
+          $animate = $injector.get('$animate');  
+        }
         $rootScope.$broadcast('cfpLoadingBar:completed');
         _set(1);
 
