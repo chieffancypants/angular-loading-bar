@@ -260,6 +260,11 @@ angular.module('cfp.loadingBar', [])
         return status;
       }
 
+      function _complete_animation() {
+        status = 0;
+        started = false;
+      }
+
       function _complete() {
         $rootScope.$broadcast('cfpLoadingBar:completed');
         _set(1);
@@ -268,10 +273,10 @@ angular.module('cfp.loadingBar', [])
 
         // Attempt to aggregate any start/complete calls within 500ms:
         completeTimeout = $timeout(function() {
-          $animate.leave(loadingBarContainer, function() {
-            status = 0;
-            started = false;
-          });
+          var promise = $animate.leave(loadingBarContainer, _complete_animation);
+          if(promise){
+            promise.then(_complete_animation);
+          }
           $animate.leave(spinner);
         }, 500);
       }
