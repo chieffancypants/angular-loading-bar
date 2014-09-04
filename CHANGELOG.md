@@ -1,6 +1,11 @@
 Changelog
 ==========
 
+## 0.5.2:
+Fixes for Angular 1.3 breaking changes:
+- Circular dependencies: ([#98](https://github.com/chieffancypants/angular-loading-bar/issues/98)), ([#101](https://github.com/chieffancypants/angular-loading-bar/pull/101))
+- $animate no longer accepts callbacks: ([#102](https://github.com/chieffancypants/angular-loading-bar/pull/102))
+
 ## 0.5.1
 - Reworked cache logic to allow cache:true ([#96](https://github.com/chieffancypants/angular-loading-bar/pull/96))
 

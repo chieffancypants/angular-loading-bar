@@ -1,5 +1,5 @@
 /*! 
- * angular-loading-bar v0.5.1
+ * angular-loading-bar v0.5.2
  * https://chieffancypants.github.io/angular-loading-bar
  * Copyright (c) 2014 Wes Cruver
  * License: MIT
@@ -163,8 +163,8 @@ angular.module('cfp.loadingBar', [])
     this.parentSelector = 'body';
     this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
 
-    this.$get = ['$document', '$timeout', '$animate', '$rootScope', function ($document, $timeout, $animate, $rootScope) {
-
+    this.$get = ['$injector', '$document', '$timeout', '$rootScope', function ($injector, $document, $timeout, $rootScope) {
+      var $animate;
       var $parentSelector = this.parentSelector,
         loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'),
         loadingBar = loadingBarContainer.find('div').eq(0),
@@ -183,6 +183,10 @@ angular.module('cfp.loadingBar', [])
        * Inserts the loading bar element into the dom, and sets it to 2%
        */
       function _start() {
+        if (!$animate) {
+          $animate = $injector.get('$animate');
+        }
+
         var $parent = $document.find($parentSelector);
         $timeout.cancel(completeTimeout);
 
@@ -266,12 +270,16 @@ angular.module('cfp.loadingBar', [])
         return status;
       }
 
-      function _complete_animation() {
+      function _completeAnimation() {
         status = 0;
         started = false;
       }
 
       function _complete() {
+        if (!$animate) {
+          $animate = $injector.get('$animate');
+        }
+
         $rootScope.$broadcast('cfpLoadingBar:completed');
         _set(1);
 
@@ -279,9 +287,9 @@ angular.module('cfp.loadingBar', [])
 
         // Attempt to aggregate any start/complete calls within 500ms:
         completeTimeout = $timeout(function() {
-          var promise = $animate.leave(loadingBarContainer, _complete_animation);
-          if(promise){
-            promise.then(_complete_animation);
+          var promise = $animate.leave(loadingBarContainer, _completeAnimation);
+          if (promise && promise.then) {
+            promise.then(_completeAnimation);
           }
           $animate.leave(spinner);
         }, 500);
