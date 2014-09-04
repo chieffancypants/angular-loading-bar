@@ -36,7 +36,15 @@ module.exports = function(grunt) {
 
     karma: {
       unit: {
-        configFile: 'test/karma.conf.js',
+        configFile: 'test/karma-angular-1.2.conf.js',
+        singleRun: true,
+        coverageReporter: {
+          type: 'text',
+          dir: 'coverage/'
+        }
+      },
+      unit13: {
+        configFile: 'test/karma-angular-1.3.conf.js',
         singleRun: true,
         coverageReporter: {
           type: 'text',
@@ -44,7 +52,7 @@ module.exports = function(grunt) {
         }
       },
       watch: {
-        configFile: 'test/karma.conf.js',
+        configFile: 'test/karma-angular-1.2.conf.js',
         singleRun: false,
         reporters: ['progress']  // Don't display coverage
       }
@@ -79,7 +87,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('default', ['jshint', 'karma:unit', 'uglify', 'cssmin', 'concat:build']);
+  grunt.registerTask('default', ['jshint', 'karma:unit', 'karma:unit13', 'uglify', 'cssmin', 'concat:build']);
   grunt.registerTask('test', ['karma:watch']);
   grunt.registerTask('build', ['default']);
 

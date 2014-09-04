@@ -178,9 +178,9 @@ angular.module('cfp.loadingBar', [])
        */
       function _start() {
         if (!$animate) {
-          $animate = $injector.get('$animate');  
+          $animate = $injector.get('$animate');
         }
-        
+
         var $parent = $document.find($parentSelector);
         $timeout.cancel(completeTimeout);
 
@@ -264,15 +264,16 @@ angular.module('cfp.loadingBar', [])
         return status;
       }
 
-      function _complete_animation() {
+      function _completeAnimation() {
         status = 0;
         started = false;
       }
 
       function _complete() {
         if (!$animate) {
-          $animate = $injector.get('$animate');  
+          $animate = $injector.get('$animate');
         }
+
         $rootScope.$broadcast('cfpLoadingBar:completed');
         _set(1);
 
@@ -280,9 +281,9 @@ angular.module('cfp.loadingBar', [])
 
         // Attempt to aggregate any start/complete calls within 500ms:
         completeTimeout = $timeout(function() {
-          var promise = $animate.leave(loadingBarContainer, _complete_animation);
-          if(promise){
-            promise.then(_complete_animation);
+          var promise = $animate.leave(loadingBarContainer, _completeAnimation);
+          if (promise && promise.then) {
+            promise.then(_completeAnimation);
           }
           $animate.leave(spinner);
         }, 500);
