@@ -24,18 +24,6 @@
   opacity: 1;
 }
 
-.fixed {
-    position: fixed;
-}
-
-.absolute {
-    position: absolute;
-}
-
-.relative {
-    position: relative;
-}
-
 #loading-bar .bar {
   -webkit-transition: width 350ms;
   -moz-transition: width 350ms;
@@ -43,6 +31,7 @@
   transition: width 350ms;
 
   background: #29d;
+  position: fixed;
   z-index: 10002;
   top: 0;
   left: 0;
@@ -54,6 +43,7 @@
 
 /* Fancy blur effect */
 #loading-bar .peg {
+  position: absolute;
   width: 70px;
   right: 0;
   top: 0;
@@ -70,6 +60,7 @@
 
 #loading-bar-spinner {
   display: block;
+  position: fixed;
   z-index: 10002;
   top: 10px;
   left: 10px;
