@@ -156,11 +156,12 @@ angular.module('cfp.loadingBar', [])
     this.startSize = 0.02;
     this.parentSelector = 'body';
     this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
+	this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
 
     this.$get = ['$injector', '$document', '$timeout', '$rootScope', function ($injector, $document, $timeout, $rootScope) {
       var $animate;
       var $parentSelector = this.parentSelector,
-        loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'),
+        loadingBarContainer = angular.element(this.loadingBarTemplate),
         loadingBar = loadingBarContainer.find('div').eq(0),
         spinner = angular.element(this.spinnerTemplate);
 
@@ -172,6 +173,12 @@ angular.module('cfp.loadingBar', [])
       var includeSpinner = this.includeSpinner;
       var includeBar = this.includeBar;
       var startSize = this.startSize;
+
+      var isBody = ('body' === this.parentSelector) ? true : false;
+
+      loadingBarContainer.find('.bar').addClass((isBody) ? 'fixed' : 'relative');
+      loadingBarContainer.find('.peg').addClass((isBody) ? 'absolute' : 'relative');
+      spinner.addClass((isBody) ? 'fixed' : 'relative');
 
       /**
        * Inserts the loading bar element into the dom, and sets it to 2%
@@ -190,17 +197,21 @@ angular.module('cfp.loadingBar', [])
         }
 
         $rootScope.$broadcast('cfpLoadingBar:started');
-        started = true;
 
-        if (includeBar) {
-          $animate.enter(loadingBarContainer, $parent);
+		// Only continue on if the parent selector was found
+        if ($parent && $parent.length > 0) {
+            started = true;
+
+            if (includeBar) {
+                $animate.enter(loadingBarContainer, $parent);
+            }
+
+            if (includeSpinner) {
+                $animate.enter(spinner, $parent);
+            }
+
+            _set(startSize);
         }
-
-        if (includeSpinner) {
-          $animate.enter(spinner, $parent);
-        }
-
-        _set(startSize);
       }
 
       /**
