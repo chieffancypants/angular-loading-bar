@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+## 0.5.2
+- Place the spinner and the loading bar anywhere you want passing any selector
+
 ## 0.5.0
 - Added spinner template configuration ([#82](https://github.com/chieffancypants/angular-loading-bar/pull/82))
 - $timeout was not canceled properly ([#79](https://github.com/chieffancypants/angular-loading-bar/pull/79))
