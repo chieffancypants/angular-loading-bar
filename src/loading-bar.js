@@ -273,17 +273,21 @@ angular.module('cfp.loadingBar', [])
         if (!$animate) {
           $animate = $injector.get('$animate');
         }
-
-        $rootScope.$broadcast('cfpLoadingBar:completed');
-        _set(1);
-
-        $timeout.cancel(completeTimeout);
+        // FIXME: Add here a partial completed flag in docs completed should be fired only once
 
         // Attempt to aggregate any start/complete calls within 500ms:
         completeTimeout = $timeout(function() {
           var promise = $animate.leave(loadingBarContainer, _completeAnimation);
           if (promise && promise.then) {
-            promise.then(_completeAnimation);
+            // FIXME: extrac/refactor this anonymous function to a named one
+            promise.then(function(){
+              _completeAnimation();
+              // Now you can really complete once
+              // I could throw these lines inside _completedAnimation but would be confusing
+              $rootScope.$broadcast('cfpLoadingBar:completed');
+              _set(1);
+              $timeout.cancel(completeTimeout);
+            });
           }
           $animate.leave(spinner);
         }, 500);
