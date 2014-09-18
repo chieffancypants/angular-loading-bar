@@ -1,6 +1,10 @@
 Changelog
 ==========
 
+## 0.6.0
+- Customize progress bar template: ([#111](https://github.com/chieffancypants/angular-loading-bar/pull/111))
+- Only append bar to first parent found ([#108](https://github.com/chieffancypants/angular-loading-bar/pull/108))
+
 ## 0.5.2:
 Fixes for Angular 1.3 breaking changes:
 - Circular dependencies: ([#98](https://github.com/chieffancypants/angular-loading-bar/issues/98)), ([#101](https://github.com/chieffancypants/angular-loading-bar/pull/101))
