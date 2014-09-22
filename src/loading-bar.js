@@ -264,33 +264,32 @@ angular.module('cfp.loadingBar', [])
         return status;
       }
 
+      // Attempt to aggregate any start/complete calls within 500ms:
+      function _aggregateSubsequentCall() {
+        var promise = $animate.leave(loadingBarContainer, _completeAnimation);
+        if (promise && promise.then) {
+          promise.then(_complete);
+        }
+        $animate.leave(spinner);
+      }
+      
+      function _onBeforeComplete() {
+        if (!$animate) {
+          $animate = $injector.get('$animate');
+        }
+        completeTimeout = $timeout(_aggregateSubsequentCall, 500);
+      }
+
       function _completeAnimation() {
+        _set(1);
         status = 0;
         started = false;
       }
 
-      function _complete() {
-        if (!$animate) {
-          $animate = $injector.get('$animate');
-        }
-        // FIXME: Add here a partial completed flag in docs completed should be fired only once
-
-        // Attempt to aggregate any start/complete calls within 500ms:
-        completeTimeout = $timeout(function() {
-          var promise = $animate.leave(loadingBarContainer, _completeAnimation);
-          if (promise && promise.then) {
-            // FIXME: extrac/refactor this anonymous function to a named one
-            promise.then(function(){
-              _completeAnimation();
-              // Now you can really complete once
-              // I could throw these lines inside _completedAnimation but would be confusing
-              $rootScope.$broadcast('cfpLoadingBar:completed');
-              _set(1);
-              $timeout.cancel(completeTimeout);
-            });
-          }
-          $animate.leave(spinner);
-        }, 500);
+      function _complete(callback) {
+        _completeAnimation();
+        $rootScope.$broadcast('cfpLoadingBar:completed');
+        $timeout.cancel(completeTimeout);
       }
 
       return {
@@ -298,7 +297,7 @@ angular.module('cfp.loadingBar', [])
         set              : _set,
         status           : _status,
         inc              : _inc,
-        complete         : _complete,
+        complete         : _onBeforeComplete,
         includeSpinner   : this.includeSpinner,
         latencyThreshold : this.latencyThreshold,
         parentSelector   : this.parentSelector,
