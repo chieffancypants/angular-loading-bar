@@ -27,7 +27,7 @@ angular.module('LoadingBarExample', ['chieffancypants.loadingBar', 'ngAnimate'])
       // see how there's no need to keep track of these XHR requests?
       // the interceptor is doing all the work in the background
       // your controllers and services don't need to know anything about it!
-      $http.jsonp('http://www.reddit.com/r/' + $scope.subreddit + '.json?limit=100&jsonp=JSON_CALLBACK').success(function(data) {
+      $http.jsonp('https://www.reddit.com/r/' + $scope.subreddit + '.json?limit=100&jsonp=JSON_CALLBACK').success(function(data) {
         // we're requesting 100 entries just to exaggerate the loading bar's progress
         // since this is just for an example, don't display all 100, just the first 5
         var posts = data.data.children.slice(0,5);
