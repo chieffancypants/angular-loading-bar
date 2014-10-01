@@ -213,6 +213,25 @@ describe 'loadingBarInterceptor Service', ->
     $timeout.flush()
 
 
+  it 'should not do anything when prevent default is triggered by listeners', inject (cfpLoadingBar, $rootScope) ->
+
+    $rootScope.$on 'cfpLoadingBar:started', (event) ->
+      event.preventDefault()
+
+    $httpBackend.expectGET(endpoint).respond response
+    $httpBackend.expectGET(endpoint).respond response
+    $http.get(endpoint)
+    $http.get(endpoint)
+
+    $httpBackend.flush(1)
+    $timeout.flush() # flush the latencyThreshold timeout
+
+    expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe false
+
+    $httpBackend.flush()
+    $timeout.flush()
+
+
   it 'should remove the loading bar when all requests have been received', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response
     $httpBackend.expectGET(endpoint).respond response
