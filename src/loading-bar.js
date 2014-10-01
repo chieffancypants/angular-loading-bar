@@ -190,18 +190,20 @@ angular.module('cfp.loadingBar', [])
           return;
         }
 
-        $rootScope.$broadcast('cfpLoadingBar:started');
-        started = true;
+        var event = $rootScope.$broadcast('cfpLoadingBar:started');
+        if (!event.defaultPrevented) {
+          started = true;
 
-        if (includeBar) {
-          $animate.enter(loadingBarContainer, $parent);
+          if (includeBar) {
+            $animate.enter(loadingBarContainer, $parent);
+          }
+
+          if (includeSpinner) {
+            $animate.enter(spinner, $parent);
+          }
+
+          _set(startSize);
         }
-
-        if (includeSpinner) {
-          $animate.enter(spinner, $parent);
-        }
-
-        _set(startSize);
       }
 
       /**
