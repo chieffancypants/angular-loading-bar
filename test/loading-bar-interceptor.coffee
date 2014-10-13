@@ -111,6 +111,30 @@ describe 'loadingBarInterceptor Service', ->
     $httpBackend.verifyNoOutstandingRequest()
     $timeout.flush() # loading bar is animated, so flush timeout
 
+  it 'should use default cache when $http.defaults.cache is true', inject (cfpLoadingBar, $cacheFactory) ->
+    # $http.defaults.cache = $cacheFactory('loading-bar')
+    $http.defaults.cache = true
+    $httpBackend.expectGET(endpoint).respond response
+    $http.get(endpoint).then (data) ->
+      result = data
+
+    expect(cfpLoadingBar.status()).toBe 0
+    $timeout.flush()
+    $timeout.flush()
+    $httpBackend.flush(1)
+    expect(cfpLoadingBar.status()).toBe 1
+    cfpLoadingBar.complete() # set as complete
+    $timeout.flush()
+    $animate.triggerCallbacks()
+
+
+    $http.get(endpoint).then (data) ->
+      result = data
+    # no need to flush $httpBackend since the response is cached
+    expect(cfpLoadingBar.status()).toBe 0
+    $httpBackend.verifyNoOutstandingRequest()
+    $timeout.flush() # loading bar is animated, so flush timeout
+
   it 'should not cache when the request is a POST', inject (cfpLoadingBar) ->
     $httpBackend.expectPOST(endpoint).respond response
     $http.post(endpoint, {message: 'post'}).then (data) ->
