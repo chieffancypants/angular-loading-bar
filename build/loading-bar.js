@@ -115,7 +115,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
         'response': function(response) {
           if (!response.config.ignoreLoadingBar && !isCached(response.config)) {
             reqsCompleted++;
-            $rootScope.$broadcast('cfpLoadingBar:loaded', {url: response.config.url});
+            $rootScope.$broadcast('cfpLoadingBar:loaded', {url: response.config.url, result: response});
             if (reqsCompleted >= reqsTotal) {
               setComplete();
             } else {
@@ -128,7 +128,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
         'responseError': function(rejection) {
           if (!rejection.config.ignoreLoadingBar && !isCached(rejection.config)) {
             reqsCompleted++;
-            $rootScope.$broadcast('cfpLoadingBar:loaded', {url: rejection.config.url});
+            $rootScope.$broadcast('cfpLoadingBar:loaded', {url: rejection.config.url, result: rejection});
             if (reqsCompleted >= reqsTotal) {
               setComplete();
             } else {
