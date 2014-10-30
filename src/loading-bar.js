@@ -107,7 +107,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
         },
 
         'response': function(response) {
-          if (!response.config.ignoreLoadingBar && !isCached(response.config)) {
+          if (response!=undefined && !response.config.ignoreLoadingBar && !isCached(response.config)) {
             reqsCompleted++;
             $rootScope.$broadcast('cfpLoadingBar:loaded', {url: response.config.url, result: response});
             if (reqsCompleted >= reqsTotal) {
