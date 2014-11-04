@@ -64,7 +64,6 @@ describe 'loadingBarInterceptor Service', ->
     $httpBackend.verifyNoOutstandingRequest()
     $timeout.flush() # loading bar is animated, so flush timeout
 
-
   it 'should not increment if the response is cached using $http.defaults.cache', inject (cfpLoadingBar, $cacheFactory) ->
     $http.defaults.cache = $cacheFactory('loading-bar')
     $httpBackend.expectGET(endpoint).respond response
@@ -87,7 +86,6 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 0
     $httpBackend.verifyNoOutstandingRequest()
     $timeout.flush() # loading bar is animated, so flush timeout
-
 
   it 'should not increment if the response is cached', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response
@@ -160,6 +158,7 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 1
     $timeout.flush()
 
+
   it 'should increment the loading bar when not all requests have been recieved', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response
     $httpBackend.expectGET(endpoint).respond response
@@ -178,7 +177,6 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 1
     $timeout.flush() # loading bar is animated, so flush timeout
 
-
   it 'should count http errors as responses so the loading bar can complete', inject (cfpLoadingBar) ->
     # $httpBackend.expectGET(endpoint).respond response
     $httpBackend.expectGET(endpoint).respond 401
@@ -195,8 +193,6 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 1
 
     $timeout.flush()
-
-
 
   it 'should insert the loadingbar into the DOM when a request is sent', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response
@@ -342,7 +338,6 @@ describe 'loadingBarInterceptor Service', ->
 
     cfpLoadingBar.complete()
     $timeout.flush()
-
 
   it 'should not set the status if the loading bar has not yet been started', inject (cfpLoadingBar) ->
     cfpLoadingBar.set(0.5)
@@ -493,3 +488,61 @@ describe 'LoadingBar only', ->
 
     expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe false
 
+
+describe 'Interceptor tests', ->
+  provider = $http = $httpBackend = $log = null
+  endpoint = '/service'
+  response = {message:'OK'}
+
+  describe 'Success response', ->
+
+    beforeEach ->
+      module 'chieffancypants.loadingBar', ($httpProvider) ->
+        provider = $httpProvider
+        provider.interceptors.push ->
+          response: (resp) ->
+            return null
+        return
+
+      inject (_$http_, _$httpBackend_, _$log_) ->
+        $http = _$http_
+        $httpBackend = _$httpBackend_
+        $log = _$log_
+
+
+    it 'should detect poorly implemented interceptors and warn accordingly', ->
+      expect($log.error.logs.length).toBe 0
+
+      $httpBackend.expectGET(endpoint).respond 204
+      $http.get(endpoint)
+      $httpBackend.flush()
+
+      expect($log.error.logs.length).toBe 1
+      expect($log.error.logs).toContain ['Broken interceptor detected: Config object not supplied in response:\n https://github.com/chieffancypants/angular-loading-bar/pull/50']
+
+  describe 'Error response', ->
+
+    beforeEach ->
+      module 'chieffancypants.loadingBar', ($httpProvider) ->
+          provider = $httpProvider
+          provider.interceptors.push ($q) ->
+            responseError: (resp) ->
+              delete resp.config
+              $q.reject(resp);
+          return
+
+        inject (_$http_, _$httpBackend_, _$log_) ->
+          $http = _$http_
+          $httpBackend = _$httpBackend_
+          $log = _$log_
+
+
+    it 'should detect poorly implemented interceptors and warn accordingly', ->
+      expect($log.error.logs.length).toBe 0
+
+      $httpBackend.expectGET(endpoint).respond 500
+      $http.get(endpoint)
+      $httpBackend.flush()
+
+      expect($log.error.logs.length).toBe 1
+      expect($log.error.logs).toContain ['Broken interceptor detected: Config object not supplied in rejection:\n https://github.com/chieffancypants/angular-loading-bar/pull/50']
