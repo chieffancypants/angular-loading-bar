@@ -3,7 +3,11 @@
 angular.module('LoadingBarExample', ['chieffancypants.loadingBar', 'ngAnimate'])
   .config(function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = true;
-  })
+    cfpLoadingBarProvider.enableLatencyDebug = true; //Default: false
+    cfpLoadingBarProvider.skipTemplates = ['.html']; //Default: '.html'
+    cfpLoadingBarProvider.latencyWarn = 200; //Default: 200, if request excees 'latencyWarn', 
+                                             //console.warn called, otherwise console.info
+  });
 
   .controller('ExampleCtrl', function ($scope, $http, $timeout, cfpLoadingBar) {
     $scope.posts = [];
