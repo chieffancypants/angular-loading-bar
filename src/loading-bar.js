@@ -53,9 +53,9 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
        * calls cfpLoadingBar.complete() which removes the
        * loading bar from the DOM.
        */
-      function setComplete() {
+      function setComplete(_url) {
         $timeout.cancel(startTimeout);
-        cfpLoadingBar.complete();
+        cfpLoadingBar.complete(_url);
         reqsCompleted = 0;
         reqsTotal = 0;
       }
@@ -97,7 +97,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
             $rootScope.$broadcast('cfpLoadingBar:loading', {url: config.url});
             if (reqsTotal === 0) {
               startTimeout = $timeout(function() {
-                cfpLoadingBar.start();
+                cfpLoadingBar.start(config.url); //start url tracking
               }, latencyThreshold);
             }
             reqsTotal++;
@@ -111,7 +111,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
             reqsCompleted++;
             $rootScope.$broadcast('cfpLoadingBar:loaded', {url: response.config.url, result: response});
             if (reqsCompleted >= reqsTotal) {
-              setComplete();
+              setComplete(response.config.url);  //end url tracking
             } else {
               cfpLoadingBar.set(reqsCompleted / reqsTotal);
             }
@@ -150,6 +150,15 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
 angular.module('cfp.loadingBar', [])
   .provider('cfpLoadingBar', function() {
 
+    //Urls to watch
+    var urls = [];
+    //initiator
+    this.enableLatencyDebug = false;
+    //Skip template loading from latency logger
+    this.skipTemplates = ['.html'];
+    //if request time excesses latencyWarn, then console.warn, otherwise console.info
+    this.latencyWarn = 200;
+
     this.includeSpinner = true;
     this.includeBar = true;
     this.latencyThreshold = 100;
@@ -173,11 +182,25 @@ angular.module('cfp.loadingBar', [])
       var includeSpinner = this.includeSpinner;
       var includeBar = this.includeBar;
       var startSize = this.startSize;
-
+      var enableLatencyDebug = this.enableLatencyDebug;
+      var skipTemplates = this.skipTemplates;
+      var latencyWarn = this.latencyWarn;
       /**
        * Inserts the loading bar element into the dom, and sets it to 2%
        */
-      function _start() {
+      function _start(_url) { //back-compat
+        if(_url && enableLatencyDebug){
+          //iterate over skipTemplates and save all which pass them 
+          angular.forEach(skipTemplates, function(o){
+            if(_url.slice(_url.length - o.length, o.length) != o){
+              urls.push({
+                id: _url,
+                stamp: new Date().getTime()
+              });
+            }
+          });
+          
+        }
         if (!$animate) {
           $animate = $injector.get('$animate');
         }
@@ -270,7 +293,17 @@ angular.module('cfp.loadingBar', [])
         started = false;
       }
 
-      function _complete() {
+      function _complete(_url) {
+        if(_url && enableLatencyDebug){
+            var _item = urls.filter(function(o){
+              return o.id === _url;
+            });
+            if(_item && _item.length > 0){
+              var _diff = new Date().getTime() - _item[0].stamp;
+              _diff > latencyWarn ? console.warn(_diff+'ms ' + _url) : console.info(_diff+'ms ' + _url);
+              urls.splice(urls.indexOf(_item[0]));
+            }
+        }
         if (!$animate) {
           $animate = $injector.get('$animate');
         }
