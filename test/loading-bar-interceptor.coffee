@@ -15,6 +15,7 @@ describe 'loadingBarInterceptor Service', ->
 
   beforeEach ->
     module 'ngAnimateMock', 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
+      cfpLoadingBarProvider.urlsToIgnore = /.*\/to_be_ignored/
       loadingBar = cfpLoadingBarProvider
       return
 
@@ -390,6 +391,16 @@ describe 'loadingBarInterceptor Service', ->
 
     $timeout.flush()
 
+  it 'should ignore requests when endpoint matches regex for urls to be ignored', inject (cfpLoadingBar) ->
+    $httpBackend.expectGET('/api/to_be_ignored').respond response
+    $http.get('/api/to_be_ignored')
+    $httpBackend.flush()
+
+    injected = isLoadingBarInjected $document.find(cfpLoadingBar.parentSelector)
+    expect(injected).toBe false
+
+    $timeout.flush()
+
   it 'should ignore responses when ignoreLoadingBar is true (#70)', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response
     $httpBackend.expectGET('/service2').respond response
@@ -406,6 +417,24 @@ describe 'loadingBarInterceptor Service', ->
 
     expect(cfpLoadingBar.status()).toBe 1
     $timeout.flush() # loading bar is animated, so flush timeout
+
+  it 'should ignore responses when endpoint matches regex for urls to be ignored', inject (cfpLoadingBar) ->
+    $httpBackend.expectGET('/api/to_be_ignored').respond response
+    $httpBackend.expectGET(endpoint).respond response
+
+    $http.get('/api/to_be_ignored')
+    $http.get(endpoint)
+
+    expect(cfpLoadingBar.status()).toBe 0
+    $httpBackend.flush(1) # flush only the ignored request
+    expect(cfpLoadingBar.status()).toBe 0
+
+    $timeout.flush()
+    $httpBackend.flush()
+
+    expect(cfpLoadingBar.status()).toBe 1
+    $timeout.flush() # loading bar is animated, so flush timeout
+
 
   it 'should ignore errors when ignoreLoadingBar is true (#70)', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond 400
@@ -424,6 +453,22 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 1
     $timeout.flush() # loading bar is animated, so flush timeout
 
+  it 'should ignore errors when endpoint matches regex for urls to be ignored', inject (cfpLoadingBar) ->
+    $httpBackend.expectGET('/api/to_be_ignored').respond 400
+    $httpBackend.expectGET(endpoint).respond 400
+
+    $http.get('/api/to_be_ignored')
+    $http.get(endpoint)
+
+    expect(cfpLoadingBar.status()).toBe 0
+    $httpBackend.flush(1) # flush only the ignored request
+    expect(cfpLoadingBar.status()).toBe 0
+
+    $timeout.flush()
+    $httpBackend.flush()
+
+    expect(cfpLoadingBar.status()).toBe 1
+    $timeout.flush() # loading bar is animated, so flush timeout
 
 
 describe 'LoadingBar only', ->
