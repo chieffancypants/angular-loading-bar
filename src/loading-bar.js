@@ -44,6 +44,11 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
       var latencyThreshold = cfpLoadingBar.latencyThreshold;
 
       /**
+       * Regex to match URLs of requests that are to be ignored
+       */
+      var urlsToIgnore = cfpLoadingBar.urlsToIgnore;
+
+      /**
        * $timeout handle for latencyThreshold
        */
       var startTimeout;
@@ -88,12 +93,20 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
         return cached;
       }
 
+      /**
+       * Determine if the request should be ignored
+       * @param config The config option from the request
+       * @returns {boolean} true if to be ignored, false otherwise
+       */
+      function isIgnored(config) {
+        return config.ignoreLoadingBar || (urlsToIgnore != null && urlsToIgnore.test(config.url))
+      }
 
       return {
         'request': function(config) {
           // Check to make sure this request hasn't already been cached and that
           // the requester didn't explicitly ask us to ignore this request:
-          if (!config.ignoreLoadingBar && !isCached(config)) {
+          if (!isIgnored(config) && !isCached(config)) {
             $rootScope.$broadcast('cfpLoadingBar:loading', {url: config.url});
             if (reqsTotal === 0) {
               startTimeout = $timeout(function() {
@@ -107,7 +120,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
         },
 
         'response': function(response) {
-          if (!response.config.ignoreLoadingBar && !isCached(response.config)) {
+          if (!isIgnored(response.config) && !isCached(response.config)) {
             reqsCompleted++;
             $rootScope.$broadcast('cfpLoadingBar:loaded', {url: response.config.url, result: response});
             if (reqsCompleted >= reqsTotal) {
@@ -120,7 +133,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
         },
 
         'responseError': function(rejection) {
-          if (!rejection.config.ignoreLoadingBar && !isCached(rejection.config)) {
+          if (!isIgnored(rejection.config) && !isCached(rejection.config)) {
             reqsCompleted++;
             $rootScope.$broadcast('cfpLoadingBar:loaded', {url: rejection.config.url, result: rejection});
             if (reqsCompleted >= reqsTotal) {
@@ -153,6 +166,7 @@ angular.module('cfp.loadingBar', [])
     this.includeSpinner = true;
     this.includeBar = true;
     this.latencyThreshold = 100;
+    this.urlsToIgnore = null;
     this.startSize = 0.02;
     this.parentSelector = 'body';
     this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
@@ -298,6 +312,7 @@ angular.module('cfp.loadingBar', [])
         complete         : _complete,
         includeSpinner   : this.includeSpinner,
         latencyThreshold : this.latencyThreshold,
+        urlsToIgnore     : this.urlsToIgnore,
         parentSelector   : this.parentSelector,
         startSize        : this.startSize
       };
