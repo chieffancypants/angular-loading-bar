@@ -99,7 +99,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
        * @returns {boolean} true if to be ignored, false otherwise
        */
       function isIgnored(config) {
-        return config.ignoreLoadingBar || (urlsToIgnore != null && urlsToIgnore.test(config.url))
+        return config.ignoreLoadingBar || (urlsToIgnore != null && urlsToIgnore.test(config.url));
       }
 
       return {
