@@ -178,10 +178,6 @@ angular.module('cfp.loadingBar', [])
        * Inserts the loading bar element into the dom, and sets it to 2%
        */
       function _start() {
-        if (!$animate) {
-          $animate = $injector.get('$animate');
-        }
-
         var $parent = $document.find($parentSelector).eq(0);
         $timeout.cancel(completeTimeout);
 
@@ -193,6 +189,7 @@ angular.module('cfp.loadingBar', [])
         $rootScope.$broadcast('cfpLoadingBar:started');
         started = true;
 
+        $animate = _getAnimate();
         if (includeBar) {
           $animate.enter(loadingBarContainer, $parent);
         }
@@ -213,9 +210,11 @@ angular.module('cfp.loadingBar', [])
         if (!started) {
           return;
         }
-        var pct = (n * 100) + '%';
-        loadingBar.css('width', pct);
-        status = n;
+        if (status < n) {
+          var pct = (n * 100) + '%';
+          loadingBar.css('width', pct);
+          status = n;
+        }
 
         // increment loadingbar to give the illusion that there is always
         // progress but make sure to cancel the previous timeouts so we don't
@@ -232,6 +231,11 @@ angular.module('cfp.loadingBar', [])
        */
       function _inc() {
         if (_status() >= 1) {
+          var promise = _getAnimate().leave(loadingBarContainer, _completeAnimation);
+          if (promise && promise.then) {
+            promise.then(_completeAnimation);
+          }
+          $rootScope.$broadcast('cfpLoadingBar:completed');
           return;
         }
 
@@ -271,23 +275,20 @@ angular.module('cfp.loadingBar', [])
       }
 
       function _complete() {
-        if (!$animate) {
-          $animate = $injector.get('$animate');
-        }
-
-        $rootScope.$broadcast('cfpLoadingBar:completed');
-        _set(1);
-
         $timeout.cancel(completeTimeout);
 
         // Attempt to aggregate any start/complete calls within 500ms:
         completeTimeout = $timeout(function() {
-          var promise = $animate.leave(loadingBarContainer, _completeAnimation);
-          if (promise && promise.then) {
-            promise.then(_completeAnimation);
-          }
-          $animate.leave(spinner);
+          _set(1);
+          _getAnimate().leave(spinner);
         }, 500);
+      }
+
+      function _getAnimate() {
+        if (!$animate) {
+          $animate = $injector.get('$animate');
+        }
+        return $animate;
       }
 
       return {
