@@ -29,6 +29,20 @@ $ bower install angular-loading-bar
 ```
 $ npm install angular-loading-bar
 ```
+#### via cdn:
+
+##### development:
+
+loading-bar.css `https://rawgit.com/chieffancypants/angular-loading-bar/0.6.0/build/loading-bar.css`
+
+loading-bar.js `https://rawgit.com/chieffancypants/angular-loading-bar/0.6.0/build/loading-bar.js`
+
+##### production: 
+
+loading-bar.min.css `https://cdn.rawgit.com/chieffancypants/angular-loading-bar/0.6.0/build/loading-bar.min.css`
+
+loading-bar.min.js `https://cdn.rawgit.com/chieffancypants/angular-loading-bar/0.6.0/build/loading-bar.min.js`
+
 
 
 ## Why I created this
