@@ -1,7 +1,7 @@
 /*! 
  * angular-loading-bar v0.6.0
  * https://chieffancypants.github.io/angular-loading-bar
- * Copyright (c) 2014 Wes Cruver
+ * Copyright (c) 2015 Wes Cruver
  * License: MIT
  */
 /*
@@ -126,9 +126,11 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
         },
 
         'responseError': function(rejection) {
-          if (!rejection.config.ignoreLoadingBar && !isCached(rejection.config)) {
+          if (!rejection.config || (!rejection.config.ignoreLoadingBar && !isCached(rejection.config))) {
             reqsCompleted++;
-            $rootScope.$broadcast('cfpLoadingBar:loaded', {url: rejection.config.url, result: rejection});
+            if (rejection.config) {
+              $rootScope.$broadcast('cfpLoadingBar:loaded', {url: rejection.config.url, result: rejection});
+            }
             if (reqsCompleted >= reqsTotal) {
               setComplete();
             } else {
