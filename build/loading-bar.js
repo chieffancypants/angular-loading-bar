@@ -1,7 +1,7 @@
 /*! 
  * angular-loading-bar v0.6.0
  * https://chieffancypants.github.io/angular-loading-bar
- * Copyright (c) 2014 Wes Cruver
+ * Copyright (c) 2015 Wes Cruver
  * License: MIT
  */
 /*
@@ -163,6 +163,14 @@ angular.module('cfp.loadingBar', [])
     this.parentSelector = 'body';
     this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
     this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
+
+    this.setSpinnerTemplate = function(template){
+      this.spinnerTemplate = template;
+    };
+
+    this.setLoadingBarTemplate = function(template){
+      this.loadingBarTemplate = template;
+    };
 
     this.$get = ['$injector', '$document', '$timeout', '$rootScope', function ($injector, $document, $timeout, $rootScope) {
       var $animate;
