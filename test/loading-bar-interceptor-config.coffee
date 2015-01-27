@@ -44,3 +44,24 @@ describe 'loadingBarInterceptor Service - config options', ->
       cfpLoadingBar.complete()
       $timeout.flush()
 
+  it 'should set loadingBar template', ->
+    module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
+      cfpLoadingBarProvider.setLoadingBarTemplate('<div class="custom-loading-bar-template"></div>')
+      return
+    inject ($timeout, cfpLoadingBar) ->
+      cfpLoadingBar.start()
+      customTemplate = document.querySelector('.custom-loading-bar-template')
+      expect(customTemplate).not.toBeNull
+      cfpLoadingBar.complete()
+      $timeout.flush()
+
+  it 'should set spinner template', ->
+    module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
+      cfpLoadingBarProvider.setSpinnerTemplate('<div class="custom-spinner-template"></div>')
+      return
+    inject ($timeout, cfpLoadingBar) ->
+      cfpLoadingBar.start()
+      customTemplate = document.querySelector('.custom-spinner-template')
+      expect(customTemplate).not.toBeNull
+      cfpLoadingBar.complete()
+      $timeout.flush()
