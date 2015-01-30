@@ -156,7 +156,9 @@ angular.module('cfp.loadingBar', [])
     this.startSize = 0.02;
     this.parentSelector = 'body';
     this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
-    this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
+    this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'
+    this.loadingBarColor = '#29d';
+    this.spinnerColor = '#29d';
 
     this.$get = ['$injector', '$document', '$timeout', '$rootScope', function ($injector, $document, $timeout, $rootScope) {
       var $animate;
@@ -195,10 +197,14 @@ angular.module('cfp.loadingBar', [])
 
         if (includeBar) {
           $animate.enter(loadingBarContainer, $parent);
+          document.body.querySelector($parentSelector + ">div#loading-bar>.bar").style.backgroundColor = loadingBarColor;
+          document.body.querySelector($parentSelector + ">div#loading-bar>.bar>.peg").style.boxShadowColor = loadingBarColor;
         }
 
         if (includeSpinner) {
           $animate.enter(spinner, $parent);
+          document.body.querySelector($parentSelector + ">div#loading-bar-spinner>.spinner-icon").style.borderTopColor = spinnerColor;
+          document.body.querySelector($parentSelector + ">div#loading-bar-spinner>.spinner-icon").style.borderLeftColor = spinnerColor;
         }
 
         _set(startSize);
