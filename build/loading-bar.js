@@ -1,7 +1,7 @@
 /*! 
  * angular-loading-bar v0.6.0
  * https://chieffancypants.github.io/angular-loading-bar
- * Copyright (c) 2014 Wes Cruver
+ * Copyright (c) 2015 Wes Cruver
  * License: MIT
  */
 /*
@@ -200,11 +200,11 @@ angular.module('cfp.loadingBar', [])
         started = true;
 
         if (includeBar) {
-          $animate.enter(loadingBarContainer, $parent);
+          $animate.enter(loadingBarContainer, $parent, angular.element($parent[0].lastChild));
         }
 
         if (includeSpinner) {
-          $animate.enter(spinner, $parent);
+          $animate.enter(spinner, $parent, angular.element($parent[0].lastChild));
         }
 
         _set(startSize);
