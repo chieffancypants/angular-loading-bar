@@ -212,6 +212,22 @@ describe 'loadingBarInterceptor Service', ->
     $httpBackend.flush()
     $timeout.flush()
 
+  it 'should insert the loadingbar as the last children of the parent container', inject (cfpLoadingBar) ->
+    $httpBackend.expectGET(endpoint).respond response
+    $httpBackend.expectGET(endpoint).respond response
+    $http.get(endpoint)
+    $http.get(endpoint)
+
+    $httpBackend.flush(1)
+    $timeout.flush() # flush the latencyThreshold timeout
+
+    parent = $document.find(cfpLoadingBar.parentSelector)[0]
+    children = parent.childNodes
+    expect(children[children.length - 1].id).toBe 'loading-bar-spinner'
+    expect(children[children.length - 2].id).toBe 'loading-bar'
+
+    $httpBackend.flush()
+    $timeout.flush()
 
   it 'should remove the loading bar when all requests have been received', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response
