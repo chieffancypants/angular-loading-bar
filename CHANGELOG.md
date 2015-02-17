@@ -1,6 +1,12 @@
 Changelog
 ==========
 
+## 0.7.0
+- Changes for animate.enter compatibility for 1.2 and 1.3 ([#170](https://github.com/chieffancypants/angular-loading-bar/pull/170))
+- Detect errors with other interceptors ([#133](https://github.com/chieffancypants/angular-loading-bar/pull/133), [#50](https://github.com/chieffancypants/angular-loading-bar/pull/50))
+- Provide more detail on response/responseError events ([#128](https://github.com/chieffancypants/angular-loading-bar/pull/128))
+- Change angular dependency in bower ([#126](https://github.com/chieffancypants/angular-loading-bar/issues/126))
+
 ## 0.6.0
 - Customize progress bar template: ([#111](https://github.com/chieffancypants/angular-loading-bar/pull/111))
 - Only append bar to first parent found ([#108](https://github.com/chieffancypants/angular-loading-bar/pull/108))
