@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+## 0.7.1
+- Merge correct PR for broken interceptor detection ([#133](https://github.com/chieffancypants/angular-loading-bar/pull/133), [#50](https://github.com/chieffancypants/angular-loading-bar/pull/50))
+
 ## 0.7.0
 - Changes for animate.enter compatibility for 1.2 and 1.3 ([#170](https://github.com/chieffancypants/angular-loading-bar/pull/170))
 - Detect errors with other interceptors ([#133](https://github.com/chieffancypants/angular-loading-bar/pull/133), [#50](https://github.com/chieffancypants/angular-loading-bar/pull/50))
