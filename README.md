@@ -82,8 +82,14 @@ angular.module('myApp', ['angular-loading-bar'])
 The loading bar can also be forced to ignore certain requests, for example, when long-polling or periodically sending debugging information back to the server.
 
 ```js
-// ignore particular $http requests:
+// ignore a particular $http GET:
 $http.get('/status', {
+  ignoreLoadingBar: true
+});
+
+// ignore a particular $http POST.  Note: POST and GET have different
+// method signatures:
+$http.post('/save', data, {
   ignoreLoadingBar: true
 });
 
