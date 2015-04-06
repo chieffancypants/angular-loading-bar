@@ -223,9 +223,12 @@ angular.module('cfp.loadingBar', [])
         if (!started) {
           return;
         }
+
         var pct = (n * 100) + '%';
         loadingBar.css('width', pct);
         status = n;
+
+        $rootScope.$broadcast('cfpLoadingBar:statusChanged', status);
 
         // increment loadingbar to give the illusion that there is always
         // progress but make sure to cancel the previous timeouts so we don't
