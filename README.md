@@ -18,7 +18,13 @@ This is mostly cool because you simply include it in your app, and it works.  Th
     angular.module('myApp', ['angular-loading-bar', 'ngAnimate'])
     ```
     
-2. include the supplied CSS file (or create your own).
+2. include the supplied JS and CSS file (or create your own CSS to override defaults).
+
+    ```html
+    <link rel='stylesheet' href='build/loading-bar.min.css' type='text/css' media='all' />
+    <script type='text/javascript' src='build/loading-bar.min.js'></script>
+    ```
+
 3. That's it -- you're done!
 
 #### via bower:
