@@ -36,6 +36,11 @@ $ bower install angular-loading-bar
 $ npm install angular-loading-bar
 ```
 
+#### via CDN:
+```html
+ <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.7.1/loading-bar.min.css' type='text/css' media='all' />
+ <script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.7.1/loading-bar.min.js'></script>
+```
 
 ## Why I created this
 There are a couple projects similar to this out there, but none were ideal for me.  All implementations I've seen require that you maintain state on behalf of the loading bar.  In other words, you're setting the value of the loading/progress bar manually from potentially many different locations.  This becomes complicated when you have a very large application with several services all making independant XHR requests. It becomes even more complicated if you want these services to be loosly coupled.
