@@ -2,7 +2,7 @@
   "name": "angular-loading-bar",
   "version": "0.7.1",
   "description": "An automatic loading bar for AngularJS",
-  "main": "src/loading-bar.js",
+  "main": "index.js",
   "directories": {
     "example": "example",
     "test": "test"
