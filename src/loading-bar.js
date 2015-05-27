@@ -275,29 +275,32 @@ angular.module('cfp.loadingBar', [])
         return status;
       }
 
+      // Attempt to aggregate any start/complete calls within 500ms:
+      function _aggregateSubsequentCall() {
+        var promise = $animate.leave(loadingBarContainer, _completeAnimation);
+        if (promise && promise.then) {
+          promise.then(_complete);
+        }
+        $animate.leave(spinner);
+      }
+      
+      function _onBeforeComplete() {
+        if (!$animate) {
+          $animate = $injector.get('$animate');
+        }
+        completeTimeout = $timeout(_aggregateSubsequentCall, 500);
+      }
+
       function _completeAnimation() {
+        _set(1);
         status = 0;
         started = false;
       }
 
-      function _complete() {
-        if (!$animate) {
-          $animate = $injector.get('$animate');
-        }
-
+      function _complete(callback) {
+        _completeAnimation();
         $rootScope.$broadcast('cfpLoadingBar:completed');
-        _set(1);
-
         $timeout.cancel(completeTimeout);
-
-        // Attempt to aggregate any start/complete calls within 500ms:
-        completeTimeout = $timeout(function() {
-          var promise = $animate.leave(loadingBarContainer, _completeAnimation);
-          if (promise && promise.then) {
-            promise.then(_completeAnimation);
-          }
-          $animate.leave(spinner);
-        }, 500);
       }
 
       return {
@@ -305,7 +308,7 @@ angular.module('cfp.loadingBar', [])
         set              : _set,
         status           : _status,
         inc              : _inc,
-        complete         : _complete,
+        complete         : _onBeforeComplete,
         includeSpinner   : this.includeSpinner,
         latencyThreshold : this.latencyThreshold,
         parentSelector   : this.parentSelector,
