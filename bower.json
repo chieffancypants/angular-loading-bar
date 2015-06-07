@@ -3,7 +3,8 @@
   "version": "0.7.1",
   "main": [
     "build/loading-bar.js",
-    "build/loading-bar.css"
+    "build/loading-bar.css",
+    "src/loading-bar.scss"
   ],
   "ignore": [
     "**/.*",

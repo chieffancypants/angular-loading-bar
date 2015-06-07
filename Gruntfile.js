@@ -78,6 +78,17 @@ module.exports = function(grunt) {
           'build/loading-bar.js':  'src/loading-bar.js',
         }
       }
+    },
+
+    sass: {
+      build: {
+        options: {
+          outputStyle: 'expanded',
+        },
+        files: {
+          'build/loading-bar-sass.css': 'src/loading-bar.scss',
+        }
+      }
     }
   });
 
@@ -85,10 +96,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-karma');
 
   grunt.registerTask('default', ['jshint', 'karma:unit', 'karma:unit13', 'uglify', 'cssmin', 'concat:build']);
   grunt.registerTask('test', ['karma:watch']);
   grunt.registerTask('build', ['default']);
+  grunt.registerTask('styles', ['sass:build']);
 
 };
