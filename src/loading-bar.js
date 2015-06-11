@@ -160,6 +160,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
 angular.module('cfp.loadingBar', [])
   .provider('cfpLoadingBar', function() {
 
+    this.autoIncrement = true;
     this.includeSpinner = true;
     this.includeBar = true;
     this.latencyThreshold = 100;
@@ -180,6 +181,7 @@ angular.module('cfp.loadingBar', [])
         started = false,
         status = 0;
 
+      var autoIncrement = this.autoIncrement;
       var includeSpinner = this.includeSpinner;
       var includeBar = this.includeBar;
       var startSize = this.startSize;
@@ -230,10 +232,12 @@ angular.module('cfp.loadingBar', [])
         // increment loadingbar to give the illusion that there is always
         // progress but make sure to cancel the previous timeouts so we don't
         // have multiple incs running at the same time.
-        $timeout.cancel(incTimeout);
-        incTimeout = $timeout(function() {
-          _inc();
-        }, 250);
+        if (autoIncrement) {
+          $timeout.cancel(incTimeout);
+          incTimeout = $timeout(function() {
+            _inc();
+          }, 250);
+        }
       }
 
       /**
@@ -306,6 +310,7 @@ angular.module('cfp.loadingBar', [])
         status           : _status,
         inc              : _inc,
         complete         : _complete,
+        autoIncrement    : this.autoIncrement,
         includeSpinner   : this.includeSpinner,
         latencyThreshold : this.latencyThreshold,
         parentSelector   : this.parentSelector,
