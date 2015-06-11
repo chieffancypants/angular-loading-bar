@@ -13,7 +13,9 @@
 #loading-bar.ng-enter,
 #loading-bar.ng-leave.ng-leave-active,
 #loading-bar-spinner.ng-enter,
-#loading-bar-spinner.ng-leave.ng-leave-active {
+#loading-bar-spinner.ng-leave.ng-leave-active,
+#loading-bar-backdrop.ng-enter,
+#loading-bar-backdrop.ng-leave.ng-leave-active, {
   opacity: 0;
 }
 
@@ -22,6 +24,11 @@
 #loading-bar-spinner.ng-enter.ng-enter-active,
 #loading-bar-spinner.ng-leave {
   opacity: 1;
+}
+
+#loading-bar-backdrop.ng-enter.ng-enter-active,
+#loading-bar-backdrop.ng-leave {
+  opacity: .75;
 }
 
 #loading-bar .bar {
@@ -80,6 +87,17 @@
   -ms-animation:     loading-bar-spinner 400ms linear infinite;
   -o-animation:      loading-bar-spinner 400ms linear infinite;
   animation:         loading-bar-spinner 400ms linear infinite;
+}
+
+#loading-bar-backdrop {
+  background: #fff;
+  opacity: .75;
+  position: absolute;
+  z-index: 10001;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 @-webkit-keyframes loading-bar-spinner {
