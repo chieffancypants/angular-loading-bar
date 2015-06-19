@@ -1,5 +1,15 @@
 Changelog
 ==========
+## 0.8.0
+- auto incrementing is now configurable
+([#209](https://github.com/chieffancypants/angular-loading-bar/pull/209))
+- removed `version` from bower.json
+([#207](https://github.com/chieffancypants/angular-loading-bar/pull/207))
+- added support for webpack and browserify
+([#200](https://github.com/chieffancypants/angular-loading-bar/pull/200))
+- spinner border radius 10px -> 50%
+([#184](https://github.com/chieffancypants/angular-loading-bar/issues/184))
+
 
 ## 0.7.1
 - Merge correct PR for broken interceptor detection ([#133](https://github.com/chieffancypants/angular-loading-bar/pull/133), [#50](https://github.com/chieffancypants/angular-loading-bar/pull/50))
