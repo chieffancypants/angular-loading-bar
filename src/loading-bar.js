@@ -163,18 +163,21 @@ angular.module('cfp.loadingBar', [])
     this.autoIncrement = true;
     this.includeSpinner = true;
     this.includeBar = true;
+    this.includeBackdrop = false;
     this.latencyThreshold = 100;
     this.startSize = 0.02;
     this.parentSelector = 'body';
     this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
     this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
+    this.backdropTemplate = '<div id="loading-bar-backdrop"></div>';
 
     this.$get = ['$injector', '$document', '$timeout', '$rootScope', function ($injector, $document, $timeout, $rootScope) {
       var $animate;
       var $parentSelector = this.parentSelector,
         loadingBarContainer = angular.element(this.loadingBarTemplate),
         loadingBar = loadingBarContainer.find('div').eq(0),
-        spinner = angular.element(this.spinnerTemplate);
+        spinner = angular.element(this.spinnerTemplate),
+        backdrop = angular.element(this.backdropTemplate);
 
       var incTimeout,
         completeTimeout,
@@ -184,6 +187,7 @@ angular.module('cfp.loadingBar', [])
       var autoIncrement = this.autoIncrement;
       var includeSpinner = this.includeSpinner;
       var includeBar = this.includeBar;
+      var includeBackdrop = this.includeBackdrop;
       var startSize = this.startSize;
 
       /**
@@ -204,6 +208,10 @@ angular.module('cfp.loadingBar', [])
 
         $rootScope.$broadcast('cfpLoadingBar:started');
         started = true;
+
+        if (includeBackdrop) {
+          $animate.enter(backdrop, $parent, angular.element($parent[0].lastChild));
+        }
 
         if (includeBar) {
           $animate.enter(loadingBarContainer, $parent, angular.element($parent[0].lastChild));
@@ -301,6 +309,7 @@ angular.module('cfp.loadingBar', [])
             promise.then(_completeAnimation);
           }
           $animate.leave(spinner);
+          $animate.leave(backdrop);
         }, 500);
       }
 
