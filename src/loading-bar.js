@@ -194,7 +194,7 @@ angular.module('cfp.loadingBar', [])
           $animate = $injector.get('$animate');
         }
 
-        // $document.find is limited to lookups by name in jqLite
+        // $document.find is limited to lookups by tag name in jqLite
         // https://docs.angularjs.org/api/ng/function/angular.element
         var $parent = angular.element($document[0].querySelector($parentSelector)).eq(0);
         $timeout.cancel(completeTimeout);
