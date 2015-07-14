@@ -48,6 +48,9 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
        */
       var startTimeout;
 
+      $rootScope.$on('cfpLoadingBar:requestCompleted', function() {
+        reqsCompleted++;
+      });
 
       /**
        * calls cfpLoadingBar.complete() which removes the
@@ -304,12 +307,20 @@ angular.module('cfp.loadingBar', [])
         }, 500);
       }
 
+      /**
+       * Increments the number of completed requests
+       */
+      function _incCompletedRequests() {
+        $rootScope.$broadcast('cfpLoadingBar:requestCompleted');
+      }
+
       return {
         start            : _start,
         set              : _set,
         status           : _status,
         inc              : _inc,
         complete         : _complete,
+        incCompletedRequests: _incCompletedRequests,
         autoIncrement    : this.autoIncrement,
         includeSpinner   : this.includeSpinner,
         latencyThreshold : this.latencyThreshold,

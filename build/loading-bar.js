@@ -1,4 +1,4 @@
-/*! 
+/*!
  * angular-loading-bar v0.8.0
  * https://chieffancypants.github.io/angular-loading-bar
  * Copyright (c) 2015 Wes Cruver
@@ -54,6 +54,9 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
        */
       var startTimeout;
 
+      $rootScope.$on('cfpLoadingBar:requestCompleted', function() {
+        reqsCompleted++;
+      });
 
       /**
        * calls cfpLoadingBar.complete() which removes the
@@ -310,12 +313,20 @@ angular.module('cfp.loadingBar', [])
         }, 500);
       }
 
+      /**
+       * Increments the number of completed requests
+       */
+      function _incCompletedRequests() {
+        $rootScope.$broadcast('cfpLoadingBar:requestCompleted');
+      }
+
       return {
         start            : _start,
         set              : _set,
         status           : _status,
         inc              : _inc,
         complete         : _complete,
+        incCompletedRequests: _incCompletedRequests,
         autoIncrement    : this.autoIncrement,
         includeSpinner   : this.includeSpinner,
         latencyThreshold : this.latencyThreshold,
