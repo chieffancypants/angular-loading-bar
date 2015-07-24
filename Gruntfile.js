@@ -74,8 +74,14 @@ module.exports = function(grunt) {
           banner: '<%= banner %>'
         },
         files: {
-          'build/loading-bar.css': 'src/loading-bar.css',
           'build/loading-bar.js':  'src/loading-bar.js',
+        }
+      }
+    }
+    sass: {
+      dist: {
+        files: {
+          'build/loading-bar.css': 'src/loading-bar.css'
         }
       }
     }
@@ -87,7 +93,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('default', ['jshint', 'karma:unit', 'karma:unit13', 'uglify', 'cssmin', 'concat:build']);
+  grunt.registerTask('default', ['jshint', 'karma:unit', 'karma:unit13', 'uglify', 'sass', 'cssmin', 'concat:build']);
   grunt.registerTask('test', ['karma:watch']);
   grunt.registerTask('build', ['default']);
 
