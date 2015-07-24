@@ -4,7 +4,7 @@
 #loading-bar,
 #loading-bar-spinner {
   pointer-events: none;
-  transition: 350ms linear all;
+  transition: $angularLoadingBarDefaultTransitionDuration linear all;
 }
 
 #loading-bar.ng-enter,
@@ -22,11 +22,11 @@
 }
 
 #loading-bar .bar {
-  transition: width 350ms;
+  transition: width $angularLoadingBarDefaultTransitionDuration;
 
   background: #29d;
   position: fixed;
-  z-index: 10002;
+  z-index: $angularLoadingBarDefaultZindex;
   top: 0;
   left: 0;
   width: 100%;
@@ -50,7 +50,7 @@
 #loading-bar-spinner {
   display: block;
   position: fixed;
-  z-index: 10002;
+  z-index: $angularLoadingBarDefaultZindex;
   top: 10px;
   left: 10px;
 }
@@ -63,7 +63,7 @@
   border-top-color:  #29d;
   border-left-color: #29d;
   border-radius: 50%;
-  animation:         loading-bar-spinner 400ms linear infinite;
+  animation: loading-bar-spinner 400ms linear infinite;
 }
 
 @keyframes loading-bar-spinner {
