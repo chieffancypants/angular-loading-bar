@@ -80,7 +80,7 @@ angular.module('myApp', ['angular-loading-bar'])
 ```
 
 #### Set your favorite color:
-Like the spinner configuration above, the loading bar can also be turned off for cases where you only want the spinner:
+Change the color of the loading-bar and/or the spinner by giving one of the following color names
 
 ```js
 angular.module('myApp', ['angular-loading-bar'])
