@@ -1,0 +1,20 @@
+@mixin angularLoadingBarVariations() {
+    @each $color in $angularLoadingBarPredefinedColors {
+        #loading-bar.#{nth($color, 1)} {
+            .bar {
+                background: nth($color, 2);
+            }
+
+            .peg {
+                box-shadow: nth($color, 2) 1px 0 6px 1px;
+            }
+        }
+
+        #loading-bar-spinner.#{nth($color, 1)} {
+            .spinner-icon {
+                border-top-color:  nth($color, 2);
+                border-left-color: nth($color, 2);
+            }
+        }
+    }
+}
