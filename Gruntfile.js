@@ -29,7 +29,7 @@ module.exports = function(grunt) {
         report: 'gzip'
       },
       minify: {
-        src: 'src/loading-bar.css',
+        src: 'build/loading-bar.css',
         dest: 'build/loading-bar.min.css'
       }
     },
@@ -74,11 +74,38 @@ module.exports = function(grunt) {
           banner: '<%= banner %>'
         },
         files: {
-          'build/loading-bar.css': 'src/loading-bar.css',
           'build/loading-bar.js':  'src/loading-bar.js',
         }
       }
+    },
+    sass: {
+      dist: {
+        options: {
+          outputStyle: 'expanded',
+        },
+        files: {
+          'build/loading-bar.css': 'src/loading-bar.scss'
+        }
+      }
+    },
+    autoprefixer: {
+      options: {
+        annotation: false,
+        browsers: [
+          'last 5 versions',
+          'ie 8',
+          'ie 9',
+          'ie 10',
+          'android 4'
+        ],
+      },
+      dist: {
+        files: {
+          'build/loading-bar.css': 'build/loading-bar.css',
+        }
+      }
     }
+
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -86,8 +113,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-sass');
+  grunt.loadNpmTasks('grunt-autoprefixer');
 
-  grunt.registerTask('default', ['jshint', 'karma:unit', 'karma:unit13', 'uglify', 'cssmin', 'concat:build']);
+  grunt.registerTask('default', ['jshint', 'karma:unit', 'karma:unit13', 'uglify','css', 'concat:build']);
+  grunt.registerTask('css', ['sass', 'autoprefixer', 'cssmin']);
   grunt.registerTask('test', ['karma:watch']);
   grunt.registerTask('build', ['default']);
 

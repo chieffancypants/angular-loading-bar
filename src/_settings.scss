@@ -1,0 +1,55 @@
+// The positon of the loading bar
+$angularLoadingBarDefaultPositiont: fixed;
+
+// The left position
+$angularLoadingBarDefaultPositionLeft: 0;
+
+// The Top position
+$angularLoadingBarDefaultPositionTop: 0;
+
+// The default color of the loading bar
+$angularLoadingBarDefaultBackground: #29d;
+
+// The default duration of the transitions
+$angularLoadingBarDefaultTransitionDuration: 350ms;
+
+// The Z-index of the loading bar
+$angularLoadingBarDefaultZindex: 10002;
+
+// The height of the loading bar
+$angularLoadingBarDefaultHeight: 2px;
+
+// The width of the loading bar
+$angularLoadingBarDefaultWidth: 100%;
+
+// The border radius of the loading bar
+$angularLoadingBarDefaultBorderRadius: 0 1px 1px 0;
+
+// if you're not going to use the predifined themes set this val on false
+$angularLoadingBarApplyPredefinedColors: true;
+
+// Colors are based on the MD color palette of google
+// see: https://www.google.com/design/spec/style/color.html#color-color-palette
+// Classname =>  color
+// Example: .green => #4CAF50
+$angularLoadingBarPredefinedColors: ('red'              #F44336)
+                                    ('pink'             #E91E63)
+                                    ('purple'           #9C27B0)
+                                    ('deep-purple'      #9C27B0)
+                                    ('indigo'           #3F51B5)
+                                    ('blue'             #2196F3)
+                                    ('light-blue'       #03A9F4)
+                                    ('cyan'             #00BCD4)
+                                    ('teal'             #009688)
+                                    ('green'            #4CAF50)
+                                    ('light-green'      #8BC34A)
+                                    ('lime'             #CDDC39)
+                                    ('yellow'           #FFEB3B)
+                                    ('amber'            #FFC107)
+                                    ('orange'           #FF9800)
+                                    ('deep-orange'      #FF5722)
+                                    ('brown'            #795548)
+                                    ('grey'             #9E9E9E)
+                                    ('blue-grey'        #607D8B)
+                                    ('back'             #000000)
+                                    ('white'            #ffffff);

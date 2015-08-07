@@ -1,19 +1,8 @@
-/*! 
- * angular-loading-bar v0.8.0
- * https://chieffancypants.github.io/angular-loading-bar
- * Copyright (c) 2015 Wes Cruver
- * License: MIT
- */
-
-/* Make clicks pass-through */
 #loading-bar,
 #loading-bar-spinner {
   pointer-events: none;
-  -webkit-pointer-events: none;
   -webkit-transition: 350ms linear all;
-  -moz-transition: 350ms linear all;
-  -o-transition: 350ms linear all;
-  transition: 350ms linear all;
+          transition: 350ms linear all;
 }
 
 #loading-bar.ng-enter,
@@ -32,10 +21,7 @@
 
 #loading-bar .bar {
   -webkit-transition: width 350ms;
-  -moz-transition: width 350ms;
-  -o-transition: width 350ms;
-  transition: width 350ms;
-
+          transition: width 350ms;
   background: #29d;
   position: fixed;
   z-index: 10002;
@@ -43,11 +29,9 @@
   left: 0;
   width: 100%;
   height: 2px;
-  border-bottom-right-radius: 1px;
-  border-top-right-radius: 1px;
+  border-radius: 0 1px 1px 0;
 }
 
-/* Fancy blur effect */
 #loading-bar .peg {
   position: absolute;
   width: 70px;
@@ -55,12 +39,7 @@
   top: 0;
   height: 2px;
   opacity: .45;
-  -moz-box-shadow: #29d 1px 0 6px 1px;
-  -ms-box-shadow: #29d 1px 0 6px 1px;
-  -webkit-box-shadow: #29d 1px 0 6px 1px;
   box-shadow: #29d 1px 0 6px 1px;
-  -moz-border-radius: 100%;
-  -webkit-border-radius: 100%;
   border-radius: 100%;
 }
 
@@ -75,36 +54,313 @@
 #loading-bar-spinner .spinner-icon {
   width: 14px;
   height: 14px;
-
-  border:  solid 2px transparent;
-  border-top-color:  #29d;
+  border: solid 2px transparent;
+  border-top-color: #29d;
   border-left-color: #29d;
   border-radius: 50%;
-
   -webkit-animation: loading-bar-spinner 400ms linear infinite;
-  -moz-animation:    loading-bar-spinner 400ms linear infinite;
-  -ms-animation:     loading-bar-spinner 400ms linear infinite;
-  -o-animation:      loading-bar-spinner 400ms linear infinite;
-  animation:         loading-bar-spinner 400ms linear infinite;
+          animation: loading-bar-spinner 400ms linear infinite;
+}
+
+#loading-bar.red .bar {
+  background: #F44336;
+}
+
+#loading-bar.red .peg {
+  box-shadow: #F44336 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.red .spinner-icon {
+  border-top-color: #F44336;
+  border-left-color: #F44336;
+}
+
+#loading-bar.pink .bar {
+  background: #E91E63;
+}
+
+#loading-bar.pink .peg {
+  box-shadow: #E91E63 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.pink .spinner-icon {
+  border-top-color: #E91E63;
+  border-left-color: #E91E63;
+}
+
+#loading-bar.purple .bar {
+  background: #9C27B0;
+}
+
+#loading-bar.purple .peg {
+  box-shadow: #9C27B0 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.purple .spinner-icon {
+  border-top-color: #9C27B0;
+  border-left-color: #9C27B0;
+}
+
+#loading-bar.deep-purple .bar {
+  background: #9C27B0;
+}
+
+#loading-bar.deep-purple .peg {
+  box-shadow: #9C27B0 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.deep-purple .spinner-icon {
+  border-top-color: #9C27B0;
+  border-left-color: #9C27B0;
+}
+
+#loading-bar.indigo .bar {
+  background: #3F51B5;
+}
+
+#loading-bar.indigo .peg {
+  box-shadow: #3F51B5 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.indigo .spinner-icon {
+  border-top-color: #3F51B5;
+  border-left-color: #3F51B5;
+}
+
+#loading-bar.blue .bar {
+  background: #2196F3;
+}
+
+#loading-bar.blue .peg {
+  box-shadow: #2196F3 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.blue .spinner-icon {
+  border-top-color: #2196F3;
+  border-left-color: #2196F3;
+}
+
+#loading-bar.light-blue .bar {
+  background: #03A9F4;
+}
+
+#loading-bar.light-blue .peg {
+  box-shadow: #03A9F4 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.light-blue .spinner-icon {
+  border-top-color: #03A9F4;
+  border-left-color: #03A9F4;
+}
+
+#loading-bar.cyan .bar {
+  background: #00BCD4;
+}
+
+#loading-bar.cyan .peg {
+  box-shadow: #00BCD4 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.cyan .spinner-icon {
+  border-top-color: #00BCD4;
+  border-left-color: #00BCD4;
+}
+
+#loading-bar.teal .bar {
+  background: #009688;
+}
+
+#loading-bar.teal .peg {
+  box-shadow: #009688 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.teal .spinner-icon {
+  border-top-color: #009688;
+  border-left-color: #009688;
+}
+
+#loading-bar.green .bar {
+  background: #4CAF50;
+}
+
+#loading-bar.green .peg {
+  box-shadow: #4CAF50 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.green .spinner-icon {
+  border-top-color: #4CAF50;
+  border-left-color: #4CAF50;
+}
+
+#loading-bar.light-green .bar {
+  background: #8BC34A;
+}
+
+#loading-bar.light-green .peg {
+  box-shadow: #8BC34A 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.light-green .spinner-icon {
+  border-top-color: #8BC34A;
+  border-left-color: #8BC34A;
+}
+
+#loading-bar.lime .bar {
+  background: #CDDC39;
+}
+
+#loading-bar.lime .peg {
+  box-shadow: #CDDC39 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.lime .spinner-icon {
+  border-top-color: #CDDC39;
+  border-left-color: #CDDC39;
+}
+
+#loading-bar.yellow .bar {
+  background: #FFEB3B;
+}
+
+#loading-bar.yellow .peg {
+  box-shadow: #FFEB3B 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.yellow .spinner-icon {
+  border-top-color: #FFEB3B;
+  border-left-color: #FFEB3B;
+}
+
+#loading-bar.amber .bar {
+  background: #FFC107;
+}
+
+#loading-bar.amber .peg {
+  box-shadow: #FFC107 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.amber .spinner-icon {
+  border-top-color: #FFC107;
+  border-left-color: #FFC107;
+}
+
+#loading-bar.orange .bar {
+  background: #FF9800;
+}
+
+#loading-bar.orange .peg {
+  box-shadow: #FF9800 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.orange .spinner-icon {
+  border-top-color: #FF9800;
+  border-left-color: #FF9800;
+}
+
+#loading-bar.deep-orange .bar {
+  background: #FF5722;
+}
+
+#loading-bar.deep-orange .peg {
+  box-shadow: #FF5722 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.deep-orange .spinner-icon {
+  border-top-color: #FF5722;
+  border-left-color: #FF5722;
+}
+
+#loading-bar.brown .bar {
+  background: #795548;
+}
+
+#loading-bar.brown .peg {
+  box-shadow: #795548 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.brown .spinner-icon {
+  border-top-color: #795548;
+  border-left-color: #795548;
+}
+
+#loading-bar.grey .bar {
+  background: #9E9E9E;
+}
+
+#loading-bar.grey .peg {
+  box-shadow: #9E9E9E 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.grey .spinner-icon {
+  border-top-color: #9E9E9E;
+  border-left-color: #9E9E9E;
+}
+
+#loading-bar.blue-grey .bar {
+  background: #607D8B;
+}
+
+#loading-bar.blue-grey .peg {
+  box-shadow: #607D8B 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.blue-grey .spinner-icon {
+  border-top-color: #607D8B;
+  border-left-color: #607D8B;
+}
+
+#loading-bar.back .bar {
+  background: #000000;
+}
+
+#loading-bar.back .peg {
+  box-shadow: #000000 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.back .spinner-icon {
+  border-top-color: #000000;
+  border-left-color: #000000;
+}
+
+#loading-bar.white .bar {
+  background: #ffffff;
+}
+
+#loading-bar.white .peg {
+  box-shadow: #ffffff 1px 0 6px 1px;
+}
+
+#loading-bar-spinner.white .spinner-icon {
+  border-top-color: #ffffff;
+  border-left-color: #ffffff;
 }
 
 @-webkit-keyframes loading-bar-spinner {
-  0%   { -webkit-transform: rotate(0deg);   transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
 }
-@-moz-keyframes loading-bar-spinner {
-  0%   { -moz-transform: rotate(0deg);   transform: rotate(0deg); }
-  100% { -moz-transform: rotate(360deg); transform: rotate(360deg); }
-}
-@-o-keyframes loading-bar-spinner {
-  0%   { -o-transform: rotate(0deg);   transform: rotate(0deg); }
-  100% { -o-transform: rotate(360deg); transform: rotate(360deg); }
-}
-@-ms-keyframes loading-bar-spinner {
-  0%   { -ms-transform: rotate(0deg);   transform: rotate(0deg); }
-  100% { -ms-transform: rotate(360deg); transform: rotate(360deg); }
-}
+
 @keyframes loading-bar-spinner {
-  0%   { transform: rotate(0deg);   transform: rotate(0deg); }
-  100% { transform: rotate(360deg); transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
 }

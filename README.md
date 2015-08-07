@@ -17,7 +17,7 @@ This is mostly cool because you simply include it in your app, and it works.  Th
     ```js
     angular.module('myApp', ['angular-loading-bar', 'ngAnimate'])
     ```
-    
+
 2. include the supplied JS and CSS file (or create your own CSS to override defaults).
 
     ```html
@@ -78,6 +78,44 @@ angular.module('myApp', ['angular-loading-bar'])
     cfpLoadingBarProvider.includeBar = false;
   }])
 ```
+
+#### Set your favorite color:
+Change the color of the loading-bar and/or the spinner by giving one of the following color names
+
+```js
+angular.module('myApp', ['angular-loading-bar'])
+  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.loadingBarColor = 'pink';
+    cfpLoadingBarProvider.spinnerColor = 'blue';
+  }])
+```
+
+Predefined colors are based on the [Google Material](https://www.google.com/design/spec/style/color.html#color-color-palette) pallet
+
+| class            | color   |
+|------------------|---------|
+| red              | #F44336 |
+| pink             | #E91E63 |
+| purple           | #9C27B0 |
+| deep-purple      | #9C27B0 |
+| indigo           | #3F51B5 |
+| blue             | #2196F3 |
+| light-blue       | #03A9F4 |
+| cyan             | #00BCD4 |
+| teal             | #009688 |
+| green            | #4CAF50 |
+| light-green      | #8BC34A |
+| lime             | #CDDC39 |
+| yellow           | #FFEB3B |
+| amber            | #FFC107 |
+| orange           | #FF9800 |
+| deep-orange      | #FF5722 |
+| brown            | #795548 |
+| grey             | #9E9E9E |
+| blue-grey        | #607D8B |
+| back             | #000000 |
+| white            | #ffffff |
+
 
 #### Latency Threshold
 By default, the loading bar will only display after it has been waiting for a response for over 100ms.  This helps keep things feeling snappy, and avoids the annoyingness of showing a loading bar every few seconds on really chatty applications.  This threshold is totally configurable:
@@ -151,7 +189,7 @@ cfpLoadingBar.inc();
 // increments the loading bar by a random amount.
 // It is important to note that the auto incrementing will begin to slow down as
 // the progress increases.  This is to prevent the loading bar from appearing
-// completed (or almost complete) before the XHR request has responded. 
+// completed (or almost complete) before the XHR request has responded.
 
 cfpLoadingBar.set(0.3) // Set the loading bar to 30%
 cfpLoadingBar.status() // Returns the loading bar's progress.
@@ -173,7 +211,7 @@ The loading bar broadcasts the following events over $rootScope allowing further
 
 **`cfpLoadingBar:completed`** triggered once when the all XHR requests have returned (either successfully or not)
 
-## Credits: 
+## Credits:
 Credit goes to [rstacruz](https://github.com/rstacruz) for his excellent [nProgress](https://github.com/rstacruz/nprogress).
 
 ## License:

@@ -1,0 +1,77 @@
+@import 'settings';
+@import 'loading-bar-variations';
+
+// Make clicks pass-through
+#loading-bar,
+#loading-bar-spinner {
+    pointer-events: none;
+    transition: $angularLoadingBarDefaultTransitionDuration linear all;
+}
+
+#loading-bar.ng-enter,
+#loading-bar.ng-leave.ng-leave-active,
+#loading-bar-spinner.ng-enter,
+#loading-bar-spinner.ng-leave.ng-leave-active {
+    opacity: 0;
+}
+
+#loading-bar.ng-enter.ng-enter-active,
+#loading-bar.ng-leave,
+#loading-bar-spinner.ng-enter.ng-enter-active,
+#loading-bar-spinner.ng-leave {
+    opacity: 1;
+}
+
+// Loadingbar
+#loading-bar {
+    .bar {
+        transition: width $angularLoadingBarDefaultTransitionDuration;
+        background: $angularLoadingBarDefaultBackground;
+        position: $angularLoadingBarDefaultPositiont;
+        z-index: $angularLoadingBarDefaultZindex;
+        top: $angularLoadingBarDefaultPositionTop;
+        left: $angularLoadingBarDefaultPositionLeft;
+        width: $angularLoadingBarDefaultWidth;
+        height: $angularLoadingBarDefaultHeight;
+        border-radius: $angularLoadingBarDefaultBorderRadius;
+    }
+
+    // Fancy blur effect
+    .peg {
+        position: absolute;
+        width: 70px;
+        right: 0;
+        top: 0;
+        height: 2px;
+        opacity: .45;
+        box-shadow: $angularLoadingBarDefaultBackground 1px 0 6px 1px;
+        border-radius: 100%;
+    }
+}
+
+// Loadingbar Spinner
+#loading-bar-spinner {
+    display: block;
+    position: fixed;
+    z-index: $angularLoadingBarDefaultZindex;
+    top: 10px;
+    left: 10px;
+
+    .spinner-icon {
+        width: 14px;
+        height: 14px;
+        border: solid 2px transparent;
+        border-top-color:  $angularLoadingBarDefaultBackground;
+        border-left-color: $angularLoadingBarDefaultBackground;
+        border-radius: 50%;
+        animation: loading-bar-spinner 400ms linear infinite;
+    }
+}
+@if $angularLoadingBarApplyPredefinedColors {
+    @include angularLoadingBarVariations();
+}
+
+@keyframes loading-bar-spinner {
+    0%   { transform: rotate(0deg);   transform: rotate(0deg); }
+    100% { transform: rotate(360deg); transform: rotate(360deg); }
+}

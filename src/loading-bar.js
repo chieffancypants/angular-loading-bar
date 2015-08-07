@@ -165,6 +165,8 @@ angular.module('cfp.loadingBar', [])
     this.includeBar = true;
     this.latencyThreshold = 100;
     this.startSize = 0.02;
+    this.loadingBarColor = '';
+    this.spinnerColor = '';
     this.parentSelector = 'body';
     this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
     this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
@@ -184,6 +186,8 @@ angular.module('cfp.loadingBar', [])
       var autoIncrement = this.autoIncrement;
       var includeSpinner = this.includeSpinner;
       var includeBar = this.includeBar;
+      var loadingBarColor = this.loadingBarColor;
+      var spinnerColor = this.spinnerColor;
       var startSize = this.startSize;
 
       /**
@@ -211,6 +215,13 @@ angular.module('cfp.loadingBar', [])
 
         if (includeSpinner) {
           $animate.enter(spinner, $parent, angular.element($parent[0].lastChild));
+        }
+
+        if (loadingBarColor !== '') {
+            loadingBarContainer.addClass(loadingBarColor);
+        }
+        if (spinnerBarColor !== '') {
+            spinner.addClass(spinnerBarColor);
         }
 
         _set(startSize);
