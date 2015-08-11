@@ -79,6 +79,16 @@ angular.module('myApp', ['angular-loading-bar'])
   }])
 ```
 
+#### Customize the template:
+If you'd like to replace the default HTML template you can configure it by providing inline HTML as a string:
+
+```js
+angular.module('myApp', ['angular-loading-bar'])
+  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Loading...</div>';
+  }])
+```
+
 #### Latency Threshold
 By default, the loading bar will only display after it has been waiting for a response for over 100ms.  This helps keep things feeling snappy, and avoids the annoyingness of showing a loading bar every few seconds on really chatty applications.  This threshold is totally configurable:
 
