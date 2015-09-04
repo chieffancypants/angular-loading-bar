@@ -29,7 +29,7 @@ module.exports = function(grunt) {
         report: 'gzip'
       },
       minify: {
-        src: 'src/loading-bar.css',
+        src: 'build/loading-bar.css',
         dest: 'build/loading-bar.min.css'
       }
     },
@@ -78,6 +78,17 @@ module.exports = function(grunt) {
           'build/loading-bar.js':  'src/loading-bar.js',
         }
       }
+    },
+
+    postcss: {
+      options: {
+        processors: [
+          require('autoprefixer-core')({browsers: 'last 2 versions, Firefox ESR'}) // add vendor prefixes
+        ]
+      },
+      build: {
+        src: 'build/loading-bar.css'
+      }
     }
   });
 
@@ -85,9 +96,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-postcss');
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('default', ['jshint', 'karma:unit', 'karma:unit13', 'uglify', 'cssmin', 'concat:build']);
+  grunt.registerTask('default', ['jshint', 'karma:unit', 'karma:unit13', 'uglify', 'concat:build', 'postcss:build', 'cssmin']);
   grunt.registerTask('test', ['karma:watch']);
   grunt.registerTask('build', ['default']);
 
