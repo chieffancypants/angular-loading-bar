@@ -41,6 +41,12 @@
   border-top-right-radius: 1px;
 }
 
+.to-bottom {
+  position: absolute!important;
+  top: auto!important;
+  bottom: 0!important;
+}
+
 /* Fancy blur effect */
 #loading-bar .peg {
   position: absolute;
