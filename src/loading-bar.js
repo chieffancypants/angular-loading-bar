@@ -163,23 +163,26 @@ angular.module('cfp.loadingBar', [])
     this.autoIncrement = true;
     this.includeSpinner = true;
     this.includeBar = true;
+    this.toBottom = false;
     this.latencyThreshold = 100;
     this.startSize = 0.02;
     this.parentSelector = 'body';
-    this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
-    this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
 
     this.$get = ['$injector', '$document', '$timeout', '$rootScope', function ($injector, $document, $timeout, $rootScope) {
+      var spinnerTemplate = this.spinnerTemplate || '<div id="loading-bar-spinner"><div class="spinner-icon '+(this.toBottom ? 'to-bottom' : "")+'"></div></div>';
+      var loadingBarTemplate = this.loadingBarTemplate || '<div id="loading-bar"><div class="bar '+(this.toBottom ? 'to-bottom' : "")+'"><div class="peg"></div></div></div>';
+
       var $animate;
       var $parentSelector = this.parentSelector,
-        loadingBarContainer = angular.element(this.loadingBarTemplate),
+        loadingBarContainer = angular.element(loadingBarTemplate),
         loadingBar = loadingBarContainer.find('div').eq(0),
-        spinner = angular.element(this.spinnerTemplate);
+        spinner = angular.element(spinnerTemplate);
 
       var incTimeout,
         completeTimeout,
         started = false,
-        status = 0;
+        status = 0,
+        triesLimit = 5;
 
       var autoIncrement = this.autoIncrement;
       var includeSpinner = this.includeSpinner;
@@ -194,23 +197,42 @@ angular.module('cfp.loadingBar', [])
           $animate = $injector.get('$animate');
         }
 
-        var $parent = $document.find($parentSelector).eq(0);
+
         $timeout.cancel(completeTimeout);
 
         // do not continually broadcast the started event:
         if (started) {
           return;
         }
-
         $rootScope.$broadcast('cfpLoadingBar:started');
         started = true;
 
+        var tryNum = 0;
+
+        /**
+         * trying to add our element to the DOM.
+         * If we can't get $parent, try again  0.5 sec.
+         * @param element
+         */
+        function addElement (element) {
+          var $parent = $document.find($parentSelector).eq(0);
+          if ($parent[0]) {
+            $animate.enter(element, $parent, angular.element($parent[0].lastChild));
+          } else {
+            if (tryNum < triesLimit) {
+              setTimeout(function () {
+                addElement(element);
+                tryNum++;
+              }, 500);
+            }
+          }
+        }
         if (includeBar) {
-          $animate.enter(loadingBarContainer, $parent, angular.element($parent[0].lastChild));
+          addElement(loadingBarContainer);
         }
 
         if (includeSpinner) {
-          $animate.enter(spinner, $parent, angular.element($parent[0].lastChild));
+          addElement(spinner);
         }
 
         _set(startSize);
