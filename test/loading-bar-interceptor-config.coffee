@@ -96,3 +96,19 @@ describe 'loadingBarInterceptor Service - config options', ->
       expect(children[1].id).toBe 'loading-bar-spinner'
       cfpLoadingBar.complete()
       $timeout.flush()
+
+  it 'should append the loading bar to the body if parentSelector is empty', ->
+    module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
+      cfpLoadingBarProvider.parentSelector = '#doesnotexist'
+      return
+    inject ($timeout, $document, cfpLoadingBar) ->
+      parent = $document[0].querySelector(cfpLoadingBar.parentSelector)
+      expect(parent).toBeFalsy;
+      body = $document[0].querySelector 'body'
+      cfpLoadingBar.start()
+      bar = angular.element(body.querySelector '#loading-bar');
+      spinner = angular.element(body.querySelector '#loading-bar-spinner');
+      expect(bar.length).toBe 1
+      expect(spinner.length).toBe 1
+      cfpLoadingBar.complete()
+      $timeout.flush()

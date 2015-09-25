@@ -194,9 +194,6 @@ angular.module('cfp.loadingBar', [])
           $animate = $injector.get('$animate');
         }
 
-        // $document.find is limited to lookups by tag name in jqLite
-        // https://docs.angularjs.org/api/ng/function/angular.element
-        var $parent = angular.element($document[0].querySelector($parentSelector)).eq(0);
         $timeout.cancel(completeTimeout);
 
         // do not continually broadcast the started event:
@@ -204,15 +201,24 @@ angular.module('cfp.loadingBar', [])
           return;
         }
 
+        var parent = $document[0].querySelector($parentSelector);
+
+        if (! parent) {
+          parent = $document[0].querySelector('body');
+        }
+
+        var $parent = angular.element(parent);
+        var $after = parent.lastChild && angular.element(parent.lastChild);
+
         $rootScope.$broadcast('cfpLoadingBar:started');
         started = true;
 
         if (includeBar) {
-          $animate.enter(loadingBarContainer, $parent, $parent[0].lastChild && angular.element($parent[0].lastChild));
+          $animate.enter(loadingBarContainer, $parent, $after);
         }
 
         if (includeSpinner) {
-          $animate.enter(spinner, $parent, $parent[0].lastChild && angular.element($parent[0].lastChild));
+          $animate.enter(spinner, $parent, loadingBarContainer);
         }
 
         _set(startSize);
