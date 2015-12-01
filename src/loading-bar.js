@@ -107,8 +107,9 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
         },
 
         'response': function(response) {
+          // https://github.com/chieffancypants/angular-loading-bar/pull/50
           if (!response || !response.config) {
-            $log.error('Broken interceptor detected: Config object not supplied in response:\n https://github.com/chieffancypants/angular-loading-bar/pull/50');
+            $log.error('Broken interceptor detected: Config object not supplied in response');
             return response;
           }
 
@@ -125,8 +126,9 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
         },
 
         'responseError': function(rejection) {
+          // https://github.com/chieffancypants/angular-loading-bar/pull/50
           if (!rejection || !rejection.config) {
-            $log.error('Broken interceptor detected: Config object not supplied in rejection:\n https://github.com/chieffancypants/angular-loading-bar/pull/50');
+            $log.error('Broken interceptor detected: Config object not supplied in rejection');
             return $q.reject(rejection);
           }
 
