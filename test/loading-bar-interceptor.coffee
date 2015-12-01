@@ -490,7 +490,7 @@ describe 'LoadingBar only', ->
 
 
 describe 'Interceptor tests', ->
-  provider = $http = $httpBackend = $log = $document = null
+  provider = $http = $httpBackend = $log = null
   endpoint = '/service'
   response = {message:'OK'}
 
@@ -523,8 +523,7 @@ describe 'Interceptor tests', ->
   describe 'Error response', ->
 
     beforeEach ->
-      module 'chieffancypants.loadingBar', ($httpProvider, cfpLoadingBarProvider) ->
-          loadingBar = cfpLoadingBarProvider
+      module 'chieffancypants.loadingBar', ($httpProvider) ->
           provider = $httpProvider
           provider.interceptors.push ($q) ->
             responseError: (resp) ->
@@ -536,7 +535,6 @@ describe 'Interceptor tests', ->
           $http = _$http_
           $httpBackend = _$httpBackend_
           $log = _$log_
-          $document = _$document_
 
 
     it 'should warn the user for responses with no config on the response', ->
