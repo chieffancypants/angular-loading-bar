@@ -41,6 +41,10 @@
   border-top-right-radius: 1px;
 }
 
+#loading-bar.light .bar {
+  background-color: white;
+}
+
 /* Fancy blur effect */
 #loading-bar .peg {
   position: absolute;
@@ -56,6 +60,13 @@
   -moz-border-radius: 100%;
   -webkit-border-radius: 100%;
   border-radius: 100%;
+}
+
+#loading-bar.light .peg {
+  -moz-box-shadow: white 6px 0 6px 6px;
+  -ms-box-shadow: white 6px 0 6px 6px;
+  -webkit-box-shadow: white 6px 0 6px 6px;
+  box-shadow: white 6px 0 6px 6px;
 }
 
 #loading-bar-spinner {
@@ -80,6 +91,11 @@
   -ms-animation:     loading-bar-spinner 400ms linear infinite;
   -o-animation:      loading-bar-spinner 400ms linear infinite;
   animation:         loading-bar-spinner 400ms linear infinite;
+}
+
+#loading-bar-spinner.light .spinner-icon {
+  border-top-color:  white;
+  border-left-color: white;
 }
 
 @-webkit-keyframes loading-bar-spinner {
