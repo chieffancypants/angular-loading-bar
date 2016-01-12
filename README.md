@@ -17,7 +17,7 @@ This is mostly cool because you simply include it in your app, and it works.  Th
     ```js
     angular.module('myApp', ['angular-loading-bar', 'ngAnimate'])
     ```
-    
+
 2. include the supplied JS and CSS file (or create your own CSS to override defaults).
 
     ```html
@@ -87,6 +87,20 @@ angular.module('myApp', ['angular-loading-bar'])
   .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Loading...</div>';
   }])
+```
+
+#### Position the template:
+If you'd like to position the loadingBar or spinner, provide a CSS selector to the element you'd like the template injected into. The default is the `<body>` element:
+
+```js
+angular.module('myApp', ['angular-loading-bar'])
+  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
+    cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';
+  }])
+```
+```html
+<div id="loading-bar-container"></div>
 ```
 
 #### Latency Threshold
@@ -161,7 +175,7 @@ cfpLoadingBar.inc();
 // increments the loading bar by a random amount.
 // It is important to note that the auto incrementing will begin to slow down as
 // the progress increases.  This is to prevent the loading bar from appearing
-// completed (or almost complete) before the XHR request has responded. 
+// completed (or almost complete) before the XHR request has responded.
 
 cfpLoadingBar.set(0.3) // Set the loading bar to 30%
 cfpLoadingBar.status() // Returns the loading bar's progress.
@@ -183,7 +197,7 @@ The loading bar broadcasts the following events over $rootScope allowing further
 
 **`cfpLoadingBar:completed`** triggered once when the all XHR requests have returned (either successfully or not)
 
-## Credits: 
+## Credits:
 Credit goes to [rstacruz](https://github.com/rstacruz) for his excellent [nProgress](https://github.com/rstacruz/nprogress).
 
 ## License:
