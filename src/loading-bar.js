@@ -24,7 +24,7 @@ angular.module('chieffancypants.loadingBar', ['cfp.loadingBarInterceptor']);
  * Registers itself as an Angular interceptor and listens for XHR requests.
  */
 angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
-  .config(['$httpProvider', function ($httpProvider) {
+  .config(['$httpProvider', 'cfpLoadingBarProvider', function ($httpProvider, cfpLoadingBarProvider) {
 
     var interceptor = ['$q', '$cacheFactory', '$timeout', '$rootScope', '$log', 'cfpLoadingBar', function ($q, $cacheFactory, $timeout, $rootScope, $log, cfpLoadingBar) {
 
@@ -93,7 +93,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
         'request': function(config) {
           // Check to make sure this request hasn't already been cached and that
           // the requester didn't explicitly ask us to ignore this request:
-          if (!config.ignoreLoadingBar && !isCached(config)) {
+          if (cfpLoadingBarProvider.interceptor && !config.ignoreLoadingBar && !isCached(config)) {
             $rootScope.$broadcast('cfpLoadingBar:loading', {url: config.url});
             if (reqsTotal === 0) {
               startTimeout = $timeout(function() {
@@ -112,7 +112,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
             return response;
           }
 
-          if (!response.config.ignoreLoadingBar && !isCached(response.config)) {
+          if (cfpLoadingBarProvider.interceptor && !response.config.ignoreLoadingBar && !isCached(response.config)) {
             reqsCompleted++;
             $rootScope.$broadcast('cfpLoadingBar:loaded', {url: response.config.url, result: response});
             if (reqsCompleted >= reqsTotal) {
@@ -130,7 +130,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
             return $q.reject(rejection);
           }
 
-          if (!rejection.config.ignoreLoadingBar && !isCached(rejection.config)) {
+          if (cfpLoadingBarProvider.interceptor && !rejection.config.ignoreLoadingBar && !isCached(rejection.config)) {
             reqsCompleted++;
             $rootScope.$broadcast('cfpLoadingBar:loaded', {url: rejection.config.url, result: rejection});
             if (reqsCompleted >= reqsTotal) {
@@ -160,6 +160,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
 angular.module('cfp.loadingBar', [])
   .provider('cfpLoadingBar', function() {
 
+    this.interceptor = true;
     this.autoIncrement = true;
     this.includeSpinner = true;
     this.includeBar = true;
