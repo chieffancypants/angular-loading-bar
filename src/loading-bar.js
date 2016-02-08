@@ -206,11 +206,11 @@ angular.module('cfp.loadingBar', [])
         started = true;
 
         if (includeBar) {
-          $animate.enter(loadingBarContainer, $parent, angular.element($parent[0].lastChild));
+          $animate.enter(loadingBarContainer, $parent, $parent.children().length > 0 ? $parent.children().last() : null);
         }
 
         if (includeSpinner) {
-          $animate.enter(spinner, $parent, angular.element($parent[0].lastChild));
+          $animate.enter(spinner, $parent, $parent.children().length > 0 ? $parent.children().last() : null);
         }
 
         _set(startSize);
