@@ -3,6 +3,7 @@
   "version": "0.8.0",
   "description": "An automatic loading bar for AngularJS",
   "main": "index.js",
+  "style": "build/loading-bar.css",
   "directories": {
     "example": "example",
     "test": "test"
