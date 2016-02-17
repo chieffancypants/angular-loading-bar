@@ -131,7 +131,17 @@ $http.post('/save', data, {
 
 ```
 
+#### Light theme for web page with dark background:
+The loading bar and spinner provide a light theme which can be used in the web page with dark background:
 
+```js
+angular.module('myApp', ['angular-loading-bar'])
+  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.lightTheme = true;
+  }])
+```
+
+The default theme is dark, which means the lightTheme is false.
 
 
 ## How it works:
@@ -171,6 +181,23 @@ cfpLoadingBar.complete()
 // Set the loading bar's progress to 100%, and then remove it from the DOM.
 
 ```
+
+### Show loading bar when ui-router is loading view
+If you are using ui-router to load view, you will need the service API to operate the loading bar:
+
+```js
+angular.module('myApp', ['angular-loading-bar'])
+.run(function($rootScope, cfpLoadingBar){
+    $rootScope.$on('$stateChangeStart', function() {
+        cfpLoadingBar.start();
+    });
+
+    $rootScope.$on('$stateChangeSuccess', function() {
+        cfpLoadingBar.complete();
+    });
+});
+```
+
 
 ## Events
 The loading bar broadcasts the following events over $rootScope allowing further customization:

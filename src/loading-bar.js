@@ -166,6 +166,7 @@ angular.module('cfp.loadingBar', [])
     this.latencyThreshold = 100;
     this.startSize = 0.02;
     this.parentSelector = 'body';
+    this.lightTheme = false;
     this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
     this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
 
@@ -185,6 +186,7 @@ angular.module('cfp.loadingBar', [])
       var includeSpinner = this.includeSpinner;
       var includeBar = this.includeBar;
       var startSize = this.startSize;
+      var lightTheme = this.lightTheme;
 
       /**
        * Inserts the loading bar element into the dom, and sets it to 2%
@@ -206,10 +208,16 @@ angular.module('cfp.loadingBar', [])
         started = true;
 
         if (includeBar) {
+          if (lightTheme) {
+            loadingBarContainer.addClass('light');
+          }
           $animate.enter(loadingBarContainer, $parent, angular.element($parent[0].lastChild));
         }
 
         if (includeSpinner) {
+          if (lightTheme) {
+            spinner.addClass('light');
+          }
           $animate.enter(spinner, $parent, angular.element($parent[0].lastChild));
         }
 
