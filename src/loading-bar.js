@@ -170,6 +170,8 @@ angular.module('cfp.loadingBar', [])
     this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
 
     this.$get = ['$injector', '$document', '$timeout', '$rootScope', function ($injector, $document, $timeout, $rootScope) {
+      var _this = this;
+
       var $animate;
       var $parentSelector = this.parentSelector,
         loadingBarContainer = angular.element(this.loadingBarTemplate),
@@ -182,9 +184,27 @@ angular.module('cfp.loadingBar', [])
         status = 0;
 
       var autoIncrement = this.autoIncrement;
-      var includeSpinner = this.includeSpinner;
-      var includeBar = this.includeBar;
       var startSize = this.startSize;
+
+      /**
+       * set includeSpinner in runtime
+       */
+      function _setSpinner(set){
+        if(set !== undefined){
+          _this.includeSpinner = set;
+        }
+        return _this.includeSpinner;
+      }
+
+      /**
+       * set includeBar in runtime
+       */
+      function _setBar(set){
+        if(set !== undefined){
+          _this.includeBar = set;
+        }
+        return _this.includeBar;
+      }
 
       /**
        * Inserts the loading bar element into the dom, and sets it to 2%
@@ -207,12 +227,12 @@ angular.module('cfp.loadingBar', [])
         
         var $children = $parent.children();
 
-        if (includeBar) {
+        if (_this.includeBar) {
           
           $animate.enter(loadingBarContainer, $parent, $children.length > 0 ? $children[$children.length - 1] : null);
         }
 
-        if (includeSpinner) {
+        if (_this.includeSpinner) {
           $animate.enter(spinner, $parent, $children.length > 0 ? $children[$children.length - 1] : null);
         }
 
@@ -313,6 +333,8 @@ angular.module('cfp.loadingBar', [])
         status           : _status,
         inc              : _inc,
         complete         : _complete,
+        setBar           : _setBar,
+        setSpinner       : _setSpinner,
         autoIncrement    : this.autoIncrement,
         includeSpinner   : this.includeSpinner,
         latencyThreshold : this.latencyThreshold,
