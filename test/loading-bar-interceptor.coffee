@@ -7,6 +7,8 @@ isLoadingBarInjected = (doc) ->
       break
   return injected
 
+flush = null
+
 describe 'loadingBarInterceptor Service', ->
 
   $http = $httpBackend = $document = $timeout = result = loadingBar = $animate = null
@@ -25,6 +27,11 @@ describe 'loadingBarInterceptor Service', ->
       $document = _$document_
       $timeout = _$timeout_
       $animate = _$animate_
+
+    # Angular 1.4 removed triggerCalbacks(), so try them both:
+    flush = () ->
+      $animate.flush && $animate.flush()
+      $animate.triggerCallbacks && $animate.triggerCallbacks()
 
   beforeEach ->
     this.addMatchers
@@ -54,7 +61,7 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 1
     cfpLoadingBar.complete() # set as complete
     $timeout.flush()
-    $animate.triggerCallbacks()
+    flush()
 
 
     $http.get(endpoint, cache: cache).then (data) ->
@@ -77,7 +84,7 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 1
     cfpLoadingBar.complete() # set as complete
     $timeout.flush()
-    $animate.triggerCallbacks()
+    flush()
 
 
     $http.get(endpoint).then (data) ->
@@ -99,7 +106,7 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 1
     cfpLoadingBar.complete() # set as complete
     $timeout.flush()
-    $animate.triggerCallbacks()
+    flush()
 
 
     $http.get(endpoint, cache: true).then (data) ->
@@ -123,7 +130,7 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 1
     cfpLoadingBar.complete() # set as complete
     $timeout.flush()
-    $animate.triggerCallbacks()
+    flush()
 
 
     $http.get(endpoint).then (data) ->
@@ -144,7 +151,7 @@ describe 'loadingBarInterceptor Service', ->
     $httpBackend.flush(1)
     expect(cfpLoadingBar.status()).toBe 1
     $timeout.flush()
-    $animate.triggerCallbacks()
+    flush()
 
 
     $httpBackend.expectPOST(endpoint).respond response
@@ -383,7 +390,7 @@ describe 'loadingBarInterceptor Service', ->
     expect(startedEventCalled).toBe 1 # Should still be one, as complete was never called:
     cfpLoadingBar.complete()
     $timeout.flush()
-    $animate.triggerCallbacks()
+    flush()
 
 
     cfpLoadingBar.start()
@@ -478,13 +485,12 @@ describe 'LoadingBar only', ->
     cfpLoadingBar.complete()
     cfpLoadingBar.start()
     $timeout.flush()
-    $animate.triggerCallbacks()
 
     expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe true
 
     cfpLoadingBar.complete()
     $timeout.flush()
-    $animate.triggerCallbacks()
+    flush()
 
     expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe false
 
