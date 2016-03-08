@@ -204,16 +204,13 @@ angular.module('cfp.loadingBar', [])
 
         $rootScope.$broadcast('cfpLoadingBar:started');
         started = true;
-        
-        var $children = $parent.children();
 
         if (includeBar) {
-          
-          $animate.enter(loadingBarContainer, $parent, $children.length > 0 ? $children[$children.length - 1] : null);
+          $animate.enter(loadingBarContainer, $parent, angular.element($parent[0].lastChild));
         }
 
         if (includeSpinner) {
-          $animate.enter(spinner, $parent, $children.length > 0 ? $children[$children.length - 1] : null);
+          $animate.enter(spinner, $parent, angular.element($parent[0].lastChild));
         }
 
         _set(startSize);
