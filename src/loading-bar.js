@@ -201,10 +201,14 @@ angular.module('cfp.loadingBar', [])
           return;
         }
 
-        var parent = $document[0].querySelector($parentSelector);
+        var document = $document[0];
+        var parent = document.querySelector ?
+          document.querySelector($parentSelector)
+          : $document.find($parentSelector)[0]
+        ;
 
         if (! parent) {
-          parent = $document[0].querySelector('body');
+          parent = document.getElementsByTagName('body')[0];
         }
 
         var $parent = angular.element(parent);
