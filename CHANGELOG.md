@@ -1,5 +1,19 @@
 Changelog
 ==========
+## 0.9.0
+- resolved issue with parentSelector when parent has no children
+([#244](https://github.com/chieffancypants/angular-loading-bar/pull/244))
+([#251](https://github.com/chieffancypants/angular-loading-bar/issues/251))
+([#239](https://github.com/chieffancypants/angular-loading-bar/issues/239))
+([#179](https://github.com/chieffancypants/angular-loading-bar/issues/179))
+- added style property to package.json
+([#271](https://github.com/chieffancypants/angular-loading-bar/pull/271))
+([#231](https://github.com/chieffancypants/angular-loading-bar/pull/231))
+- Removed duplicated property declaration in CSS
+([#226](https://github.com/chieffancypants/angular-loading-bar/pull/226))
+
+
+
 ## 0.8.0
 - auto incrementing is now configurable
 ([#209](https://github.com/chieffancypants/angular-loading-bar/pull/209))

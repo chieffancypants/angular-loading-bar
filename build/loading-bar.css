@@ -1,7 +1,7 @@
 /*! 
- * angular-loading-bar v0.8.0
+ * angular-loading-bar v0.9.0
  * https://chieffancypants.github.io/angular-loading-bar
- * Copyright (c) 2015 Wes Cruver
+ * Copyright (c) 2016 Wes Cruver
  * License: MIT
  */
 
@@ -105,6 +105,6 @@
   100% { -ms-transform: rotate(360deg); transform: rotate(360deg); }
 }
 @keyframes loading-bar-spinner {
-  0%   { transform: rotate(0deg);   transform: rotate(0deg); }
-  100% { transform: rotate(360deg); transform: rotate(360deg); }
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
