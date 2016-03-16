@@ -79,3 +79,36 @@ describe 'loadingBarInterceptor Service - config options', ->
       expect(cfpLoadingBar.status()).toBeGreaterThan .5
       cfpLoadingBar.complete()
       $timeout.flush()
+
+  it 'should append the loadingbar as the first child of the parent container if empty', ->
+    emptyEl = angular.element '<div id="empty"></div>'
+    angular.element(document).find('body').eq(0).append emptyEl
+
+    module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
+      cfpLoadingBarProvider.parentSelector = '#empty'
+      return
+    inject ($timeout, $document, cfpLoadingBar) ->
+      cfpLoadingBar.start()
+      parent = $document[0].querySelector(cfpLoadingBar.parentSelector)
+      children = parent.childNodes
+      expect(children.length).toBe 2
+      expect(children[0].id).toBe 'loading-bar'
+      expect(children[1].id).toBe 'loading-bar-spinner'
+      cfpLoadingBar.complete()
+      $timeout.flush()
+
+  it 'should append the loading bar to the body if parentSelector is empty', ->
+    module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
+      cfpLoadingBarProvider.parentSelector = '#doesnotexist'
+      return
+    inject ($timeout, $document, cfpLoadingBar) ->
+      parent = $document[0].querySelector(cfpLoadingBar.parentSelector)
+      expect(parent).toBeFalsy;
+      body = $document[0].querySelector 'body'
+      cfpLoadingBar.start()
+      bar = angular.element(body.querySelector '#loading-bar');
+      spinner = angular.element(body.querySelector '#loading-bar-spinner');
+      expect(bar.length).toBe 1
+      expect(spinner.length).toBe 1
+      cfpLoadingBar.complete()
+      $timeout.flush()
