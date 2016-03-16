@@ -187,7 +187,7 @@ describe 'loadingBarInterceptor Service', ->
   it 'should count http errors as responses so the loading bar can complete', inject (cfpLoadingBar) ->
     # $httpBackend.expectGET(endpoint).respond response
     $httpBackend.expectGET(endpoint).respond 401
-    $httpBackend.expectGET(endpoint).respond 401
+    $httpBackend.expectGET(endpoint).respond 404
     $http.get(endpoint)
     $http.get(endpoint)
 
@@ -516,7 +516,7 @@ describe 'Interceptor tests', ->
         $log = _$log_
 
 
-    it 'should detect poorly implemented interceptors and warn accordingly', ->
+    it 'should warn the user for null response', ->
       expect($log.error.logs.length).toBe 0
 
       $httpBackend.expectGET(endpoint).respond 204
@@ -524,7 +524,7 @@ describe 'Interceptor tests', ->
       $httpBackend.flush()
 
       expect($log.error.logs.length).toBe 1
-      expect($log.error.logs).toContain ['Broken interceptor detected: Config object not supplied in response:\n https://github.com/chieffancypants/angular-loading-bar/pull/50']
+      expect($log.error.logs[0][0]).toBe 'cfpLoadingBar: Error encountered while handling response'
 
   describe 'Error response', ->
 
@@ -537,13 +537,13 @@ describe 'Interceptor tests', ->
               $q.reject(resp);
           return
 
-        inject (_$http_, _$httpBackend_, _$log_) ->
+        inject (_$http_, _$httpBackend_, _$log_, _$document_) ->
           $http = _$http_
           $httpBackend = _$httpBackend_
           $log = _$log_
 
 
-    it 'should detect poorly implemented interceptors and warn accordingly', ->
+    it 'should warn the user for responses with no config on the response', ->
       expect($log.error.logs.length).toBe 0
 
       $httpBackend.expectGET(endpoint).respond 500
@@ -551,4 +551,5 @@ describe 'Interceptor tests', ->
       $httpBackend.flush()
 
       expect($log.error.logs.length).toBe 1
-      expect($log.error.logs).toContain ['Broken interceptor detected: Config object not supplied in rejection:\n https://github.com/chieffancypants/angular-loading-bar/pull/50']
+      expect($log.error.logs[0][0]).toBe 'cfpLoadingBar: Error encountered while handling response'
+
