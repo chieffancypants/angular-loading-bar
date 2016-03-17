@@ -90,13 +90,13 @@ angular.module('myApp', ['angular-loading-bar'])
 ```
 
 #### Position the template:
-If you'd like to position the loadingBar or spinner, provide a CSS selector to the element you'd like the template injected into. The default is the <body> element:
+If you'd like to position the loadingBar or spinner, provide a CSS selector to the element you'd like the template injected into. The default is the `<body>` element:
 
 ```js
 angular.module('myApp', ['angular-loading-bar'])
   .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
-    cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';\        
+    cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';        
   }])
 ```
 ```html
