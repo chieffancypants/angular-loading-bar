@@ -6,6 +6,8 @@ Note that leaving sections blank will make it difficult for us to troubleshoot a
 
 **What version of AngularJS are you using?**
 
+**What browsers are affected?**
+
 **Please provide either a JSFiddle, Plunkr example that replicates the issue**
 
 **Please describe the issue**
