@@ -96,7 +96,7 @@ If you'd like to position the loadingBar or spinner, provide a CSS selector to t
 angular.module('myApp', ['angular-loading-bar'])
   .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
-    cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';\        
+    cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';        
   }])
 ```
 ```html
