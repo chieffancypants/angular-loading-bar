@@ -89,6 +89,20 @@ angular.module('myApp', ['angular-loading-bar'])
   }])
 ```
 
+#### Position the template:
+If you'd like to position the loadingBar or spinner, provide a CSS selector to the element you'd like the template injected into. The default is the `<body>` element:
+
+```js
+angular.module('myApp', ['angular-loading-bar'])
+  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
+    cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';        
+  }])
+```
+```html
+<div id="loading-bar-container"></div>
+```
+
 #### Latency Threshold
 By default, the loading bar will only display after it has been waiting for a response for over 100ms.  This helps keep things feeling snappy, and avoids the annoyingness of showing a loading bar every few seconds on really chatty applications.  This threshold is totally configurable:
 
