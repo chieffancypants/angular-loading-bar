@@ -552,3 +552,31 @@ describe 'Interceptor tests', ->
 
       expect($log.error.logs.length).toBe 1
       expect($log.error.logs).toContain ['Broken interceptor detected: Config object not supplied in rejection:\n https://github.com/chieffancypants/angular-loading-bar/pull/50']
+
+
+  describe 'Allow to disable interceptor', ->
+
+    beforeEach ->
+      module 'chieffancypants.loadingBar', (cfpLoadingBarProvider, $httpProvider) ->
+        provider = cfpLoadingBarProvider
+        provider.interceptor = false
+
+    it 'should not run http interceptor if disabled', inject ($http, $rootScope) ->
+      startedEventCalled = false
+      loadedEventCalled = false
+      completedEventCalled = false
+
+      $rootScope.$on 'cfpLoadingBar:started', (event) ->
+        startedEventCalled = true
+
+      $rootScope.$on 'cfpLoadingBar:loaded', (event) ->
+        loadedEventCalled = true
+
+      $rootScope.$on 'cfpLoadingBar:completed', (event) ->
+        completedEventCalled = true
+
+      $http.get('/service')
+
+      expect(startedEventCalled).toBe false
+      expect(loadedEventCalled).toBe false
+      expect(completedEventCalled).toBe false
