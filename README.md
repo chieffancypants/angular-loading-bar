@@ -80,7 +80,7 @@ angular.module('myApp', ['angular-loading-bar'])
 ```
 
 #### Turn the $http interceptor off:
-If you would like to disable $http intercpetor globally (that is tuned on by default):
+If you would like to disable the $http interceptor globally, use the following configuration
 
 ```js
 angular.module('myApp', ['angular-loading-bar'])
