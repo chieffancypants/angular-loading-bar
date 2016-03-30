@@ -92,6 +92,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
       return {
         'request': function(config) {
           // Check to make sure this request hasn't already been cached and that
+          // the $http interceptor hasn't been disabled globally or
           // the requester didn't explicitly ask us to ignore this request:
           if (cfpLoadingBarProvider.interceptor && !config.ignoreLoadingBar && !isCached(config)) {
             $rootScope.$broadcast('cfpLoadingBar:loading', {url: config.url});
