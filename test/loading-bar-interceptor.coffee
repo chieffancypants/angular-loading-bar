@@ -376,8 +376,8 @@ describe 'loadingBarInterceptor Service', ->
     expect(startedEventCalled).toBe true
 
     cfpLoadingBar.complete()
-    expect(completedEventCalled).toBe true
     $timeout.flush()
+    expect(completedEventCalled).toBe true
 
   it 'should debounce the calls to start()', inject (cfpLoadingBar, $rootScope) ->
     startedEventCalled = 0

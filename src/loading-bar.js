@@ -94,9 +94,9 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
           // Check to make sure this request hasn't already been cached and that
           // the requester didn't explicitly ask us to ignore this request:
           if (!config.ignoreLoadingBar && !isCached(config)) {
+            $rootScope.$broadcast('cfpLoadingBar:loading', {url: config.url});
             if (reqsTotal === 0) {
               startTimeout = $timeout(function() {
-                $rootScope.$broadcast('cfpLoadingBar:loading', {url: config.url});
                 cfpLoadingBar.start();
               }, latencyThreshold);
             }
@@ -301,9 +301,7 @@ angular.module('cfp.loadingBar', [])
           $animate = $injector.get('$animate');
         }
 
-        $rootScope.$broadcast('cfpLoadingBar:completed');
         _set(1);
-
         $timeout.cancel(completeTimeout);
 
         // Attempt to aggregate any start/complete calls within 500ms:
@@ -313,6 +311,7 @@ angular.module('cfp.loadingBar', [])
             promise.then(_completeAnimation);
           }
           $animate.leave(spinner);
+          $rootScope.$broadcast('cfpLoadingBar:completed');
         }, 500);
       }
 
