@@ -26,6 +26,9 @@
     "url": "https://github.com/chieffancypants/angular-loading-bar/issues"
   },
   "homepage": "https://chieffancypants.github.io/angular-loading-bar",
+  "dependencies": {
+    "angular": "^1.2.9"
+  },
   "devDependencies": {
     "karma-jasmine": "^0.1.3",
     "karma-coffee-preprocessor": "^0.2.0",
