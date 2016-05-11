@@ -66,10 +66,14 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
        * @return {Boolean} retrns true if cached, otherwise false
        */
       function isCached(config) {
-        var cache,
-            defaultCache = $cacheFactory.get('$http'),
-            defaults = $httpProvider.defaults,
-            url = buildUrl(config.url, config.paramSerializer(config.params));
+        var cache;
+        var defaultCache = $cacheFactory.get('$http');
+        var defaults = $httpProvider.defaults;
+        var url = config.url;
+
+        if (config.paramSerializer !== undefined) {
+          url = buildUrl(config.url, config.paramSerializer(config.params));
+        }
 
         // Choose the proper cache source. Borrowed from angular: $http service
         if ((config.cache || defaults.cache) && config.cache !== false &&
@@ -95,7 +99,6 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
         }
         return url;
       }
-
 
       return {
         'request': function(config) {
