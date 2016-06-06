@@ -15,7 +15,7 @@
  */
 
 
-(function() {
+(function(angular) {
 
 'use strict';
 
@@ -337,4 +337,4 @@ angular.module('cfp.loadingBar', [])
 
     }];     //
   });       // wtf javascript. srsly
-})();       //
+})(window.angular);       //
