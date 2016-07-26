@@ -103,6 +103,13 @@ angular.module('myApp', ['angular-loading-bar'])
 <div id="loading-bar-container"></div>
 ```
 
+Also keep in mind you'll likely want to change the CSS to reflect it's new position, so you'll need to override the default CSS:
+```css
+#loading-bar .bar {
+  position: absolute;
+}
+```
+
 #### Latency Threshold
 By default, the loading bar will only display after it has been waiting for a response for over 100ms.  This helps keep things feeling snappy, and avoids the annoyingness of showing a loading bar every few seconds on really chatty applications.  This threshold is totally configurable:
 
