@@ -106,7 +106,7 @@ angular.module('myApp', ['angular-loading-bar'])
 Also keep in mind you'll likely want to change the CSS to reflect it's new position, so you'll need to override the default CSS:
 ```css
 #loading-bar .bar {
-  position: absolute;
+  position: relative;
 }
 ```
 
