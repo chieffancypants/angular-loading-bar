@@ -4,31 +4,30 @@
 #loading-bar-spinner {
   pointer-events: none;
   -webkit-pointer-events: none;
-  -webkit-transition: 350ms linear all;
-  -moz-transition: 350ms linear all;
-  -o-transition: 350ms linear all;
-  transition: 350ms linear all;
+
+  -webkit-animation: fade linear 350ms;
+  -moz-animation: fade linear 350ms;
+  -ms-animation: fade linear 350ms;
+  -o-animation: fade linear 350ms;
+  animation: fade linear 350ms;
+
+  -webkit-transition: opacity 350ms linear;
+  -moz-transition: opacity 350ms linear;
+  -o-transition: opacity 350ms linear;
+  transition: opacity 350ms linear;
 }
 
-#loading-bar.active,
-#loading-bar-spinner.active {
-  visibility: visible;
-  opacity: 1;
-}
-
-#loading-bar, #loading-bar-spinner {
-  visibility: hidden;
+#loading-bar.out,
+#loading-bar-spinner.out {
   opacity: 0;
 }
 
-#loading-bar.active .bar {
-  -webkit-transition: width 350ms;
-  -moz-transition: width 350ms;
-  -o-transition: width 350ms;
-  transition: width 350ms;
-}
-
 #loading-bar .bar {
+  -webkit-transition: width 350ms linear;
+  -moz-transition: width 350ms linear;
+  -o-transition: width 350ms linear;
+  transition: width 350ms linear;
+
   background: #29d;
   position: fixed;
   z-index: 10002;
@@ -100,4 +99,25 @@
 @keyframes loading-bar-spinner {
   0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@-webkit-keyframes fade {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@-moz-keyframes fade {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@-o-keyframes fade {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@-ms-keyframes fade {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes fade {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
 }
