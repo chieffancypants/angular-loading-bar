@@ -179,7 +179,8 @@ angular.module('cfp.loadingBar', [])
       var incTimeout,
         completeTimeout,
         started = false,
-        status = 0;
+        status = 0,
+        elementsInitialized = false;
 
       var autoIncrement = this.autoIncrement;
       var includeSpinner = this.includeSpinner;
@@ -190,10 +191,6 @@ angular.module('cfp.loadingBar', [])
        * Inserts the loading bar element into the dom, and sets it to 2%
        */
       function _start() {
-        if (!$animate) {
-          $animate = $injector.get('$animate');
-        }
-
         $timeout.cancel(completeTimeout);
 
         // do not continually broadcast the started event:
@@ -201,28 +198,34 @@ angular.module('cfp.loadingBar', [])
           return;
         }
 
-        var document = $document[0];
-        var parent = document.querySelector ?
-          document.querySelector($parentSelector)
-          : $document.find($parentSelector)[0]
-        ;
+        if(!elementsInitialized) {
+          var document = $document[0];
+          var parent = document.querySelector ?
+              document.querySelector($parentSelector)
+              : $document.find($parentSelector)[0]
+            ;
 
-        if (! parent) {
-          parent = document.getElementsByTagName('body')[0];
+          if(!parent) {
+            parent = document.getElementsByTagName('body')[0];
+          }
+
+          var $parent = angular.element(parent);
+
+          $parent.append(loadingBarContainer);
+          $parent.append(spinner);
+
+          elementsInitialized = true;
         }
-
-        var $parent = angular.element(parent);
-        var $after = parent.lastChild && angular.element(parent.lastChild);
 
         $rootScope.$broadcast('cfpLoadingBar:started');
         started = true;
 
         if (includeBar) {
-          $animate.enter(loadingBarContainer, $parent, $after);
+          loadingBarContainer.addClass('active');
         }
 
         if (includeSpinner) {
-          $animate.enter(spinner, $parent, loadingBarContainer);
+          spinner.addClass('active');
         }
 
         _set(startSize);
@@ -292,6 +295,7 @@ angular.module('cfp.loadingBar', [])
       }
 
       function _completeAnimation() {
+        _set(startSize);
         status = 0;
         started = false;
       }
@@ -306,11 +310,11 @@ angular.module('cfp.loadingBar', [])
 
         // Attempt to aggregate any start/complete calls within 500ms:
         completeTimeout = $timeout(function() {
-          var promise = $animate.leave(loadingBarContainer, _completeAnimation);
+          var promise = $animate.removeClass(loadingBarContainer, 'active');
           if (promise && promise.then) {
             promise.then(_completeAnimation);
           }
-          $animate.leave(spinner);
+          spinner.removeClass('active');
           $rootScope.$broadcast('cfpLoadingBar:completed');
         }, 500);
       }
