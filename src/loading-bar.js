@@ -268,7 +268,7 @@ angular.module('cfp.loadingBar', [])
           spinner.remove();
           loadingBarContainer.remove();
         }, options.fadeOutDuration);
-      }
+      };
     }
 
     this.$get = ['$injector', '$document', '$timeout', '$rootScope', function ($injector, $document, $timeout, $rootScope) {
