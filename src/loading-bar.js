@@ -168,8 +168,9 @@ angular.module('cfp.loadingBar', [])
     this.parentSelector = 'body';
     this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
     this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
+    this.fadeOutDuration = 350;
 
-    function LoadingBar($document, $timeout, $animate, options) {
+    function LoadingBar($document, $timeout, options) {
       var _this = this;
       var loadingBarContainer = angular.element(options.loadingBarTemplate);
       var loadingBar = loadingBarContainer.find('div').eq(0);
@@ -261,31 +262,31 @@ angular.module('cfp.loadingBar', [])
 
       this.cleanup = function() {
         spinner.addClass('out');
-        var promise = $animate.addClass(loadingBarContainer, 'out');
-        if(promise && promise.then) {
-          promise.then(function() {
-            spinner.remove();
-            loadingBarContainer.remove();
-          });
-        }
+        loadingBarContainer.addClass('out');
+
+        $timeout(function() {
+          spinner.remove();
+          loadingBarContainer.remove();
+        }, options.fadeOutDuration);
       }
     }
 
     this.$get = ['$injector', '$document', '$timeout', '$rootScope', function ($injector, $document, $timeout, $rootScope) {
+      var _this = this;
+
       var options = {
-        parentSelector: this.parentSelector,
-        loadingBarTemplate: this.loadingBarTemplate,
-        spinnerTemplate: this.spinnerTemplate,
-        autoIncrement: this.autoIncrement,
-        includeSpinner: this.includeSpinner,
-        includeBar: this.includeBar,
-        startSize: this.startSize
+        parentSelector: _this.parentSelector,
+        loadingBarTemplate: _this.loadingBarTemplate,
+        spinnerTemplate: _this.spinnerTemplate,
+        autoIncrement: _this.autoIncrement,
+        includeSpinner: _this.includeSpinner,
+        includeBar: _this.includeBar,
+        startSize: _this.startSize,
+        fadeOutDuration: _this.fadeOutDuration
       };
 
       var completeTimeout,
         currentBar = null;
-
-      var $animate;
 
       /**
        * Inserts the loading bar element into the dom, and sets it to 2%
@@ -298,11 +299,7 @@ angular.module('cfp.loadingBar', [])
           return;
         }
 
-        if (!$animate) {
-          $animate = $injector.get('$animate');
-        }
-
-        currentBar = new LoadingBar($document, $timeout, $animate, options);
+        currentBar = new LoadingBar($document, $timeout, options);
         currentBar.activate();
 
         $rootScope.$broadcast('cfpLoadingBar:started');
