@@ -168,7 +168,7 @@ The service is responsible for the presentation of the loading bar.  It injects 
 Under normal circumstances you won't need to use this.  However, if you wish to use the loading bar without the interceptor, you can do that as well.  Simply include the loading bar service as a dependency instead of the main `angular-loading-bar` module:
 
 ```js
-angular.module('myApp', ['cfp.loadingBar'])
+angular.module('myApp', ['cfpLoadingBar'])
 ```
 
 
