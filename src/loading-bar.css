@@ -25,10 +25,10 @@
 }
 
 #loading-bar .bar {
-  -webkit-transition: width 350ms;
-  -moz-transition: width 350ms;
-  -o-transition: width 350ms;
-  transition: width 350ms;
+  -webkit-transition: all 350ms;
+  -moz-transition: all 350ms;
+  -o-transition: all 350ms;
+  transition: all 350ms;
 
   background: #29d;
   position: fixed;
