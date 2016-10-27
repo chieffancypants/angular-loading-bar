@@ -171,6 +171,7 @@ angular.module('cfp.loadingBar', [])
     this.includeBar = true;
     this.latencyThreshold = 100;
     this.startSize = 0.02;
+    this.transformMode = false;
     this.parentSelector = 'body';
     this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
     this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
@@ -191,6 +192,7 @@ angular.module('cfp.loadingBar', [])
       var includeSpinner = this.includeSpinner;
       var includeBar = this.includeBar;
       var startSize = this.startSize;
+      var transformMode = this.transformMode;
 
       /**
        * Inserts the loading bar element into the dom, and sets it to 2%
@@ -243,8 +245,17 @@ angular.module('cfp.loadingBar', [])
         if (!started) {
           return;
         }
-        var pct = (n * 100) + '%';
-        loadingBar.css('width', pct);
+
+        var pct;
+
+        if (!transformMode) {
+          pct = (n * 100) + '%';
+          loadingBar.css('width', pct);
+        } else {
+          pct = (100 - (n * 100)) * -1 + '%';
+          loadingBar.css('transform', 'translate3d(' + pct + ',0,0)');
+        }
+
         status = n;
 
         // increment loadingbar to give the illusion that there is always
@@ -331,7 +342,8 @@ angular.module('cfp.loadingBar', [])
         includeSpinner   : this.includeSpinner,
         latencyThreshold : this.latencyThreshold,
         parentSelector   : this.parentSelector,
-        startSize        : this.startSize
+        startSize        : this.startSize,
+        transformMode    : this.transformMode
       };
 
 
