@@ -11,7 +11,7 @@ flush = null
 
 describe 'loadingBarInterceptor Service', ->
 
-  $http = $httpBackend = $document = $timeout = result = loadingBar = $animate = null
+  $http = $httpBackend = $document = $timeout = $interval = result = loadingBar = $animate = null
   response = {message:'OK'}
   endpoint = '/service'
 
@@ -21,11 +21,12 @@ describe 'loadingBarInterceptor Service', ->
       return
 
     result = null
-    inject (_$http_, _$httpBackend_, _$document_, _$timeout_, _$animate_) ->
+    inject (_$http_, _$httpBackend_, _$document_, _$timeout_, _$interval_, _$animate_) ->
       $http = _$http_
       $httpBackend = _$httpBackend_
       $document = _$document_
       $timeout = _$timeout_
+      $interval = _$interval_
       $animate = _$animate_
 
     # Angular 1.4 removed triggerCalbacks(), so try them both:
@@ -250,7 +251,7 @@ describe 'loadingBarInterceptor Service', ->
 
   it 'should get and set status', inject (cfpLoadingBar) ->
     cfpLoadingBar.start()
-    $timeout.flush()
+    $interval.flush(250)
 
     cfpLoadingBar.set(0.4)
     expect(cfpLoadingBar.status()).toBe 0.4
@@ -264,13 +265,13 @@ describe 'loadingBarInterceptor Service', ->
 
   it 'should increment things randomly', inject (cfpLoadingBar) ->
     cfpLoadingBar.start()
-    $timeout.flush()
+    $interval.flush(250)
 
     # increments between 3 - 6%
     cfpLoadingBar.set(0.1)
     lbar = angular.element(document.getElementById('loading-bar'))
     width = lbar.children().css('width').slice(0, -1)
-    $timeout.flush()
+    $interval.flush(250)
     width2 = lbar.children().css('width').slice(0, -1)
     expect(width2).toBeGreaterThan width
     expect(width2 - width).toBeBetween(3, 6)
@@ -278,7 +279,7 @@ describe 'loadingBarInterceptor Service', ->
     cfpLoadingBar.set(0.2)
     lbar = angular.element(document.getElementById('loading-bar'))
     width = lbar.children().css('width').slice(0, -1)
-    $timeout.flush()
+    $interval.flush(250)
     width2 = lbar.children().css('width').slice(0, -1)
     expect(width2).toBeGreaterThan width
     expect(width2 - width).toBeBetween(3, 6)
@@ -287,7 +288,7 @@ describe 'loadingBarInterceptor Service', ->
     cfpLoadingBar.set(0.25)
     lbar = angular.element(document.getElementById('loading-bar'))
     width = lbar.children().css('width').slice(0, -1)
-    $timeout.flush()
+    $interval.flush(250)
     width2 = lbar.children().css('width').slice(0, -1)
     expect(width2).toBeGreaterThan width
     expect(width2 - width).toBeBetween(0, 3)
@@ -295,7 +296,7 @@ describe 'loadingBarInterceptor Service', ->
     cfpLoadingBar.set(0.5)
     lbar = angular.element(document.getElementById('loading-bar'))
     width = lbar.children().css('width').slice(0, -1)
-    $timeout.flush()
+    $interval.flush(250)
     width2 = lbar.children().css('width').slice(0, -1)
     expect(width2).toBeGreaterThan width
     expect(width2 - width).toBeBetween(0, 3)
@@ -304,7 +305,7 @@ describe 'loadingBarInterceptor Service', ->
     cfpLoadingBar.set(0.65)
     lbar = angular.element(document.getElementById('loading-bar'))
     width = lbar.children().css('width').slice(0, -1)
-    $timeout.flush()
+    $interval.flush(250)
     width2 = lbar.children().css('width').slice(0, -1)
     expect(width2).toBeGreaterThan width
     expect(width2 - width).toBeBetween(0, 2)
@@ -312,7 +313,7 @@ describe 'loadingBarInterceptor Service', ->
     cfpLoadingBar.set(0.75)
     lbar = angular.element(document.getElementById('loading-bar'))
     width = lbar.children().css('width').slice(0, -1)
-    $timeout.flush()
+    $interval.flush(250)
     width2 = lbar.children().css('width').slice(0, -1)
     expect(width2).toBeGreaterThan width
     expect(width2 - width).toBeBetween(0, 2)
@@ -321,7 +322,7 @@ describe 'loadingBarInterceptor Service', ->
     cfpLoadingBar.set(0.9)
     lbar = angular.element(document.getElementById('loading-bar'))
     width = lbar.children().css('width').slice(0, -1)
-    $timeout.flush()
+    $interval.flush(250)
     width2 = lbar.children().css('width').slice(0, -1)
     expect(width2).toBeGreaterThan width
     expect(width2 - width).toBe 0.5
@@ -329,7 +330,7 @@ describe 'loadingBarInterceptor Service', ->
     cfpLoadingBar.set(0.97)
     lbar = angular.element(document.getElementById('loading-bar'))
     width = lbar.children().css('width').slice(0, -1)
-    $timeout.flush()
+    $interval.flush(250)
     width2 = lbar.children().css('width').slice(0, -1)
     expect(width2).toBeGreaterThan width
     expect(width2 - width).toBe 0.5
@@ -338,7 +339,7 @@ describe 'loadingBarInterceptor Service', ->
     cfpLoadingBar.set(0.99)
     lbar = angular.element(document.getElementById('loading-bar'))
     width = lbar.children().css('width').slice(0, -1)
-    $timeout.flush()
+    $interval.flush(250)
     width2 = lbar.children().css('width').slice(0, -1)
     expect(width2).toBe width
 
@@ -445,13 +446,14 @@ describe 'loadingBarInterceptor Service', ->
 
 
 describe 'LoadingBar only', ->
-  cfpLoadingBar = $document = $timeout = $animate = null
+  cfpLoadingBar = $document = $timeout = $interval = $animate = null
 
   beforeEach ->
     module 'cfp.loadingBar', 'ngAnimateMock'
 
-    inject (_$http_, _$httpBackend_, _$document_, _$timeout_, _$animate_, _cfpLoadingBar_) ->
+    inject (_$http_, _$httpBackend_, _$document_, _$timeout_, _$interval_, _$animate_, _cfpLoadingBar_) ->
       $timeout = _$timeout_
+      $interval = _$interval_
       $document = _$document_
       $animate = _$animate_
       cfpLoadingBar = _cfpLoadingBar_
@@ -459,7 +461,7 @@ describe 'LoadingBar only', ->
   it 'should be capable of being used alone', ->
     # just a simple quick test to make sure:
     cfpLoadingBar.start()
-    $timeout.flush()
+    $interval.flush(250)
 
     # test setting progress
     cfpLoadingBar.set(0.4)
@@ -478,7 +480,7 @@ describe 'LoadingBar only', ->
 
   it 'should start after multiple calls to complete()', ->
     cfpLoadingBar.start()
-    $timeout.flush()
+    $interval.flush(250)
     expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe true
 
     cfpLoadingBar.complete()

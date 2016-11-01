@@ -71,11 +71,11 @@ describe 'loadingBarInterceptor Service - config options', ->
     module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
       cfpLoadingBarProvider.autoIncrement = true
       return
-    inject ($timeout, cfpLoadingBar) ->
+    inject ($timeout, $interval, cfpLoadingBar) ->
       cfpLoadingBar.start()
-      $timeout.flush()
+      $interval.flush(250)
       cfpLoadingBar.set(.5)
-      $timeout.flush()
+      $interval.flush(250)
       expect(cfpLoadingBar.status()).toBeGreaterThan .5
       cfpLoadingBar.complete()
       $timeout.flush()
