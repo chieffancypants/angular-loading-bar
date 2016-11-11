@@ -204,6 +204,10 @@ The loading bar broadcasts the following events over $rootScope allowing further
 
 **`cfpLoadingBar:completed`** triggered once when the all XHR requests have returned (either successfully or not)
 
+The loading bar can also be manually closed by firing an event
+
+**`cfpLoadingBar:manual-loaded`** Trigger this if you want to leave connection open, but cancel loading bar
+
 ## Credits:
 Credit goes to [rstacruz](https://github.com/rstacruz) for his excellent [nProgress](https://github.com/rstacruz/nprogress).
 
