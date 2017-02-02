@@ -118,6 +118,7 @@
           },
 
           'response': function (response) {
+           $log.log('inside teh response');
             if (!response || !response.config) {
               $log.error('Broken interceptor detected: Config object not supplied in response:\n https://github.com/chieffancypants/angular-loading-bar/pull/50');
               return response;
@@ -128,7 +129,7 @@
               if (reqsCompleted >= reqsTotal) {
                 $rootScope.$broadcast('cfpLoadingBar:loaded', { url: response.config.url, result: response });
                 if (response.config.method === 'POST' && response.config.status === 200) {
-                  cosole.log('found 200 ok with post response');
+                  $log.log('found 200 ok with post response');
                   setCompleteWithSucess();
                 } else {
                   setComplete();
@@ -313,7 +314,7 @@
         }
 
         function _completeWithSuccess() {
-          console.log('got the complete with success');
+          $log.log('got the complete with success');
           if (!$animate) {
             $animate = $injector.get('$animate');
           }
@@ -328,14 +329,14 @@
               promise.then(_completeAnimation);
             }
             $animate.leave(spinner);
-            console.log('spinner is left');
+            $log.log('spinner is left');
 
             spinner = angular.element(this.spinnerSuccessTemplate);
-            console.log('new spinner template loaded',spinner);
+            $log.log('new spinner template loaded',spinner);
              $animate.enter(spinner, $parent, loadingBarContainer);
-             console.log('new spinner template is now visible');
+             $log.log('new spinner template is now visible');
                            $animate.leave(spinner);
-              console.log('spinner is left again');
+              $log.log('spinner is left again');
             $rootScope.$broadcast('cfpLoadingBar:completed');
           }, 800);
         }
