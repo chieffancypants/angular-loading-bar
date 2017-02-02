@@ -54,6 +54,7 @@
           reqsCompleted = 0;
           reqsTotal = 0;
         }
+
         /**
          * calls cfpLoadingBar.complete() which removes the
          * loading bar from the DOM.
@@ -112,8 +113,6 @@
           },
 
           'response': function (response) {
-
-            console.log('inside teh response');
             if (!response || !response.config) {
               $log.error('Broken interceptor detected: Config object not supplied in response:\n https://github.com/chieffancypants/angular-loading-bar/pull/50');
               return response;
@@ -122,7 +121,6 @@
             if (!response.config.ignoreLoadingBar && !isCached(response.config)) {
               reqsCompleted++;
               if (reqsCompleted >= reqsTotal) {
-                console.log('response in if condition is', response);
                 $rootScope.$broadcast('cfpLoadingBar:loaded', { url: response.config.url, result: response });
                 if (response.config.method == 'POST' && response.config.status == 200) {
                   console.log('found 200 ok with post response');
@@ -320,14 +318,13 @@
             parent = document.getElementsByTagName('body')[0];
           }
           var $parent = angular.element(parent);
-          console.log('got the complete with success',$parent);
+          console.log('got the complete with success', $parent);
           if (!$animate) {
             $animate = $injector.get('$animate');
           }
 
           _set(1);
           $timeout.cancel(completeTimeout);
-
           // Attempt to aggregate any start/complete calls within 500ms:
           completeTimeout = $timeout(function () {
             var promise = $animate.leave(loadingBarContainer, _completeAnimation);
@@ -335,20 +332,15 @@
               promise.then(_completeAnimation);
             }
             $animate.leave(spinner);
-
-            console.log('spinner is left');
-
-            spinner = angular.element(this.spinnerSuccessTemplate);
-
-            console.log('new spinner template loaded', spinner);
-            $animate.enter(spinner, $parent, loadingBarContainer);
-
-            console.log('new spinner template loaded', spinner);
-            $animate.leave(spinner);
-
-            console.log('new spinner template loaded', spinner);
             $rootScope.$broadcast('cfpLoadingBar:completed');
           }, 800);
+          console.log('tick mark spinner anmiation');
+          spinner = angular.element(spinnerSuccessTemplate);
+          $animate.enter(spinner, $parent, loadingBarContainer);
+          $timeout(function () {
+            $animate.leave(spinner);
+          }, 1000);
+          console.log('all animation complete');
         }
 
         function _complete() {
