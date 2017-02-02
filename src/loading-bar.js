@@ -122,9 +122,10 @@
             if (!response.config.ignoreLoadingBar && !isCached(response.config)) {
               reqsCompleted++;
               if (reqsCompleted >= reqsTotal) {
+                console.log('response in if condition is',response);
                 $rootScope.$broadcast('cfpLoadingBar:loaded', { url: response.config.url, result: response });
-                if (response.config.method === 'POST' && response.config.status === 200) {
-                  $log.error('found 200 ok with post response');
+                if (response.config.method == 'POST' && response.config.status == 200) {
+               
                   console.log('found 200 ok with post response');
                   setCompleteWithSucess();
                 } else {
