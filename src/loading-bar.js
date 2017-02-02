@@ -112,7 +112,8 @@
           },
 
           'response': function (response) {
-           $log.log('inside teh response');
+           $log.error('inside teh response');
+           console.log('inside teh response');
             if (!response || !response.config) {
               $log.error('Broken interceptor detected: Config object not supplied in response:\n https://github.com/chieffancypants/angular-loading-bar/pull/50');
               return response;
@@ -123,7 +124,8 @@
               if (reqsCompleted >= reqsTotal) {
                 $rootScope.$broadcast('cfpLoadingBar:loaded', { url: response.config.url, result: response });
                 if (response.config.method === 'POST' && response.config.status === 200) {
-                  $log.log('found 200 ok with post response');
+                  $log.error('found 200 ok with post response');
+                  console.log('found 200 ok with post response');
                   setCompleteWithSucess();
                 } else {
                   setComplete();
@@ -308,7 +310,8 @@
         }
 
         function _completeWithSuccess() {
-          $log.log('got the complete with success');
+         $log.error('got the complete with success');
+           console.log('got the complete with success');
           if (!$animate) {
             $animate = $injector.get('$animate');
           }
@@ -323,14 +326,18 @@
               promise.then(_completeAnimation);
             }
             $animate.leave(spinner);
-            $log.log('spinner is left');
+            $log.error('spinner is left');
+            console.log('spinner is left');
 
             spinner = angular.element(this.spinnerSuccessTemplate);
-            $log.log('new spinner template loaded',spinner);
+            $log.error('new spinner template loaded',spinner);
+            console.log('new spinner template loaded',spinner);
              $animate.enter(spinner, $parent, loadingBarContainer);
-             $log.log('new spinner template is now visible');
+             $log.error('new spinner template is now visible');
+             console.log('new spinner template loaded',spinner);
                            $animate.leave(spinner);
-              $log.log('spinner is left again');
+              $log.error('spinner is left again');
+              console.log('new spinner template loaded',spinner);
             $rootScope.$broadcast('cfpLoadingBar:completed');
           }, 800);
         }
