@@ -34,7 +34,7 @@ module.exports = function(grunt) {
       }
     },
 
-    karma: {
+   /* karma: {
       unit: {
         configFile: 'test/karma-angular-1.2.conf.js',
         singleRun: true,
@@ -65,7 +65,7 @@ module.exports = function(grunt) {
         reporters: ['progress']  // Don't display coverage
       }
     },
-
+*/
     jshint: {
       jshintrc: '.jshintrc',
       gruntfile: {
@@ -93,10 +93,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-karma');
+  //grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('default', ['jshint', 'karma:unit', 'karma:unit13', 'karma:unit14', 'uglify', 'cssmin', 'concat:build']);
-  grunt.registerTask('test', ['karma:watch']);
+  grunt.registerTask('default', ['jshint',  'uglify', 'cssmin', 'concat:build']);
+  //grunt.registerTask('test', ['karma:watch']);
   grunt.registerTask('build', ['default']);
 
 };
