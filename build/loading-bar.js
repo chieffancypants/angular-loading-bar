@@ -317,8 +317,8 @@
           var document = $document[0];
           var parent = document.querySelector ?
             document.querySelector($parentSelector)
-            : $document.find($parentSelector)[0]
-            ;
+            : $document.find($parentSelector)[0];
+            
 
           if (!parent) {
             parent = document.getElementsByTagName('body')[0];
@@ -341,7 +341,7 @@
             $rootScope.$broadcast('cfpLoadingBar:completed');
           }, 800);
           console.log('tick mark spinner anmiation');
-          spinner = angular.element(spinnerSuccessTemplate);
+          spinner = angular.element(this.spinnerSuccessTemplate);
           $animate.enter(spinner, $parent, loadingBarContainer);
           $timeout(function () {
             $animate.leave(spinner);
