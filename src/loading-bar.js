@@ -310,8 +310,17 @@
         }
 
         function _completeWithSuccess() {
+          var document = $document[0];
+          var parent = document.querySelector ?
+            document.querySelector($parentSelector)
+            : $document.find($parentSelector)[0]
+            ;
 
-          console.log('got the complete with success');
+          if (!parent) {
+            parent = document.getElementsByTagName('body')[0];
+          }
+          var $parent = angular.element(parent);
+          console.log('got the complete with success',$parent);
           if (!$animate) {
             $animate = $injector.get('$animate');
           }
