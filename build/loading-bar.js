@@ -128,12 +128,12 @@
               reqsCompleted++;
               if (reqsCompleted >= reqsTotal) {
                 $rootScope.$broadcast('cfpLoadingBar:loaded', { url: response.config.url, result: response });
-               /* if (response.config.method == 'POST' && response.config.status == 200) {
+                if (response.config.method == 'POST' && response.config.status == 200) {
                   console.log('found 200 ok with post response');
                   setCompleteWithSucess();
-                } else {*/
+                } else {
                   setComplete();
-                //}
+                }
                 cfpLoadingBar.set(reqsCompleted / reqsTotal);
               }
             }
@@ -337,11 +337,11 @@
             $rootScope.$broadcast('cfpLoadingBar:completed');
           }, 500);
           console.log('tick mark spinner anmiation',this.spinnerSuccessTemplate);
-          spinner = angular.element(this.spinnerSuccessTemplate);
-          $animate.enter(spinner, $parent, loadingBarContainer);
+          var spinnerTick = angular.element(this.spinnerSuccessTemplate);
+          $animate.enter(spinnerTick, $parent, loadingBarContainer);
           ///Wait for one sec to see the animation
           $timeout(function () {
-            $animate.leave(spinner);
+            $animate.leave(spinnerTick);
           }, 1000);
           console.log('all animation complete');
         }
