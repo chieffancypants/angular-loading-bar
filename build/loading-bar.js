@@ -128,12 +128,12 @@
               reqsCompleted++;
               if (reqsCompleted >= reqsTotal) {
                 $rootScope.$broadcast('cfpLoadingBar:loaded', { url: response.config.url, result: response });
-                if (response.config.method == 'POST' && response.config.status == 200) {
+               /* if (response.config.method == 'POST' && response.config.status == 200) {
                   console.log('found 200 ok with post response');
                   setCompleteWithSucess();
-                } else {
+                } else {*/
                   setComplete();
-                }
+                //}
                 cfpLoadingBar.set(reqsCompleted / reqsTotal);
               }
             }
@@ -185,7 +185,7 @@
       this.parentSelector = 'body';
       this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
       this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
-      this.spinnerSuccessTemplate = '<div>&#9989;You are done!!</div>';
+      this.spinnerSuccessTemplate = '<div>You are done!!</div>';
       this.$get = ['$injector', '$document', '$timeout', '$rootScope', function ($injector, $document, $timeout, $rootScope) {
         var $animate;
         var $parentSelector = this.parentSelector,
@@ -318,17 +318,13 @@
           var parent = document.querySelector ?
             document.querySelector($parentSelector)
             : $document.find($parentSelector)[0];
-            
-
           if (!parent) {
             parent = document.getElementsByTagName('body')[0];
           }
           var $parent = angular.element(parent);
-          console.log('got the complete with success', $parent);
           if (!$animate) {
             $animate = $injector.get('$animate');
           }
-
           _set(1);
           $timeout.cancel(completeTimeout);
           // Attempt to aggregate any start/complete calls within 500ms:
@@ -339,10 +335,11 @@
             }
             $animate.leave(spinner);
             $rootScope.$broadcast('cfpLoadingBar:completed');
-          }, 800);
-          console.log('tick mark spinner anmiation');
+          }, 500);
+          console.log('tick mark spinner anmiation',this.spinnerSuccessTemplate);
           spinner = angular.element(this.spinnerSuccessTemplate);
           $animate.enter(spinner, $parent, loadingBarContainer);
+          ///Wait for one sec to see the animation
           $timeout(function () {
             $animate.leave(spinner);
           }, 1000);
