@@ -48,9 +48,9 @@
          */
         var startTimeout;
 
-        function setCompleteWithSucess() {
+        function setCompleteWithSucess(currentUrl) {
           $timeout.cancel(startTimeout);
-          cfpLoadingBar.completeWithSuccess();
+          cfpLoadingBar.completeWithSuccess(currentUrl);
           reqsCompleted = 0;
           reqsTotal = 0;
         }
@@ -121,10 +121,10 @@
             if (!response.config.ignoreLoadingBar && !isCached(response.config)) {
               reqsCompleted++;
               if (reqsCompleted >= reqsTotal) {
-                
+
                 $rootScope.$broadcast('cfpLoadingBar:loaded', { url: response.config.url, result: response });
                 if (response.config.method == 'POST' && response.status == 200) {
-                  setCompleteWithSucess();
+                  setCompleteWithSucess(response.config.url);
                 } else {
                   setComplete();
                 }
@@ -175,7 +175,8 @@
       this.includeBar = true;
       this.latencyThreshold = 100;
       this.startSize = 0.02;
-      this.sucessTickTime = 500;
+      this.sucessTickTime = 1000;
+      this.skipUrls = [];
       this.parentSelector = 'body';
       this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
       this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
@@ -196,7 +197,7 @@
         var includeSpinner = this.includeSpinner;
         var includeBar = this.includeBar;
         var startSize = this.startSize;
-
+        var skipUrls = this.skipUrls;
         /**
          * Inserts the loading bar element into the dom, and sets it to 2%
          */
@@ -307,7 +308,20 @@
           started = false;
         }
 
-        function _completeWithSuccess() {
+        function isURLSkipped(urlToSkip) {
+
+          if (skipUrls && skipUrls.length > 0) {
+            for (var j = 0; j < skipUrls.length; j++) {
+              if (urlToSkip.match(skipUrls[j])) {
+
+                return true;
+              }
+            }
+          }
+          return false;
+        }
+
+        function _completeWithSuccess(currentUrl) {
           var document = $document[0];
           var parent = document.querySelector ?
             document.querySelector($parentSelector)
@@ -331,11 +345,14 @@
             $rootScope.$broadcast('cfpLoadingBar:completed');
           }, 500);
           var spinnerTick = angular.element(this.spinnerSuccessTemplate);
-          $animate.enter(spinnerTick, $parent, loadingBarContainer);
-          ///Wait for one sec to see the animation
-          $timeout(function () {
-            $animate.leave(spinnerTick);
-          }, 1000);
+          if (!isURLSkipped(currentUrl)) {
+            
+            $animate.enter(spinnerTick, $parent, loadingBarContainer);
+            ///Wait for one sec to see the animation
+            $timeout(function () {
+              $animate.leave(spinnerTick);
+            }, this.sucessTickTime);
+          }
         }
 
         function _complete() {
@@ -370,7 +387,8 @@
           parentSelector: this.parentSelector,
           startSize: this.startSize,
           spinnerSuccessTemplate: this.spinnerSuccessTemplate,
-          sucessTickTime: this.sucessTickTime
+          sucessTickTime: this.sucessTickTime,
+          skipUrls: this.skipUrls
         };
 
 
