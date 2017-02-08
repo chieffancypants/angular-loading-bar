@@ -1,6 +1,6 @@
 {
   "name": "angular-loading-bar",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "An automatic loading bar for AngularJS",
   "main": "index.js",
   "style": "build/loading-bar.css",
