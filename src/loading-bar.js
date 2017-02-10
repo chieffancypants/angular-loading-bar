@@ -331,4 +331,16 @@ angular.module('cfp.loadingBar', [])
 
     }];     //
   });       // wtf javascript. srsly
+    /**
+     *  Support Require.JS AMD Modules
+     *  Check if define is a function then
+     *  define AMD module
+     */
+
+     if(typeof define === 'function') {
+         define([], function(){
+            return angular.module('chieffancypants.loadingBar');
+         });
+     }
+
 })();       //
