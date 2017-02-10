@@ -175,7 +175,7 @@ angular.module('cfp.loadingBar', [])
     this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
     this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
 
-    this.$get = ['$injector', '$document', '$timeout', '$rootScope', function ($injector, $document, $timeout, $rootScope) {
+    this.$get = ['$injector', '$document', '$timeout', '$interval', '$rootScope', function ($injector, $document, $timeout, $interval, $rootScope) {
       var $animate;
       var $parentSelector = this.parentSelector,
         loadingBarContainer = angular.element(this.loadingBarTemplate),
@@ -251,10 +251,10 @@ angular.module('cfp.loadingBar', [])
         // progress but make sure to cancel the previous timeouts so we don't
         // have multiple incs running at the same time.
         if (autoIncrement) {
-          $timeout.cancel(incTimeout);
-          incTimeout = $timeout(function() {
+          $interval.cancel(incTimeout);
+          incTimeout = $interval(function() {
             _inc();
-          }, 250);
+          }, 250, 1);
         }
       }
 
