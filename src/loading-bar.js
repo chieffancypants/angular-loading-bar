@@ -168,75 +168,49 @@ angular.module('cfp.loadingBar', [])
     this.parentSelector = 'body';
     this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
     this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
+    this.fadeOutDuration = 350;
 
-    this.$get = ['$injector', '$document', '$timeout', '$rootScope', function ($injector, $document, $timeout, $rootScope) {
-      var $animate;
-      var $parentSelector = this.parentSelector,
-        loadingBarContainer = angular.element(this.loadingBarTemplate),
-        loadingBar = loadingBarContainer.find('div').eq(0),
-        spinner = angular.element(this.spinnerTemplate);
-
+    function LoadingBar($document, $timeout, options) {
+      var _this = this;
+      var loadingBarContainer = angular.element(options.loadingBarTemplate);
+      var loadingBar = loadingBarContainer.find('div').eq(0);
+      var spinner = angular.element(options.spinnerTemplate);
       var incTimeout,
-        completeTimeout,
-        started = false,
         status = 0;
 
-      var autoIncrement = this.autoIncrement;
-      var includeSpinner = this.includeSpinner;
-      var includeBar = this.includeBar;
-      var startSize = this.startSize;
-
-      /**
-       * Inserts the loading bar element into the dom, and sets it to 2%
-       */
-      function _start() {
-        if (!$animate) {
-          $animate = $injector.get('$animate');
-        }
-
-        $timeout.cancel(completeTimeout);
-
-        // do not continually broadcast the started event:
-        if (started) {
-          return;
-        }
-
+      var init = function() {
         var document = $document[0];
         var parent = document.querySelector ?
-          document.querySelector($parentSelector)
-          : $document.find($parentSelector)[0]
-        ;
+            document.querySelector(options.parentSelector)
+            : $document.find(options.parentSelector)[0]
+          ;
 
-        if (! parent) {
+        if(!parent) {
           parent = document.getElementsByTagName('body')[0];
         }
 
         var $parent = angular.element(parent);
-        var $after = parent.lastChild && angular.element(parent.lastChild);
 
-        $rootScope.$broadcast('cfpLoadingBar:started');
-        started = true;
-
-        if (includeBar) {
-          $animate.enter(loadingBarContainer, $parent, $after);
+        if(options.includeBar) {
+          $parent.append(loadingBarContainer);
         }
 
-        if (includeSpinner) {
-          $animate.enter(spinner, $parent, loadingBarContainer);
+        if(options.includeSpinner) {
+          $parent.append(spinner);
         }
+      };
 
-        _set(startSize);
-      }
+      init();
 
-      /**
-       * Set the loading bar's width to a certain percent.
-       *
-       * @param n any value between 0 and 1
-       */
-      function _set(n) {
-        if (!started) {
-          return;
-        }
+      this.activate = function() {
+        _this.set(options.startSize);
+      };
+
+      this.status = function() {
+        return status;
+      };
+
+      this.set = function(n) {
         var pct = (n * 100) + '%';
         loadingBar.css('width', pct);
         status = n;
@@ -244,20 +218,17 @@ angular.module('cfp.loadingBar', [])
         // increment loadingbar to give the illusion that there is always
         // progress but make sure to cancel the previous timeouts so we don't
         // have multiple incs running at the same time.
-        if (autoIncrement) {
+        if (options.autoIncrement) {
           $timeout.cancel(incTimeout);
+
           incTimeout = $timeout(function() {
-            _inc();
+            _this.inc();
           }, 250);
         }
-      }
+      };
 
-      /**
-       * Increments the loading bar by a random amount
-       * but slows down as it progresses
-       */
-      function _inc() {
-        if (_status() >= 1) {
+      this.inc = function() {
+        if (_this.status() >= 1) {
           return;
         }
 
@@ -265,7 +236,7 @@ angular.module('cfp.loadingBar', [])
 
         // TODO: do this mathmatically instead of through conditions
 
-        var stat = _status();
+        var stat = _this.status();
         if (stat >= 0 && stat < 0.25) {
           // Start out between 3 - 6% increments
           rnd = (Math.random() * (5 - 3 + 1) + 3) / 100;
@@ -283,22 +254,79 @@ angular.module('cfp.loadingBar', [])
           rnd = 0;
         }
 
-        var pct = _status() + rnd;
-        _set(pct);
+        var pct = _this.status() + rnd;
+        _this.set(pct);
+      };
+
+      this.cleanup = function() {
+        spinner.addClass('out');
+        loadingBarContainer.addClass('out');
+
+        $timeout(function() {
+          spinner.remove();
+          loadingBarContainer.remove();
+        }, options.fadeOutDuration);
+      };
+    }
+
+    this.$get = ['$injector', '$document', '$timeout', '$rootScope', function ($injector, $document, $timeout, $rootScope) {
+      var _this = this;
+
+      var options = {
+        parentSelector: _this.parentSelector,
+        loadingBarTemplate: _this.loadingBarTemplate,
+        spinnerTemplate: _this.spinnerTemplate,
+        autoIncrement: _this.autoIncrement,
+        includeSpinner: _this.includeSpinner,
+        includeBar: _this.includeBar,
+        startSize: _this.startSize,
+        fadeOutDuration: _this.fadeOutDuration
+      };
+
+      var completeTimeout,
+        currentBar = null;
+
+      /**
+       * Inserts the loading bar element into the dom, and sets it to 2%
+       */
+      function _start() {
+        $timeout.cancel(completeTimeout);
+
+        // do not continually broadcast the started event:
+        if (currentBar) {
+          return;
+        }
+
+        currentBar = new LoadingBar($document, $timeout, options);
+        currentBar.activate();
+
+        $rootScope.$broadcast('cfpLoadingBar:started');
+      }
+
+      /**
+       * Set the loading bar's width to a certain percent.
+       *
+       * @param n any value between 0 and 1
+       */
+      function _set(n) {
+        if (currentBar) currentBar.set(n);
+      }
+
+      /**
+       * Increments the loading bar by a random amount
+       * but slows down as it progresses
+       */
+      function _inc() {
+        if (currentBar) currentBar.inc();
       }
 
       function _status() {
-        return status;
-      }
-
-      function _completeAnimation() {
-        status = 0;
-        started = false;
+        return currentBar ? currentBar.status() : 0;
       }
 
       function _complete() {
-        if (!$animate) {
-          $animate = $injector.get('$animate');
+        if (!currentBar) {
+          return;
         }
 
         _set(1);
@@ -306,11 +334,8 @@ angular.module('cfp.loadingBar', [])
 
         // Attempt to aggregate any start/complete calls within 500ms:
         completeTimeout = $timeout(function() {
-          var promise = $animate.leave(loadingBarContainer, _completeAnimation);
-          if (promise && promise.then) {
-            promise.then(_completeAnimation);
-          }
-          $animate.leave(spinner);
+          currentBar.cleanup();
+          currentBar = null;
           $rootScope.$broadcast('cfpLoadingBar:completed');
         }, 500);
       }

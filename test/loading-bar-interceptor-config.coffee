@@ -10,6 +10,7 @@ describe 'loadingBarInterceptor Service - config options', ->
       expect(spinner).toBeNull
       cfpLoadingBar.complete()
       $timeout.flush()
+      $timeout.flush()
 
   it 'should show the spinner if configured', ->
     module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
@@ -20,6 +21,7 @@ describe 'loadingBarInterceptor Service - config options', ->
       spinner = document.getElementById('loading-bar-spinner')
       expect(spinner).not.toBeNull
       cfpLoadingBar.complete()
+      $timeout.flush()
       $timeout.flush()
 
   it 'should hide the loadingBar if configured', ->
@@ -32,6 +34,7 @@ describe 'loadingBarInterceptor Service - config options', ->
       expect(spinner).toBeNull
       cfpLoadingBar.complete()
       $timeout.flush()
+      $timeout.flush()
 
   it 'should show the loadingBar if configured', ->
     module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
@@ -42,6 +45,7 @@ describe 'loadingBarInterceptor Service - config options', ->
       spinner = document.getElementById('loading-bar-spinner')
       expect(spinner).not.toBeNull
       cfpLoadingBar.complete()
+      $timeout.flush()
       $timeout.flush()
 
   it 'should not auto increment loadingBar if configured', (done) ->
@@ -66,6 +70,7 @@ describe 'loadingBarInterceptor Service - config options', ->
         expect(cfpLoadingBar.status()).toBe .5;
         cfpLoadingBar.complete()
         $timeout.flush()
+        $timeout.flush()
 
   it 'should auto increment loadingBar if configured', ->
     module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
@@ -78,6 +83,7 @@ describe 'loadingBarInterceptor Service - config options', ->
       $timeout.flush()
       expect(cfpLoadingBar.status()).toBeGreaterThan .5
       cfpLoadingBar.complete()
+      $timeout.flush()
       $timeout.flush()
 
   it 'should append the loadingbar as the first child of the parent container if empty', ->
@@ -96,6 +102,7 @@ describe 'loadingBarInterceptor Service - config options', ->
       expect(children[1].id).toBe 'loading-bar-spinner'
       cfpLoadingBar.complete()
       $timeout.flush()
+      $timeout.flush()
 
   it 'should append the loading bar to the body if parentSelector is empty', ->
     module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
@@ -111,4 +118,5 @@ describe 'loadingBarInterceptor Service - config options', ->
       expect(bar.length).toBe 1
       expect(spinner.length).toBe 1
       cfpLoadingBar.complete()
+      $timeout.flush()
       $timeout.flush()
