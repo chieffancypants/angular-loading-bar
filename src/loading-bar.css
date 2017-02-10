@@ -8,6 +8,8 @@
   -moz-transition: 350ms linear all;
   -o-transition: 350ms linear all;
   transition: 350ms linear all;
+  position: fixed;
+  z-index: 10002;
 }
 
 #loading-bar.ng-enter,
@@ -32,7 +34,6 @@
 
   background: #29d;
   position: fixed;
-  z-index: 10002;
   top: 0;
   left: 0;
   width: 100%;
