@@ -120,6 +120,16 @@ angular.module('myApp', ['angular-loading-bar'])
   }])
 ```
 
+#### Transform Mode
+The Loading Bar is using the width Property to support older Browsers. To enable the transform Property Animation, get a better Performance on mobile decices and avoid repainting just set the transformMode to true.
+
+```js
+angular.module('myApp', ['angular-loading-bar'])
+  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.transformMode = true;
+  }])
+```
+
 #### Ignoring particular XHR requests:
 The loading bar can also be forced to ignore certain requests, for example, when long-polling or periodically sending debugging information back to the server.
 
