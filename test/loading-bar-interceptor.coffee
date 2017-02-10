@@ -200,6 +200,24 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 1
 
     $timeout.flush()
+    
+  it 'should count http manual loaded event as responses so the loading bar can complete', inject (cfpLoadingBar, $rootScope) ->
+    # $httpBackend.expectGET(endpoint).respond response
+    $httpBackend.expectGET(endpoint).respond 401
+    $httpBackend.expectGET(endpoint).respond 401
+    $http.get(endpoint)
+    $http.get(endpoint)
+
+    expect(cfpLoadingBar.status()).toBe 0
+    $timeout.flush()
+    $timeout.flush()
+    $httpBackend.flush(1)
+    expect(cfpLoadingBar.status()).toBe 0.5
+    
+    $rootScope.$emit('cfpLoadingBar:manual-loaded', {url: endpoint, result: { config: { cache : false}}})
+    expect(cfpLoadingBar.status()).toBe 1
+
+    $timeout.flush()
 
   it 'should insert the loadingbar into the DOM when a request is sent', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response

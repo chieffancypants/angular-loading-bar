@@ -88,6 +88,19 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
         return cached;
       }
 
+      $rootScope.$on('cfpLoadingBar:manual-loaded', function(event, config) {
+
+        if (!config.result.config.ignoreLoadingBar && !isCached(config.result.config)) {
+          reqsCompleted++;
+          $rootScope.$broadcast('cfpLoadingBar:loaded',config);
+          if (reqsCompleted >= reqsTotal) {
+            setComplete();
+          } else {
+            cfpLoadingBar.set(reqsCompleted / reqsTotal);
+          }
+        }
+      });
+
 
       return {
         'request': function(config) {
