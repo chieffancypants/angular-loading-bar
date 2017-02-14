@@ -237,9 +237,11 @@ angular.module('cfp.loadingBar', [])
         if (!started) {
           return;
         }
-        var pct = (n * 100) + '%';
-        loadingBar.css('width', pct);
-        status = n;
+        if(status < n){
+            var pct = (n * 100) + '%';
+            loadingBar.css('width', pct);
+            status = n;
+        }
 
         // increment loadingbar to give the illusion that there is always
         // progress but make sure to cancel the previous timeouts so we don't
