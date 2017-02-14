@@ -79,6 +79,16 @@ angular.module('myApp', ['angular-loading-bar'])
   }])
 ```
 
+#### Turn the $http interceptor off:
+If you would like to disable the $http interceptor globally, use the following configuration
+
+```js
+angular.module('myApp', ['angular-loading-bar'])
+  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.interceptor = false;
+  }])
+```
+
 #### Customize the template:
 If you'd like to replace the default HTML template you can configure it by providing inline HTML as a string:
 
