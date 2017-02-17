@@ -184,11 +184,11 @@ cfpLoadingBar.inc();
 // the progress increases.  This is to prevent the loading bar from appearing
 // completed (or almost complete) before the XHR request has responded.
 
-cfpLoadingBar.set(0.3) // Set the loading bar to 30%
-cfpLoadingBar.status() // Returns the loading bar's progress.
+cfpLoadingBar.set(0.3); // Set the loading bar to 30%
+cfpLoadingBar.status(); // Returns the loading bar's progress.
 // -> 0.3
 
-cfpLoadingBar.complete()
+cfpLoadingBar.complete();
 // Set the loading bar's progress to 100%, and then remove it from the DOM.
 
 ```
