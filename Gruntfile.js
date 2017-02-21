@@ -84,6 +84,7 @@ module.exports = function(grunt) {
         files: {
           'build/loading-bar.css': 'src/loading-bar.css',
           'build/loading-bar.js':  'src/loading-bar.js',
+          'build/scss/loading-bar.scss':  'src/scss/loading-bar.scss'
         }
       }
     }
