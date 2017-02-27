@@ -44,10 +44,27 @@
         var latencyThreshold = cfpLoadingBar.latencyThreshold;
 
         /**
+       * URL to skip from GET request
+       */
+        var skipGetUrls = cfpLoadingBar.skipGetUrls;
+
+        /**
          * $timeout handle for latencyThreshold
          */
         var startTimeout;
 
+
+        function isURLSkipped(urlToSkip) {
+          if (skipGetUrls && skipGetUrls.length > 0) {
+            for (var j = 0; j < skipGetUrls.length; j++) {
+              if (urlToSkip.match(skipGetUrls[j])) {
+                return true;
+              }
+            }
+          }
+          
+          return false;
+        }
         function setCompleteWithSucess(currentUrl) {
           $timeout.cancel(startTimeout);
           cfpLoadingBar.completeWithSuccess(currentUrl);
@@ -99,11 +116,12 @@
           'request': function (config) {
             // Check to make sure this request hasn't already been cached and that
             // the requester didn't explicitly ask us to ignore this request:
-            if (!config.ignoreLoadingBar && !isCached(config)) {
+            if (!isURLSkipped(config.url) && !config.ignoreLoadingBar && !isCached(config)) {
               $rootScope.$broadcast('cfpLoadingBar:loading', { url: config.url });
+              var reqUrl= config.url;
               if (reqsTotal === 0) {
                 startTimeout = $timeout(function () {
-                  cfpLoadingBar.start();
+                cfpLoadingBar.start();
                 }, latencyThreshold);
               }
               reqsTotal++;
@@ -113,12 +131,14 @@
           },
 
           'response': function (response) {
+
             if (!response || !response.config) {
               $log.error('Broken interceptor detected: Config object not supplied in response:\n https://github.com/chieffancypants/angular-loading-bar/pull/50');
               return response;
             }
 
-            if (!response.config.ignoreLoadingBar && !isCached(response.config)) {
+            if (!isURLSkipped(response.config.url) && !response.config.ignoreLoadingBar && !isCached(response.config)) {
+      
               reqsCompleted++;
               if (reqsCompleted >= reqsTotal) {
 
@@ -140,7 +160,8 @@
               return $q.reject(rejection);
             }
 
-            if (!rejection.config.ignoreLoadingBar && !isCached(rejection.config)) {
+            if (!isURLSkipped(rejection.config.url) && !rejection.config.ignoreLoadingBar && !isCached(rejection.config)) {
+          
               reqsCompleted++;
               if (reqsCompleted >= reqsTotal) {
                 $rootScope.$broadcast('cfpLoadingBar:loaded', { url: rejection.config.url, result: rejection });
@@ -198,10 +219,14 @@
         var includeBar = this.includeBar;
         var startSize = this.startSize;
         var skipUrls = this.skipUrls;
+        var skipGetUrls = this.skipGetUrls;
+
         /**
          * Inserts the loading bar element into the dom, and sets it to 2%
          */
         function _start() {
+
+         
           if (!$animate) {
             $animate = $injector.get('$animate');
           }
@@ -307,6 +332,17 @@
           status = 0;
           started = false;
         }
+        function isGetURLSkipped(urlToSkip) {
+          
+          if (skipGetUrls && skipGetUrls.length > 0) {
+            for (var j = 0; j < skipGetUrls.length; j++) {
+              if (urlToSkip.match(skipGetUrls[j])) {
+                return true;
+              }
+            }
+          }
+          return false;
+        }
 
         function isURLSkipped(urlToSkip) {
 
@@ -346,7 +382,7 @@
           }, 500);
           var spinnerTick = angular.element(this.spinnerSuccessTemplate);
           if (!isURLSkipped(currentUrl)) {
-            
+
             $animate.enter(spinnerTick, $parent, loadingBarContainer);
             ///Wait for one sec to see the animation
             $timeout(function () {
@@ -388,7 +424,8 @@
           startSize: this.startSize,
           spinnerSuccessTemplate: this.spinnerSuccessTemplate,
           sucessTickTime: this.sucessTickTime,
-          skipUrls: this.skipUrls
+          skipUrls: this.skipUrls,
+          skipGetUrls: this.skipGetUrls     
         };
 
 
