@@ -5,7 +5,7 @@ module.exports = function (config) {
   config.set({
   
     // base path, that will be used to resolve files and exclude
-    basePath: '',
+    basePath: '../',
   
   
     // frameworks to use
@@ -14,11 +14,9 @@ module.exports = function (config) {
   
     // list of files / patterns to load in the browser
     files: [
-      '../node_modules/angular/angular.js',
-      '../node_modules/angular-animate/angular-animate.js',
-      '../node_modules/angular-mocks/angular-mocks.js',
-      '../src/*.js',
-      '*.coffee'
+      'test/*.js',
+      'src/*.js',
+      'test/*.coffee'
     ],
   
   
@@ -45,7 +43,6 @@ module.exports = function (config) {
   
   
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
   
   
     // Start these browsers, currently available:
@@ -64,17 +61,30 @@ module.exports = function (config) {
     },
   
     preprocessors: {
-      '../src/*.js': ['webpack', 'coverage'],
-      '*.coffee': 'coffee'
+      'src/*.js': ['coverage', 'webpack'],
+      'test/*.js': ['webpack'],
+      'test/*.coffee': ['coffee']
     },
+  
+    webpack: require('../webpack.config.test'),
     webpackMiddleware: {
       noInfo: true
+    },
+    coffeePreprocessor: {
+      options: {
+        bare: true,
+        sourceMap: false
+      },
+      transformPath: function (path) {
+        return path.replace(/\.coffee$/, '.js')
+      }
     },
     plugins: [
       require('karma-jasmine'),
       require('karma-junit-reporter'),
       require('karma-coverage'),
       require('karma-phantomjs-launcher'),
+      require('karma-coffee-preprocessor'),
       require('karma-webpack')
     ],
     // If browser does not capture in given timeout [ms], kill it
