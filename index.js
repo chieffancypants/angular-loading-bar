@@ -1,2 +1,2 @@
-require('./build/loading-bar');
-module.exports = 'angular-loading-bar';
+require('./src/loading-bar.scss');
+module.exports = require('./src/loading-bar');

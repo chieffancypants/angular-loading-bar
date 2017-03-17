@@ -1,0 +1,80 @@
+//colors
+$color_bar_background: #29d;
+
+#loading-bar {
+  pointer-events: none;
+  transition: 350ms linear all;
+  &.ng-enter {
+    opacity: 0;
+    &.ng-enter-active {
+      opacity: 1;
+    }
+  }
+  &.ng-leave {
+    opacity: 1;
+    &.ng-leave-active {
+      opacity: 0;
+    }
+  }
+  .bar {
+    transition: width 350ms;
+    background: $color_bar_background;
+    position: fixed;
+    z-index: 10002;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-bottom-right-radius: 1px;
+    border-top-right-radius: 1px;
+  }
+  .peg {
+    position: absolute;
+    width: 70px;
+    right: 0;
+    top: 0;
+    height: 2px;
+    opacity: .45;
+    box-shadow: $color_bar_background 1px 0 6px 1px;
+    border-radius: 100%;
+  }
+}
+#loading-bar-spinner {
+  pointer-events: none;
+  transition: 350ms linear all;
+  display: block;
+  position: fixed;
+  z-index: 10002;
+  top: 10px;
+  left: 10px;
+  &.ng-enter {
+    opacity: 0;
+    &.ng-enter-active {
+      opacity: 1;
+    }
+  }
+  &.ng-leave {
+    opacity: 1;
+    &.ng-leave-active {
+      opacity: 0;
+    }
+  }
+  .spinner-icon {
+    width: 14px;
+    height: 14px;
+    border: solid 2px transparent;
+    border-top-color: $color_bar_background;
+    border-left-color: $color_bar_background;
+    border-radius: 50%;
+    animation: loading-bar-spinner 400ms linear infinite;
+  }
+}
+
+@keyframes loading-bar-spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
