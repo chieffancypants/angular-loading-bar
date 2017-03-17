@@ -1,5 +1,5 @@
 var path = require("path");
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -8,7 +8,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, "build"),
-    filename: "loading-bar.min.[name]",
+    filename: "loading-bar.[name]",
     libraryTarget: "umd",
     library: "angular-loading-bar"
   },
@@ -18,7 +18,7 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         loaders: [
-          'ng-annotate-loader'
+          "ng-annotate-loader"
         ]
       },
       {
@@ -27,7 +27,7 @@ module.exports = {
           loader: "css-loader", // translates CSS into CommonJS
           options: {
             modules: true,
-            minimize: true
+            minimize: false
           }
         }, {
           loader: "sass-loader" // compiles Sass to CSS
@@ -36,7 +36,7 @@ module.exports = {
     ]
   },
   externals: "angular",
-  devtool: "cheap-module-source-map",
+  devtool: "source-map",
   resolve: {
     modules: [
       "node_modules"
@@ -46,8 +46,9 @@ module.exports = {
   plugins: [
     new UglifyJSPlugin(
       {
+        sourceMap: true,
         mangle: {
-          except: ['module', 'exports', 'require']
+          except: ["module", "exports", "require"]
         }
       }
     )
