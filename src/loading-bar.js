@@ -69,6 +69,11 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
         var cache;
         var defaultCache = $cacheFactory.get('$http');
         var defaults = $httpProvider.defaults;
+        var url = config.url;
+
+        if (config.paramSerializer !== undefined) {
+          url = buildUrl(config.url, config.paramSerializer(config.params));
+        }
 
         // Choose the proper cache source. Borrowed from angular: $http service
         if ((config.cache || defaults.cache) && config.cache !== false &&
@@ -79,7 +84,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
         }
 
         var cached = cache !== undefined ?
-          cache.get(config.url) !== undefined : false;
+          cache.get(url) !== undefined : false;
 
         if (config.cached !== undefined && cached !== config.cached) {
           return config.cached;
@@ -88,6 +93,12 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
         return cached;
       }
 
+      function buildUrl(url, serializedParams) {
+        if (serializedParams.length > 0) {
+          url += ((url.indexOf('?') == -1) ? '?' : '&') + serializedParams;
+        }
+        return url;
+      }
 
       return {
         'request': function(config) {

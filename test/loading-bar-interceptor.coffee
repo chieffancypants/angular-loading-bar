@@ -165,6 +165,47 @@ describe 'loadingBarInterceptor Service', ->
     expect(cfpLoadingBar.status()).toBe 1
     $timeout.flush()
 
+  it 'should not increment if the response is cached with different params', inject (cfpLoadingBar) ->
+    return unless angular.version.major >= 1 && angular.version.minor >= 4
+
+    $httpBackend.expectGET(endpoint).respond response
+    $http.get(endpoint, cache: true).then (data) ->
+      result = data
+
+    expect(cfpLoadingBar.status()).toBe 0
+    $timeout.flush()
+    $timeout.flush()
+    $httpBackend.flush(1)
+    expect(cfpLoadingBar.status()).toBe 1
+    cfpLoadingBar.complete() # set as complete
+    $timeout.flush()
+    flush()
+
+    $httpBackend.verifyNoOutstandingRequest()
+
+
+    $httpBackend.expectGET(endpoint + "?q=angular").respond response
+    $http.get(endpoint, params: { q: 'angular' }, cache: true).then (data) ->
+      result = data
+
+    $httpBackend.verifyNoOutstandingExpectation()
+    expect(cfpLoadingBar.status()).toBe 0
+    $timeout.flush()
+    $timeout.flush()
+    $httpBackend.flush(1)
+    expect(cfpLoadingBar.status()).toBe 1
+    cfpLoadingBar.complete() # set as complete
+    $timeout.flush()
+    flush()
+
+
+    $http.get(endpoint, params: { q: 'angular' }, cache: true).then (data) ->
+      result = data
+    # no need to flush $httpBackend since the response is cached
+    expect(cfpLoadingBar.status()).toBe 0
+    $httpBackend.verifyNoOutstandingRequest()
+    $timeout.flush() # loading bar is animated, so flush timeout
+
 
   it 'should increment the loading bar when not all requests have been recieved', inject (cfpLoadingBar) ->
     $httpBackend.expectGET(endpoint).respond response
