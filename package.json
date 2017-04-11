@@ -3,6 +3,10 @@
   "version": "0.9.0",
   "description": "An automatic loading bar for AngularJS",
   "main": "index.js",
+  "files": [
+    "build/loading-bar.js",
+    "build/loading-bar.css"
+  ],
   "style": "build/loading-bar.css",
   "directories": {
     "example": "example",
