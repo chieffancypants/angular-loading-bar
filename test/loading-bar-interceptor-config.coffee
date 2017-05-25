@@ -44,28 +44,27 @@ describe 'loadingBarInterceptor Service - config options', ->
       cfpLoadingBar.complete()
       $timeout.flush()
 
-  it 'should not auto increment loadingBar if configured', (done) ->
-    module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
-      cfpLoadingBarProvider.autoIncrement = false
-      return
-    inject ($timeout, cfpLoadingBar) ->
-      flag = false
-      cfpLoadingBar.start()
-      cfpLoadingBar.set(.5)
-      runs ->
+  describe 'loadingBarInterceptor Service - config options, async tests', ->
+    beforeEach (done) ->
+      module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->
+        cfpLoadingBarProvider.autoIncrement = false
+        return
+      inject ($timeout, cfpLoadingBar) ->
+        cfpLoadingBar.start()
+        cfpLoadingBar.set(.5)
         setTimeout ->
-          flag = true
+          done()
         , 500
 
-      waitsFor ->
-        return flag
-      , "500ms timeout"
-      , 1000
+    it 'should not auto increment loadingBar if configured', (done) ->
+      inject ($timeout, cfpLoadingBar) ->
+        setTimeout ->
+          expect(cfpLoadingBar.status()).toBe .5;
+          cfpLoadingBar.complete();
+          $timeout.flush();
+          done();
+        , 500
 
-      runs ->
-        expect(cfpLoadingBar.status()).toBe .5;
-        cfpLoadingBar.complete()
-        $timeout.flush()
 
   it 'should auto increment loadingBar if configured', ->
     module 'chieffancypants.loadingBar', (cfpLoadingBarProvider) ->

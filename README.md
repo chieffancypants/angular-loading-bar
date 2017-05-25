@@ -152,7 +152,15 @@ $http.post('/save', data, {
 
 ```
 
+#### Auto Increment 
+By default, the loading bar will increment by a random amount that get's smaller as the bar fills, you can disable this: 
 
+```js
+angular.module('myApp', ['angular-loading-bar'])
+  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.autoIncrement = false;
+  }])
+```
 
 
 ## How it works:
@@ -190,7 +198,17 @@ cfpLoadingBar.status() // Returns the loading bar's progress.
 
 cfpLoadingBar.complete()
 // Set the loading bar's progress to 100%, and then remove it from the DOM.
-
+//
+// Alternatively, you can us push() and pop() to control the loading bar
+// It is suggested that you turn off autoIncrement if you plan on using this
+cfpLoadingBar.push(x)
+// starts the loading bar if it hasn't been already, and adds to number of 'requests' for this loading bar
+// it will broadcast x on the 'cfpLoadingBar:loading' event when called
+cfpLoadingBar.pop(y)
+// increments the number of requests that have been completed
+// then, if the number of 'requests completed' is greater or equal to the number of 'requests' on this bar, it calls complete 
+// and broadcasts y on the 'cfpLoadingBar:loaded' event
+// otherwise, it sets the bar's progress to the number of 'requests completed' divided by the number of 'requests' on this loading bar
 ```
 
 ## Events
