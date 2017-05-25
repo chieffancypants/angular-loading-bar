@@ -1,0 +1,44 @@
+$loading-bar-color: #29d !default;
+
+#loading-bar { // sass-lint:disable-line no-ids // because angular-loading-bar requires it
+  &.ng-enter {
+    &.ng-enter-active {
+      opacity: 1;
+    }
+    opacity: 0;
+  }
+
+  &.ng-leave {
+    &.ng-leave-active {
+      opacity: 0;
+    }
+    opacity: 1;
+  }
+
+  .bar {
+    background: $loading-bar-color;
+    border-bottom-right-radius: 1px;
+    border-top-right-radius: 1px;
+    height: 2px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    transition: width 350ms;
+    width: 100%;
+    z-index: 10002;
+  }
+
+  .peg {
+    border-radius: 100%;
+    box-shadow: $loading-bar-color 1px 0 6px 1px;
+    height: 2px;
+    opacity: .45;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 70px;
+  }
+
+  pointer-events: none;
+  transition: 350ms linear all;
+}

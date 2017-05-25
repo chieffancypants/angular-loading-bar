@@ -12,6 +12,17 @@ module.exports = function(grunt) {
       ' */\n',
 
     // Task configuration.
+    sass: {
+      options: {
+        sourceMap: true
+      },
+      dist: {
+        files: {
+          'build/loading-bar.css': 'src/loading-bar.scss'
+        }
+      }
+    },
+
     uglify: {
       options: {
         banner: '<%= banner %>',
@@ -29,7 +40,7 @@ module.exports = function(grunt) {
         report: 'gzip'
       },
       minify: {
-        src: 'src/loading-bar.css',
+        src: 'build/loading-bar.css',
         dest: 'build/loading-bar.min.css'
       }
     },
@@ -94,8 +105,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-sass');
 
-  grunt.registerTask('default', ['jshint', 'karma:unit', 'karma:unit13', 'karma:unit14', 'uglify', 'cssmin', 'concat:build']);
+  grunt.registerTask('default', ['jshint', 'karma:unit', 'karma:unit13', 'karma:unit14', 'uglify', 'sass', 'cssmin', 'concat:build']);
   grunt.registerTask('test', ['karma:watch']);
   grunt.registerTask('build', ['default']);
 
