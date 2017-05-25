@@ -37,6 +37,7 @@
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-uglify": "^3.0.0",
     "grunt-karma": "^2.0.0",
+    "grunt-sass": "^2.0.0",
     "jasmine-core": "^2.6.2",
     "karma": "^1.7.0",
     "karma-coffee-preprocessor": "^1.0.1",
