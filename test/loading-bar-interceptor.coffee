@@ -34,13 +34,21 @@ describe 'loadingBarInterceptor Service', ->
       $animate.triggerCallbacks && $animate.triggerCallbacks()
 
   beforeEach ->
-    this.addMatchers
-      toBeBetween: (high, low) ->
-        if low > high
-          temp = low
-          low = high
-          high = temp
-        return this.actual > low && this.actual < high
+    jasmine.addMatchers
+      toBeBetween: () ->
+        return  compare: (actual, high, low) ->
+          if low > high
+            temp = low
+            low = high
+            high = temp
+          passed = actual > low && actual < high
+          result =
+            pass:
+              passed
+            message:
+             'expected ' + actual + ' to ' + (if passed then 'not ' else '') + 'be between ' + low + ' and ' + high
+        return result
+
 
 
   afterEach ->
