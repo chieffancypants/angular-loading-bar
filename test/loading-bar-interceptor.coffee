@@ -502,6 +502,28 @@ describe 'LoadingBar only', ->
 
     expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe false
 
+  it 'should allow for explicit calls to push and pop', ->
+    cfpLoadingBar.start()
+    $timeout.flush()
+
+    # pushing adds only to reqsTotal, and shouldn't set the status above 0, even with multiple calls
+    cfpLoadingBar.push({})
+    expect(cfpLoadingBar.status()).toBe(0)
+    cfpLoadingBar.push({})
+    cfpLoadingBar.push({})
+    cfpLoadingBar.push({})
+    expect(cfpLoadingBar.status()).toBe(0)
+
+    # pushing adds to reqsCompleted, and should set the status to reqsCompleted/reqsTotal
+    cfpLoadingBar.pop({})
+    expect(cfpLoadingBar.status()).toBe(0.25)
+    cfpLoadingBar.pop({})
+    expect(cfpLoadingBar.status()).toBe(0.5)
+    cfpLoadingBar.pop({})
+    expect(cfpLoadingBar.status()).toBe(0.75)
+    cfpLoadingBar.pop({})
+    expect(cfpLoadingBar.status()).toBe(1)
+
 
 describe 'Interceptor tests', ->
   provider = $http = $httpBackend = $log = null
