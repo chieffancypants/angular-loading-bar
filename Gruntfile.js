@@ -14,13 +14,33 @@ module.exports = function(grunt) {
     // Task configuration.
     sass: {
       options: {
-        sourceMap: true
+        sourceMap: false
       },
       dist: {
         files: {
           'build/loading-bar.css': 'src/loading-bar.scss'
         }
       }
+    },
+
+    postcss: {
+      options: {
+        map: false,
+
+        processors: [
+          require('autoprefixer')({browsers: 'last 2 versions'}), // add vendor prefixes
+        ]
+      },
+      dist: {
+        src: 'build/loading-bar.css'
+      }
+    },
+
+    sasslint: {
+      options: {
+        configFile: 'sass-lint.yml'
+      },
+      target: ['src/loading-bar.scss']
     },
 
     uglify: {
@@ -93,7 +113,7 @@ module.exports = function(grunt) {
           banner: '<%= banner %>'
         },
         files: {
-          'build/loading-bar.css': 'src/loading-bar.css',
+          // 'build/loading-bar.css': 'src/loading-bar.css',
           'build/loading-bar.js':  'src/loading-bar.js',
         }
       }
@@ -106,8 +126,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-sass');
+  grunt.loadNpmTasks('grunt-postcss');
+  grunt.loadNpmTasks('grunt-sass-lint');
 
-  grunt.registerTask('default', ['jshint', 'karma:unit', 'karma:unit13', 'karma:unit14', 'uglify', 'sass', 'cssmin', 'concat:build']);
+  grunt.registerTask('default', ['jshint', 'sasslint', 'karma:unit', 'karma:unit13', 'karma:unit14', 'uglify', 'sass', 'postcss', 'cssmin', 'concat:build']);
   grunt.registerTask('test', ['karma:watch']);
   grunt.registerTask('build', ['default']);
 

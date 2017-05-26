@@ -1,0 +1,6 @@
+options:
+  formatter: stylish
+  merge-default-rules: true
+rules:
+  no-ids: 0
+  no-transition-all: 0
