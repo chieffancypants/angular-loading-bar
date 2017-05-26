@@ -43,7 +43,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
           (config.method === 'GET' || config.method === 'JSONP')) {
           cache = angular.isObject(config.cache) ? config.cache
             : angular.isObject(defaults.cache) ? defaults.cache
-              : defaultCache;
+            : defaultCache;
         }
 
         var cached = cache !== undefined ?
