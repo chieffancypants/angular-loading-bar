@@ -1,0 +1,86 @@
+$loading-bar-color: #29d !default;
+
+#loading-bar {
+  pointer-events: none;
+  transition: 350ms linear all;
+
+  &.ng-enter {
+    opacity: 0;
+
+    &.ng-enter-active {
+      opacity: 1;
+    }
+  }
+
+  &.ng-leave {
+    opacity: 1;
+
+    &.ng-leave-active {
+      opacity: 0;
+    }
+  }
+
+  .bar {
+    background: $loading-bar-color;
+    border-bottom-right-radius: 1px;
+    border-top-right-radius: 1px;
+    height: 2px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    transition: width 350ms;
+    width: 100%;
+    z-index: 10002;
+  }
+
+  .peg {
+    border-radius: 100%;
+    box-shadow: $loading-bar-color 1px 0 6px 1px;
+    height: 2px;
+    opacity: .45;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 70px;
+  }
+}
+
+#loading-bar-spinner {
+  display: block;
+  left: 10px;
+  pointer-events: none;
+  position: fixed;
+  top: 10px;
+  transition: 350ms linear all;
+  z-index: 10002;
+
+  &.ng-enter {
+    opacity: 0;
+
+    &.ng-enter-active {
+      opacity: 1;
+    }
+  }
+
+  &.ng-leave {
+    opacity: 1;
+
+    &.ng-leave-active {
+      opacity: 0;
+    }
+  }
+
+  .spinner-icon {
+    animation: loading-bar-spinner 400ms linear infinite;
+    border:  solid 2px transparent;
+    border-left-color: $loading-bar-color;
+    border-radius: 50%;
+    border-top-color:  $loading-bar-color;
+    height: 14px;
+    width: 14px;
+  }
+}
+@keyframes loading-bar-spinner {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
