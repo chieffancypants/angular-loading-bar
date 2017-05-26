@@ -34,13 +34,21 @@ describe 'loadingBarInterceptor Service', ->
       $animate.triggerCallbacks && $animate.triggerCallbacks()
 
   beforeEach ->
-    this.addMatchers
-      toBeBetween: (high, low) ->
-        if low > high
-          temp = low
-          low = high
-          high = temp
-        return this.actual > low && this.actual < high
+    jasmine.addMatchers
+      toBeBetween: () ->
+        return  compare: (actual, high, low) ->
+          if low > high
+            temp = low
+            low = high
+            high = temp
+          passed = actual > low && actual < high
+          result =
+            pass:
+              passed
+            message:
+             'expected ' + actual + ' to ' + (if passed then 'not ' else '') + 'be between ' + low + ' and ' + high
+        return result
+
 
 
   afterEach ->
@@ -493,6 +501,28 @@ describe 'LoadingBar only', ->
     flush()
 
     expect(isLoadingBarInjected($document.find(cfpLoadingBar.parentSelector))).toBe false
+
+  it 'should allow for explicit calls to push and pop', ->
+    cfpLoadingBar.start()
+    $timeout.flush()
+
+    # pushing adds only to reqsTotal, and shouldn't set the status above 0, even with multiple calls
+    cfpLoadingBar.push({})
+    expect(cfpLoadingBar.status()).toBe(0)
+    cfpLoadingBar.push({})
+    cfpLoadingBar.push({})
+    cfpLoadingBar.push({})
+    expect(cfpLoadingBar.status()).toBe(0)
+
+    # pushing adds to reqsCompleted, and should set the status to reqsCompleted/reqsTotal
+    cfpLoadingBar.pop({})
+    expect(cfpLoadingBar.status()).toBe(0.25)
+    cfpLoadingBar.pop({})
+    expect(cfpLoadingBar.status()).toBe(0.5)
+    cfpLoadingBar.pop({})
+    expect(cfpLoadingBar.status()).toBe(0.75)
+    cfpLoadingBar.pop({})
+    expect(cfpLoadingBar.status()).toBe(1)
 
 
 describe 'Interceptor tests', ->
