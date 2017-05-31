@@ -62,7 +62,7 @@
               }
             }
           }
-          
+
           return false;
         }
         function setCompleteWithSucess(currentUrl) {
@@ -138,12 +138,12 @@
             }
 
             if (!isURLSkipped(response.config.url) && !response.config.ignoreLoadingBar && !isCached(response.config)) {
-      
+
               reqsCompleted++;
               if (reqsCompleted >= reqsTotal) {
 
                 $rootScope.$broadcast('cfpLoadingBar:loaded', { url: response.config.url, result: response });
-                if (response.config.method == 'POST' && response.status == 200) {
+                if (response.config.method == 'POST' && response.status == 200 && !response.config.skipSuccess) {
                   setCompleteWithSucess(response.config.url);
                 } else {
                   setComplete();
@@ -161,7 +161,7 @@
             }
 
             if (!isURLSkipped(rejection.config.url) && !rejection.config.ignoreLoadingBar && !isCached(rejection.config)) {
-          
+
               reqsCompleted++;
               if (reqsCompleted >= reqsTotal) {
                 $rootScope.$broadcast('cfpLoadingBar:loaded', { url: rejection.config.url, result: rejection });
@@ -226,7 +226,7 @@
          */
         function _start() {
 
-         
+
           if (!$animate) {
             $animate = $injector.get('$animate');
           }
@@ -333,7 +333,7 @@
           started = false;
         }
         function isGetURLSkipped(urlToSkip) {
-          
+
           if (skipGetUrls && skipGetUrls.length > 0) {
             for (var j = 0; j < skipGetUrls.length; j++) {
               if (urlToSkip.match(skipGetUrls[j])) {
@@ -425,7 +425,7 @@
           spinnerSuccessTemplate: this.spinnerSuccessTemplate,
           sucessTickTime: this.sucessTickTime,
           skipUrls: this.skipUrls,
-          skipGetUrls: this.skipGetUrls     
+          skipGetUrls: this.skipGetUrls
         };
 
 
