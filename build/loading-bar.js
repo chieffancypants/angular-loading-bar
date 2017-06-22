@@ -149,7 +149,7 @@
               if (reqsCompleted >= reqsTotal) {
 
                 $rootScope.$broadcast('cfpLoadingBar:loaded', { url: response.config.url, result: response });
-                if (response.config.method == 'POST' && response.status == 200 && !response.config.skipSuccess) {
+                if ((response.config.method == 'POST'|| response.config.method == 'PUT') && response.status == 200 && !response.config.skipSuccess) {
                   setCompleteWithSucess(response.config.url);
                 } else {
                   setComplete();
