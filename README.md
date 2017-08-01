@@ -79,6 +79,16 @@ angular.module('myApp', ['angular-loading-bar'])
   }])
 ```
 
+#### Turn auto increment feature off :
+When using cfpLoadingBar (full example is shown [here](https://github.com/vinaynb/angular-loading-bar/blob/master/README.md#service-api-advanced-usage)) to show a loader, it is auto incremented by default. If you need to disable this then use `autoIncrement` flag as follows: 
+
+```js
+angular.module('myApp', ['angular-loading-bar'])
+  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.autoIncrement = false;    \\default=true
+  }])
+```
+
 #### Customize the template:
 If you'd like to replace the default HTML template you can configure it by providing inline HTML as a string:
 
