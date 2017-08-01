@@ -85,7 +85,7 @@ When using cfpLoadingBar (full example is shown [here](https://github.com/vinayn
 ```js
 angular.module('myApp', ['angular-loading-bar'])
   .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
-    cfpLoadingBarProvider.autoIncrement = false;    \\default=true
+    cfpLoadingBarProvider.autoIncrement = false;    //default=true
   }])
 ```
 
