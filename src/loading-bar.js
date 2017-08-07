@@ -244,7 +244,7 @@ angular.module('cfp.loadingBar', [])
         // increment loadingbar to give the illusion that there is always
         // progress but make sure to cancel the previous timeouts so we don't
         // have multiple incs running at the same time.
-        if (autoIncrement) {
+        if (autoIncrement && status < 0.99) {
           $timeout.cancel(incTimeout);
           incTimeout = $timeout(function() {
             _inc();

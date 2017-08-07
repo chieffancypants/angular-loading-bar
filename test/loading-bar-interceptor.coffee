@@ -341,6 +341,11 @@ describe 'loadingBarInterceptor Service', ->
     $timeout.flush()
     width2 = lbar.children().css('width').slice(0, -1)
     expect(width2).toBe width
+    $timeout.verifyNoPendingTasks()
+
+    # stops timeout:
+    cfpLoadingBar.set(0.993)
+    $timeout.verifyNoPendingTasks()
 
 
     cfpLoadingBar.complete()
