@@ -24,7 +24,7 @@ angular.module('chieffancypants.loadingBar', ['cfp.loadingBarInterceptor']);
  * Registers itself as an Angular interceptor and listens for XHR requests.
  */
 angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
-  .config(['$httpProvider', function ($httpProvider) {
+  .config(['$provide', '$httpProvider', function ($provide, $httpProvider) {
 
     var interceptor = ['$q', '$cacheFactory', '$timeout', '$rootScope', '$log', 'cfpLoadingBar', function ($q, $cacheFactory, $timeout, $rootScope, $log, cfpLoadingBar) {
 
@@ -144,7 +144,8 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
       };
     }];
 
-    $httpProvider.interceptors.push(interceptor);
+    $provide.factory('LoadingBarInterceptor', interceptor);
+    $httpProvider.interceptors.push('LoadingBarInterceptor');
   }]);
 
 
