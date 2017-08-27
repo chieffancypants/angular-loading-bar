@@ -1,7 +1,7 @@
 /*! 
  * angular-loading-bar v0.9.0
  * https://chieffancypants.github.io/angular-loading-bar
- * Copyright (c) 2016 Wes Cruver
+ * Copyright (c) 2017 Wes Cruver
  * License: MIT
  */
 /*
@@ -228,7 +228,7 @@ angular.module('cfp.loadingBar', [])
         }
 
         if (includeSpinner) {
-          $animate.enter(spinner, $parent, loadingBarContainer);
+          $animate.enter(spinner, $parent, includeBar ? loadingBarContainer : $after);
         }
 
         _set(startSize);
