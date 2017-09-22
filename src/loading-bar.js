@@ -97,7 +97,7 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
             $rootScope.$broadcast('cfpLoadingBar:loading', {url: config.url});
             if (reqsTotal === 0) {
               startTimeout = $timeout(function() {
-                cfpLoadingBar.start();
+                cfpLoadingBar.start(config.switchMethods);
               }, latencyThreshold);
             }
             reqsTotal++;
@@ -168,6 +168,7 @@ angular.module('cfp.loadingBar', [])
     this.parentSelector = 'body';
     this.spinnerTemplate = '<div id="loading-bar-spinner"><div class="spinner-icon"></div></div>';
     this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
+    this.switchMethods = false;
 
     this.$get = ['$injector', '$document', '$timeout', '$rootScope', function ($injector, $document, $timeout, $rootScope) {
       var $animate;
@@ -185,11 +186,12 @@ angular.module('cfp.loadingBar', [])
       var includeSpinner = this.includeSpinner;
       var includeBar = this.includeBar;
       var startSize = this.startSize;
+      var switchMethods = this.switchMethods;
 
       /**
        * Inserts the loading bar element into the dom, and sets it to 2%
        */
-      function _start() {
+      function _start(switchMethods) {
         if (!$animate) {
           $animate = $injector.get('$animate');
         }
@@ -217,11 +219,13 @@ angular.module('cfp.loadingBar', [])
         $rootScope.$broadcast('cfpLoadingBar:started');
         started = true;
 
-        if (includeBar) {
+        //XOR with switchMethods
+
+        if ((includeBar && !switchMethods) || (!includeBar && switchMethods)) {
           $animate.enter(loadingBarContainer, $parent, $after);
         }
 
-        if (includeSpinner) {
+        if ((includeSpinner && !switchMethods) || (!includeSpinner && switchMethods)) {
           $animate.enter(spinner, $parent, loadingBarContainer);
         }
 
