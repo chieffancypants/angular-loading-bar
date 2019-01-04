@@ -294,6 +294,7 @@ angular.module('cfp.loadingBar', [])
       function _completeAnimation() {
         status = 0;
         started = false;
+        loadingBar.css('width', 0);
       }
 
       function _complete() {
