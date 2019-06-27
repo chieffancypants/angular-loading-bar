@@ -198,7 +198,7 @@ The loading bar broadcasts the following events over $rootScope allowing further
 
 **`cfpLoadingBar:loading`** triggered upon each XHR request that is not already cached
 
-**`cfpLoadingBar:loaded`** triggered each time an XHR request recieves a response (either successful or error)
+**`cfpLoadingBar:loaded`** triggered each time an XHR request receives a response (either successful or error)
 
 **`cfpLoadingBar:started`** triggered once upon the first XHR request.  Will trigger again if another request goes out after `cfpLoadingBar:completed` has triggered.
 
