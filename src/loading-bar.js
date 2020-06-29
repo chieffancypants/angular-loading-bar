@@ -222,8 +222,8 @@ angular.module('cfp.loadingBar', [])
           $animate.enter(loadingBarContainer, $parent, $after);
         }
 
-        var _includeBar = !!(typeof includeSpinner === 'function' ? includeBar() : includeSpinner);
-        if (includeSpinner) {
+        var _includeSpinner = !!(typeof includeSpinner === 'function' ? includeSpinner() : includeSpinner);
+        if (_includeSpinner) {
           $animate.enter(spinner, $parent, loadingBarContainer);
         }
 
