@@ -217,10 +217,12 @@ angular.module('cfp.loadingBar', [])
         $rootScope.$broadcast('cfpLoadingBar:started');
         started = true;
 
-        if (includeBar) {
+        var _includeBar = !!(typeof includeBar === 'function' ? includeBar() : includeBar);
+        if (_includeBar) {
           $animate.enter(loadingBarContainer, $parent, $after);
         }
 
+        var _includeBar = !!(typeof includeSpinner === 'function' ? includeBar() : includeSpinner);
         if (includeSpinner) {
           $animate.enter(spinner, $parent, loadingBarContainer);
         }
