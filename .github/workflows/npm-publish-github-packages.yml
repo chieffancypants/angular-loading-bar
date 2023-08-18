@@ -1,0 +1,25 @@
+name: Node.js Package
+
+on:
+  release:
+    types: 
+      - created    
+
+env:
+  NODE_AUTH_TOKEN: ${{ secrets.CCH_GITHUB_BOT_TOKEN }}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@carecloud'
+      - run: npm ci
+      - run: npm publish
